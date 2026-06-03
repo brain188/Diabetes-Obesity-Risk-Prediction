@@ -1,0 +1,39 @@
+data_processing:
+  columns_to_keep:
+    - age
+    - sex
+    - is_pregnant
+    - bmi
+    - bmi_category
+    - family_history_diabetes
+    - previous_gdm
+    - physically_active
+    - has_hypertension
+    - residence
+    - diabetes_status
+
+  target_map:
+    normal: 0
+    prediabetes: 1
+    diabetic: 2
+
+  boolean_columns:
+    - is_pregnant
+    - family_history_diabetes
+    - previous_gdm
+    - physically_active
+    - has_hypertension
+
+  bmi_map:
+    normal: 0
+    overweight: 1
+    obese i: 2
+    obese ii+: 3
+
+  sex_map:
+    female: 0
+    male: 1
+
+  residence_map:
+    rural: 0
+    urban: 1

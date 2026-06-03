@@ -2,3 +2,27 @@
 #
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/catalog-data/introduction/#data-catalog
+
+
+diabetes_train_raw:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/diabetes_train.csv
+  load_args:
+    dtype:
+      is_pregnant:              bool
+      family_history_diabetes:  bool
+      previous_gdm:             bool
+      physically_active:        bool
+      has_hypertension:         bool   
+
+
+diabetes_test_raw:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/diabetes_test.csv
+  load_args:
+    dtype:
+      is_pregnant:              bool
+      family_history_diabetes:  bool
+      previous_gdm:             bool
+      physically_active:        bool
+      has_hypertension:         bool

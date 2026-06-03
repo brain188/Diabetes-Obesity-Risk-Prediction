@@ -401,7 +401,7 @@ def convert_age(
     return train, test
 
 
- 
+
 def final_quality_check(
     data_train: pd.DataFrame,
     data_test: pd.DataFrame,
@@ -434,7 +434,7 @@ def final_quality_check(
             raise ValueError(
                 f"[{split}] Missing values found after processing: {nulls.to_dict()}"
             )
- 
+
         # Check 2 — all columns numeric
         non_numeric = df.select_dtypes(exclude=[np.number]).columns.tolist()
         # Allow the raw label column to remain as object
@@ -444,7 +444,7 @@ def final_quality_check(
                 f"[{split}] Non-numeric columns remain after encoding: {non_numeric}. "
                 "All columns must be numeric before training."
             )
- 
+
         # Check 3 — target values are valid
         actual_vals = set(df["diabetes_status"].unique())
         invalid = actual_vals - EXPECTED_TARGET_VALUES

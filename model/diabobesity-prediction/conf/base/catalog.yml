@@ -26,3 +26,17 @@ diabetes_test_raw:
       previous_gdm:             bool
       physically_active:        bool
       has_hypertension:         bool
+
+
+diabetes_train_cleaned:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/diabetes_train_cleaned.parquet
+  save_args:
+    # engine 'pyarrow' preserves int32/int64 dtypes exactly as written
+    engine: pyarrow
+ 
+diabetes_test_cleaned:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/diabetes_test_cleaned.parquet
+  save_args:
+    engine: pyarrow

@@ -1,0 +1,2001 @@
+age,sex,is_pregnant,bmi,bmi_category,family_history_diabetes,previous_gdm,physically_active,has_hypertension,residence,diabetes_status
+59.4,Female,False,23.1,Normal,False,False,False,False,Rural,Diabetic
+49.1,Female,False,32.4,Obese I,False,False,False,True,Rural,Diabetic
+21.5,Male,False,17.0,Normal,False,False,False,True,Rural,Prediabetes
+50.0,Male,False,30.2,Obese I,False,False,True,False,Rural,Diabetic
+49.8,Male,False,24.9,Normal,False,False,True,False,Urban,Prediabetes
+43.6,Male,False,26.0,Overweight,True,False,False,True,Urban,Diabetic
+50.1,Male,False,28.3,Overweight,False,False,True,False,Urban,Diabetic
+44.6,Male,False,16.0,Normal,False,False,True,False,Rural,Diabetic
+66.3,Male,False,25.9,Overweight,True,False,False,False,Urban,Diabetic
+42.4,Female,False,26.3,Overweight,True,False,False,False,Rural,Diabetic
+34.1,Male,False,25.2,Overweight,True,False,True,False,Rural,Diabetic
+57.9,Female,False,25.7,Overweight,True,False,False,False,Urban,Diabetic
+59.2,Male,False,20.4,Normal,False,False,False,True,Rural,Diabetic
+66.4,Male,False,26.2,Overweight,False,False,True,False,Rural,Prediabetes
+71.9,Male,False,18.6,Normal,False,False,True,False,Rural,Normal
+60.4,Female,False,31.2,Obese I,False,True,False,False,Urban,Diabetic
+29.6,Female,False,25.1,Overweight,False,False,True,False,Rural,Prediabetes
+61.5,Female,False,28.2,Overweight,False,False,True,False,Urban,Diabetic
+38.3,Female,False,22.9,Normal,False,False,False,True,Urban,Diabetic
+42.6,Female,False,29.2,Overweight,False,False,False,True,Urban,Diabetic
+37.0,Male,False,27.4,Overweight,True,False,True,False,Rural,Diabetic
+65.7,Male,False,20.6,Normal,False,False,True,True,Rural,Diabetic
+58.9,Male,False,35.6,Obese II+,False,False,False,False,Urban,Diabetic
+73.0,Female,False,24.7,Normal,False,False,False,True,Rural,Diabetic
+37.3,Male,False,29.6,Overweight,True,False,True,True,Rural,Diabetic
+56.1,Male,False,29.3,Overweight,False,False,True,False,Rural,Diabetic
+56.1,Female,False,28.9,Overweight,True,False,True,False,Rural,Diabetic
+44.3,Male,False,19.2,Normal,False,False,False,False,Urban,Diabetic
+53.7,Male,False,18.6,Normal,True,False,True,True,Rural,Diabetic
+43.6,Female,False,25.0,Overweight,True,False,False,False,Urban,Diabetic
+44.3,Male,False,25.0,Overweight,True,False,False,True,Rural,Diabetic
+41.9,Male,False,20.3,Normal,True,False,True,True,Urban,Diabetic
+38.3,Female,False,24.8,Normal,False,False,True,True,Rural,Normal
+50.0,Male,False,17.5,Normal,True,False,True,False,Urban,Diabetic
+51.2,Female,False,21.5,Normal,False,False,True,False,Urban,Prediabetes
+35.3,Male,False,26.1,Overweight,False,False,False,True,Rural,Diabetic
+32.4,Male,False,21.1,Normal,False,False,True,False,Urban,Normal
+62.0,Male,False,23.0,Normal,True,False,True,False,Rural,Diabetic
+40.2,Female,False,29.6,Overweight,False,True,False,True,Urban,Diabetic
+49.2,Male,False,29.6,Overweight,False,False,False,False,Rural,Diabetic
+57.2,Male,False,27.6,Overweight,True,False,False,True,Urban,Diabetic
+32.4,Male,False,24.7,Normal,True,False,True,True,Rural,Normal
+61.4,Female,False,35.0,Obese II+,False,False,False,False,Urban,Diabetic
+62.6,Male,False,31.4,Obese I,False,False,True,True,Urban,Diabetic
+57.4,Male,False,24.9,Normal,False,False,True,True,Urban,Diabetic
+46.4,Female,False,30.0,Obese I,True,False,False,False,Rural,Diabetic
+51.9,Female,False,33.0,Obese I,False,True,True,False,Urban,Diabetic
+40.2,Female,False,25.7,Overweight,True,False,False,False,Urban,Diabetic
+63.1,Female,False,28.4,Overweight,True,False,False,False,Urban,Diabetic
+41.4,Male,False,25.4,Overweight,False,False,True,True,Rural,Diabetic
+63.7,Male,False,23.9,Normal,False,False,True,False,Urban,Diabetic
+51.8,Male,False,21.5,Normal,False,False,True,True,Urban,Diabetic
+51.8,Male,False,27.6,Overweight,False,False,True,True,Urban,Diabetic
+45.7,Female,False,17.5,Normal,False,False,False,False,Urban,Diabetic
+39.2,Female,False,35.2,Obese II+,False,False,False,False,Urban,Diabetic
+37.7,Female,False,23.5,Normal,False,False,True,False,Urban,Prediabetes
+37.6,Male,False,34.2,Obese I,False,False,True,False,Urban,Diabetic
+24.9,Male,False,24.2,Normal,False,False,True,True,Rural,Prediabetes
+58.8,Male,False,16.0,Normal,False,False,False,True,Rural,Diabetic
+64.5,Male,False,29.2,Overweight,False,False,True,True,Rural,Diabetic
+66.6,Male,False,22.0,Normal,False,False,False,True,Urban,Diabetic
+51.3,Female,False,16.7,Normal,False,True,False,False,Rural,Diabetic
+72.6,Male,False,27.4,Overweight,True,False,False,True,Rural,Diabetic
+54.7,Female,False,23.1,Normal,False,False,False,True,Rural,Diabetic
+65.4,Male,False,23.0,Normal,False,False,False,True,Rural,Diabetic
+61.6,Male,False,31.6,Obese I,True,False,False,True,Rural,Diabetic
+34.1,Male,False,17.7,Normal,False,False,True,False,Rural,Prediabetes
+64.5,Male,False,21.8,Normal,False,False,True,False,Urban,Diabetic
+58.0,Male,False,20.8,Normal,False,False,False,True,Rural,Diabetic
+55.8,Female,False,28.0,Overweight,False,False,False,True,Urban,Diabetic
+30.8,Female,False,19.1,Normal,False,False,True,False,Rural,Normal
+59.0,Female,False,24.3,Normal,False,False,False,True,Urban,Diabetic
+37.6,Male,False,21.4,Normal,False,False,True,False,Rural,Normal
+66.8,Female,False,27.7,Overweight,False,False,False,True,Urban,Diabetic
+43.9,Female,False,27.0,Overweight,False,False,False,False,Rural,Prediabetes
+49.2,Female,False,31.7,Obese I,False,False,False,True,Rural,Diabetic
+62.4,Female,False,28.8,Overweight,True,False,True,True,Urban,Diabetic
+47.3,Male,False,20.7,Normal,False,False,False,False,Rural,Prediabetes
+74.4,Female,False,30.3,Obese I,False,False,False,True,Urban,Diabetic
+32.0,Male,False,23.5,Normal,False,False,True,False,Urban,Normal
+43.3,Female,False,29.1,Overweight,False,False,True,True,Rural,Diabetic
+35.2,Male,False,22.2,Normal,True,False,True,False,Urban,Prediabetes
+45.0,Female,False,24.6,Normal,False,True,True,False,Urban,Diabetic
+65.6,Male,False,18.3,Normal,False,False,True,False,Urban,Diabetic
+68.5,Female,False,26.3,Overweight,False,False,False,True,Urban,Diabetic
+54.6,Male,False,19.0,Normal,True,False,False,False,Rural,Diabetic
+33.9,Female,False,29.0,Overweight,False,False,False,True,Urban,Diabetic
+49.6,Male,False,26.5,Overweight,False,False,True,True,Urban,Diabetic
+35.1,Female,False,26.3,Overweight,False,False,False,False,Urban,Diabetic
+58.9,Female,False,27.5,Overweight,True,False,True,False,Rural,Diabetic
+53.0,Male,False,23.7,Normal,False,False,False,False,Urban,Prediabetes
+51.3,Female,False,32.0,Obese I,False,False,False,True,Urban,Diabetic
+33.0,Female,False,22.1,Normal,False,False,False,True,Urban,Diabetic
+39.8,Female,False,21.2,Normal,False,False,True,False,Rural,Normal
+69.5,Female,False,30.7,Obese I,False,False,False,True,Rural,Diabetic
+34.6,Male,False,22.8,Normal,False,False,False,False,Rural,Normal
+56.1,Male,False,26.9,Overweight,True,False,False,True,Rural,Diabetic
+48.0,Male,False,20.7,Normal,False,False,False,True,Urban,Diabetic
+61.2,Male,False,21.5,Normal,False,False,True,True,Rural,Prediabetes
+47.2,Male,False,25.4,Overweight,False,False,False,True,Rural,Diabetic
+39.2,Female,False,19.8,Normal,True,False,False,False,Urban,Diabetic
+53.3,Male,False,22.5,Normal,False,False,True,False,Rural,Normal
+51.0,Male,False,17.4,Normal,False,False,True,False,Rural,Prediabetes
+30.9,Female,False,25.0,Overweight,True,False,False,False,Urban,Diabetic
+48.7,Male,False,30.8,Obese I,False,False,False,True,Rural,Diabetic
+53.9,Female,False,27.5,Overweight,False,False,False,False,Urban,Diabetic
+72.8,Male,False,23.9,Normal,True,False,True,True,Rural,Diabetic
+47.5,Female,False,25.5,Overweight,False,False,False,False,Urban,Diabetic
+54.6,Male,False,26.7,Overweight,False,False,True,True,Urban,Diabetic
+49.9,Male,False,28.9,Overweight,False,False,False,False,Urban,Diabetic
+54.5,Female,False,18.4,Normal,False,False,True,False,Urban,Prediabetes
+33.4,Male,False,19.6,Normal,False,False,False,False,Rural,Normal
+73.1,Female,False,23.1,Normal,False,False,True,True,Urban,Prediabetes
+50.6,Male,False,31.1,Obese I,True,False,True,True,Urban,Diabetic
+37.7,Male,False,21.1,Normal,False,False,True,True,Rural,Normal
+37.9,Male,False,31.0,Obese I,False,False,False,False,Rural,Diabetic
+72.6,Male,False,21.3,Normal,False,False,False,False,Rural,Normal
+46.5,Male,False,21.9,Normal,False,False,False,True,Rural,Diabetic
+55.9,Male,False,24.6,Normal,False,False,True,False,Rural,Normal
+51.4,Male,False,25.1,Overweight,True,False,False,True,Rural,Diabetic
+54.2,Female,False,26.0,Overweight,True,False,True,False,Urban,Diabetic
+42.1,Male,False,21.0,Normal,False,False,True,True,Rural,Prediabetes
+29.8,Male,False,24.4,Normal,True,False,False,False,Urban,Diabetic
+56.5,Female,False,31.0,Obese I,False,False,False,True,Urban,Prediabetes
+47.6,Male,False,34.9,Obese I,False,False,False,True,Urban,Diabetic
+65.3,Female,False,25.7,Overweight,False,False,True,False,Rural,Normal
+67.3,Male,False,20.6,Normal,False,False,False,True,Urban,Diabetic
+55.9,Male,False,23.1,Normal,False,False,True,False,Rural,Normal
+72.1,Male,False,29.2,Overweight,False,False,False,False,Rural,Diabetic
+53.2,Male,False,26.5,Overweight,True,False,False,False,Rural,Diabetic
+59.2,Male,False,20.7,Normal,False,False,False,False,Rural,Prediabetes
+53.6,Female,False,26.1,Overweight,False,False,True,True,Urban,Diabetic
+55.4,Female,False,25.8,Overweight,False,False,True,True,Rural,Diabetic
+36.2,Female,False,30.1,Obese I,False,True,True,True,Rural,Diabetic
+33.6,Female,False,26.2,Overweight,False,False,False,False,Urban,Diabetic
+63.7,Female,False,25.5,Overweight,False,False,False,False,Rural,Diabetic
+48.3,Female,False,24.4,Normal,True,False,True,False,Urban,Diabetic
+43.9,Male,False,25.5,Overweight,False,False,True,True,Rural,Diabetic
+66.8,Female,False,18.9,Normal,False,False,False,True,Rural,Diabetic
+54.2,Female,False,21.1,Normal,False,False,True,False,Urban,Normal
+67.2,Male,False,17.1,Normal,False,False,False,True,Rural,Diabetic
+57.8,Female,False,17.2,Normal,False,False,False,False,Rural,Diabetic
+52.8,Female,False,25.6,Overweight,False,False,True,False,Urban,Prediabetes
+64.9,Female,False,31.1,Obese I,False,False,False,True,Urban,Diabetic
+64.0,Female,False,34.7,Obese I,True,False,True,False,Rural,Diabetic
+79.1,Female,False,40.3,Obese II+,False,False,True,False,Rural,Diabetic
+48.0,Male,False,24.2,Normal,False,False,False,False,Urban,Diabetic
+56.5,Female,False,31.4,Obese I,True,False,False,True,Rural,Diabetic
+66.9,Male,False,23.3,Normal,False,False,False,False,Rural,Normal
+47.6,Male,False,16.0,Normal,True,False,True,True,Rural,Prediabetes
+59.7,Male,False,23.8,Normal,False,False,False,True,Rural,Diabetic
+68.4,Female,False,31.8,Obese I,True,False,False,True,Rural,Diabetic
+68.3,Female,False,32.4,Obese I,True,False,False,False,Urban,Diabetic
+53.9,Female,False,30.2,Obese I,False,False,False,False,Urban,Diabetic
+63.3,Female,False,28.6,Overweight,True,False,True,True,Urban,Prediabetes
+69.1,Female,False,23.0,Normal,False,False,True,True,Rural,Normal
+71.0,Female,False,31.6,Obese I,False,False,True,False,Urban,Diabetic
+46.3,Male,False,17.5,Normal,False,False,False,True,Urban,Diabetic
+29.6,Female,False,26.6,Overweight,True,False,False,True,Rural,Diabetic
+56.3,Male,False,25.1,Overweight,False,False,True,False,Urban,Diabetic
+41.7,Female,False,19.3,Normal,False,False,False,False,Urban,Diabetic
+70.2,Male,False,23.1,Normal,False,False,False,True,Urban,Diabetic
+48.1,Female,False,19.5,Normal,False,False,True,True,Rural,Diabetic
+38.7,Male,False,22.4,Normal,False,False,True,False,Rural,Normal
+61.5,Female,False,17.3,Normal,False,False,False,False,Rural,Normal
+39.2,Female,False,31.4,Obese I,False,False,True,True,Rural,Prediabetes
+43.3,Female,False,25.2,Overweight,False,False,False,False,Rural,Diabetic
+42.6,Female,False,28.9,Overweight,False,False,False,True,Rural,Diabetic
+57.6,Male,False,18.5,Normal,True,False,False,True,Rural,Diabetic
+40.9,Female,False,25.6,Overweight,False,False,False,True,Urban,Diabetic
+64.1,Female,False,30.8,Obese I,False,False,True,True,Rural,Diabetic
+60.7,Female,False,29.5,Overweight,False,False,True,True,Rural,Diabetic
+61.2,Female,False,16.0,Normal,False,False,False,True,Rural,Prediabetes
+63.0,Female,False,24.9,Normal,False,False,False,False,Urban,Diabetic
+53.5,Female,False,26.8,Overweight,False,False,False,True,Urban,Diabetic
+70.1,Male,False,28.3,Overweight,True,False,False,True,Rural,Diabetic
+53.1,Female,False,20.5,Normal,False,False,True,False,Rural,Normal
+56.6,Female,False,23.5,Normal,False,False,True,False,Rural,Diabetic
+51.5,Female,False,22.2,Normal,False,False,True,False,Rural,Prediabetes
+49.9,Female,False,24.2,Normal,False,False,False,True,Urban,Diabetic
+55.9,Male,False,26.3,Overweight,False,False,True,False,Urban,Diabetic
+53.3,Female,False,31.5,Obese I,False,True,True,False,Rural,Diabetic
+28.6,Female,False,29.7,Overweight,False,False,True,True,Urban,Diabetic
+56.8,Male,False,26.1,Overweight,True,False,False,False,Urban,Prediabetes
+59.8,Male,False,29.7,Overweight,False,False,True,False,Rural,Prediabetes
+84.3,Male,False,23.8,Normal,False,False,True,True,Rural,Normal
+51.3,Male,False,32.4,Obese I,False,False,False,False,Urban,Diabetic
+42.3,Male,False,19.1,Normal,False,False,True,False,Rural,Prediabetes
+55.7,Male,False,23.6,Normal,False,False,False,False,Rural,Prediabetes
+40.3,Male,False,27.2,Overweight,False,False,False,False,Urban,Diabetic
+44.8,Female,False,21.8,Normal,False,False,False,False,Urban,Diabetic
+57.2,Male,False,33.9,Obese I,False,False,True,True,Rural,Diabetic
+24.0,Male,False,23.6,Normal,False,False,False,False,Rural,Normal
+55.0,Male,False,27.2,Overweight,False,False,False,True,Rural,Diabetic
+40.9,Male,False,29.4,Overweight,True,False,False,False,Urban,Diabetic
+74.7,Male,False,25.6,Overweight,False,False,False,True,Urban,Diabetic
+44.8,Female,False,20.2,Normal,False,False,False,True,Rural,Prediabetes
+37.8,Female,True,38.8,Obese II+,False,True,False,False,Urban,Diabetic
+48.8,Female,False,29.8,Overweight,False,False,True,False,Urban,Diabetic
+29.2,Female,False,25.1,Overweight,False,False,False,False,Urban,Diabetic
+50.4,Female,False,23.1,Normal,False,False,True,True,Rural,Prediabetes
+40.3,Female,False,22.4,Normal,True,False,True,True,Urban,Diabetic
+18.0,Male,False,34.2,Obese I,False,False,True,True,Urban,Prediabetes
+39.4,Male,False,22.9,Normal,False,False,True,False,Rural,Normal
+63.5,Female,False,25.7,Overweight,True,False,False,True,Rural,Diabetic
+38.2,Male,False,26.2,Overweight,False,False,True,False,Rural,Normal
+80.6,Male,False,20.2,Normal,False,False,True,True,Rural,Normal
+42.7,Male,False,19.9,Normal,True,False,False,False,Rural,Diabetic
+51.0,Male,False,27.7,Overweight,False,False,False,True,Rural,Diabetic
+44.9,Female,False,21.0,Normal,True,False,True,False,Rural,Diabetic
+55.6,Female,False,32.4,Obese I,True,False,False,True,Urban,Diabetic
+44.0,Female,True,30.1,Obese I,False,True,False,True,Rural,Diabetic
+84.8,Female,False,33.2,Obese I,False,False,False,False,Rural,Diabetic
+26.7,Male,False,23.5,Normal,True,False,True,False,Rural,Normal
+64.9,Female,False,30.8,Obese I,False,False,True,True,Rural,Diabetic
+52.8,Female,False,23.9,Normal,False,False,False,False,Rural,Normal
+54.3,Female,False,16.0,Normal,False,False,False,False,Rural,Normal
+59.1,Male,False,28.4,Overweight,True,False,True,True,Rural,Diabetic
+59.2,Male,False,29.6,Overweight,True,False,True,False,Urban,Diabetic
+76.3,Male,False,18.2,Normal,False,False,False,True,Rural,Diabetic
+56.8,Male,False,26.2,Overweight,True,False,True,False,Rural,Diabetic
+31.7,Male,False,23.1,Normal,False,False,True,False,Urban,Normal
+59.5,Male,False,27.5,Overweight,False,False,False,True,Urban,Diabetic
+40.2,Male,False,17.5,Normal,False,False,False,True,Urban,Diabetic
+63.5,Female,False,31.0,Obese I,False,False,True,True,Rural,Prediabetes
+62.4,Female,False,30.6,Obese I,True,False,True,False,Urban,Diabetic
+64.1,Female,False,27.5,Overweight,False,False,True,False,Rural,Diabetic
+57.7,Male,False,26.2,Overweight,False,False,False,False,Urban,Diabetic
+51.8,Male,False,28.0,Overweight,False,False,False,False,Urban,Diabetic
+71.2,Female,False,25.4,Overweight,False,False,True,True,Rural,Diabetic
+44.1,Female,False,33.8,Obese I,False,False,True,True,Rural,Diabetic
+40.1,Female,False,28.7,Overweight,False,True,True,True,Rural,Diabetic
+60.1,Male,False,22.7,Normal,False,False,False,False,Urban,Diabetic
+75.0,Female,False,31.4,Obese I,False,False,True,False,Urban,Diabetic
+53.3,Female,False,26.7,Overweight,False,False,False,True,Rural,Diabetic
+50.9,Male,False,21.8,Normal,True,False,True,False,Rural,Prediabetes
+62.2,Female,False,30.2,Obese I,False,False,False,True,Urban,Diabetic
+45.8,Female,False,26.7,Overweight,False,False,False,False,Urban,Diabetic
+66.4,Female,False,28.5,Overweight,True,False,True,False,Rural,Prediabetes
+27.6,Male,False,22.7,Normal,True,False,True,False,Rural,Normal
+47.6,Female,False,30.9,Obese I,True,False,True,True,Urban,Diabetic
+54.3,Male,False,19.2,Normal,False,False,True,False,Rural,Prediabetes
+50.4,Male,False,22.5,Normal,True,False,True,False,Rural,Prediabetes
+45.9,Male,False,20.9,Normal,False,False,False,False,Rural,Prediabetes
+54.4,Male,False,24.0,Normal,False,False,True,False,Rural,Diabetic
+78.9,Female,False,30.0,Obese I,False,False,False,True,Urban,Diabetic
+44.8,Female,False,18.3,Normal,False,False,False,False,Urban,Prediabetes
+65.5,Male,False,24.0,Normal,True,False,True,False,Rural,Diabetic
+67.6,Male,False,26.3,Overweight,True,False,False,False,Urban,Diabetic
+54.0,Male,False,22.0,Normal,False,False,True,False,Urban,Prediabetes
+59.7,Male,False,28.1,Overweight,False,False,True,True,Rural,Diabetic
+64.1,Male,False,24.6,Normal,False,False,False,True,Urban,Diabetic
+53.0,Female,False,23.4,Normal,False,False,True,False,Rural,Diabetic
+64.7,Male,False,22.2,Normal,False,False,False,True,Rural,Diabetic
+64.0,Male,False,28.2,Overweight,True,False,True,False,Urban,Diabetic
+44.4,Female,False,29.2,Overweight,True,False,True,False,Rural,Diabetic
+57.3,Male,False,26.0,Overweight,False,False,True,False,Urban,Diabetic
+54.2,Male,False,19.4,Normal,False,False,False,False,Urban,Diabetic
+55.2,Male,False,23.0,Normal,True,False,False,False,Rural,Diabetic
+63.3,Female,False,17.5,Normal,False,False,True,False,Urban,Normal
+24.6,Male,False,23.8,Normal,True,False,True,False,Urban,Diabetic
+64.2,Male,False,23.9,Normal,False,False,True,False,Rural,Normal
+52.1,Female,False,33.2,Obese I,True,False,False,False,Urban,Diabetic
+57.9,Male,False,25.1,Overweight,False,False,True,True,Rural,Diabetic
+64.0,Male,False,23.4,Normal,False,False,True,False,Urban,Diabetic
+32.9,Male,False,23.1,Normal,True,False,False,False,Urban,Diabetic
+65.6,Female,False,31.0,Obese I,False,False,False,False,Urban,Diabetic
+41.8,Male,False,22.1,Normal,True,False,False,True,Rural,Diabetic
+53.5,Female,False,30.2,Obese I,True,False,False,True,Urban,Prediabetes
+63.3,Male,False,23.2,Normal,False,False,True,True,Urban,Diabetic
+60.5,Female,False,28.3,Overweight,False,True,True,True,Urban,Diabetic
+47.7,Female,False,28.3,Overweight,True,False,True,False,Urban,Diabetic
+55.2,Female,False,35.6,Obese II+,False,False,False,True,Rural,Diabetic
+52.2,Female,False,29.4,Overweight,False,False,True,True,Rural,Diabetic
+38.2,Female,False,30.4,Obese I,True,False,True,False,Urban,Diabetic
+22.9,Male,False,22.3,Normal,True,False,False,True,Urban,Diabetic
+63.8,Female,False,28.2,Overweight,False,False,False,False,Rural,Prediabetes
+36.1,Female,False,20.9,Normal,False,False,True,True,Urban,Normal
+73.3,Male,False,16.0,Normal,False,False,True,False,Rural,Normal
+63.2,Male,False,25.8,Overweight,False,False,False,True,Urban,Diabetic
+52.0,Male,False,22.6,Normal,False,False,False,False,Urban,Diabetic
+56.7,Male,False,22.9,Normal,True,False,False,True,Rural,Diabetic
+37.9,Female,False,24.3,Normal,False,False,False,False,Urban,Normal
+50.9,Female,False,26.0,Overweight,False,False,False,True,Rural,Diabetic
+49.4,Female,False,30.8,Obese I,True,False,False,True,Urban,Diabetic
+60.6,Male,False,19.9,Normal,False,False,False,True,Rural,Prediabetes
+36.0,Female,False,25.3,Overweight,True,False,False,False,Urban,Diabetic
+52.4,Male,False,24.8,Normal,False,False,True,False,Rural,Diabetic
+41.9,Female,False,25.3,Overweight,True,False,True,False,Urban,Diabetic
+64.5,Male,False,23.5,Normal,True,False,True,False,Urban,Diabetic
+62.7,Male,False,19.1,Normal,False,False,True,True,Urban,Diabetic
+55.8,Female,False,31.4,Obese I,False,False,False,True,Urban,Diabetic
+42.4,Male,False,16.0,Normal,False,False,False,False,Rural,Normal
+37.4,Female,False,19.6,Normal,True,False,True,True,Rural,Prediabetes
+53.1,Female,False,26.7,Overweight,False,False,False,False,Urban,Diabetic
+61.0,Female,False,29.8,Overweight,True,False,False,True,Urban,Diabetic
+64.0,Male,False,24.0,Normal,False,False,True,True,Rural,Normal
+60.8,Male,False,28.4,Overweight,False,False,True,False,Urban,Diabetic
+67.9,Female,False,25.4,Overweight,False,False,False,True,Rural,Diabetic
+53.3,Female,False,32.2,Obese I,False,False,False,True,Rural,Diabetic
+35.5,Male,False,25.7,Overweight,False,False,False,True,Rural,Diabetic
+57.8,Male,False,16.0,Normal,True,False,True,True,Rural,Diabetic
+55.9,Male,False,25.2,Overweight,False,False,True,False,Rural,Diabetic
+39.2,Male,False,27.6,Overweight,True,False,False,True,Rural,Diabetic
+51.6,Male,False,17.0,Normal,False,False,False,False,Rural,Prediabetes
+58.9,Male,False,25.6,Overweight,True,False,False,True,Urban,Diabetic
+34.2,Female,False,26.2,Overweight,False,False,True,False,Rural,Normal
+49.8,Female,False,19.2,Normal,False,False,False,False,Urban,Prediabetes
+70.0,Male,False,17.5,Normal,False,False,False,False,Urban,Prediabetes
+38.1,Male,False,28.2,Overweight,False,False,False,True,Urban,Diabetic
+34.8,Female,False,27.6,Overweight,True,False,False,False,Urban,Diabetic
+49.7,Male,False,24.8,Normal,False,False,False,True,Urban,Diabetic
+64.1,Male,False,17.7,Normal,False,False,False,False,Rural,Prediabetes
+55.0,Male,False,23.2,Normal,True,False,False,True,Rural,Diabetic
+66.6,Male,False,26.7,Overweight,False,False,True,True,Rural,Diabetic
+52.3,Male,False,26.9,Overweight,False,False,False,True,Urban,Diabetic
+42.4,Female,False,37.1,Obese II+,False,False,True,False,Urban,Diabetic
+43.0,Female,False,28.7,Overweight,True,False,True,True,Rural,Diabetic
+44.9,Female,True,22.6,Normal,True,False,True,False,Rural,Normal
+54.1,Female,False,20.7,Normal,False,False,False,True,Rural,Diabetic
+44.4,Male,False,26.4,Overweight,False,False,True,True,Urban,Diabetic
+35.8,Male,False,29.5,Overweight,False,False,False,False,Urban,Diabetic
+32.3,Male,False,25.0,Overweight,False,False,True,False,Rural,Normal
+54.5,Male,False,22.0,Normal,False,False,True,True,Urban,Diabetic
+57.1,Male,False,25.1,Overweight,True,False,False,True,Urban,Diabetic
+43.2,Male,False,19.7,Normal,False,False,False,True,Urban,Diabetic
+60.6,Female,False,24.0,Normal,False,True,False,True,Urban,Diabetic
+46.4,Male,False,17.3,Normal,True,False,True,True,Rural,Diabetic
+49.5,Female,False,24.7,Normal,False,False,True,False,Urban,Diabetic
+64.1,Male,False,23.8,Normal,False,False,True,True,Rural,Diabetic
+38.6,Female,False,31.4,Obese I,True,False,False,False,Urban,Diabetic
+35.4,Female,True,17.7,Normal,False,False,True,False,Rural,Normal
+34.3,Male,False,29.0,Overweight,False,False,False,True,Urban,Diabetic
+61.2,Female,False,25.1,Overweight,False,False,False,True,Rural,Diabetic
+42.2,Male,False,20.4,Normal,False,False,False,False,Urban,Diabetic
+35.6,Female,False,33.2,Obese I,False,False,True,False,Urban,Diabetic
+42.7,Male,False,24.3,Normal,False,False,False,True,Urban,Diabetic
+33.8,Male,False,21.3,Normal,True,False,False,False,Rural,Prediabetes
+37.9,Female,False,27.3,Overweight,False,False,True,False,Rural,Diabetic
+70.6,Male,False,29.7,Overweight,True,False,True,True,Rural,Diabetic
+71.9,Female,False,29.6,Overweight,False,False,True,True,Rural,Diabetic
+52.6,Female,False,29.5,Overweight,False,False,True,False,Rural,Diabetic
+65.0,Female,False,23.5,Normal,False,False,False,True,Urban,Diabetic
+51.3,Male,False,29.1,Overweight,False,False,False,False,Rural,Diabetic
+29.8,Male,False,23.5,Normal,False,False,False,False,Rural,Normal
+36.3,Female,False,26.8,Overweight,False,False,True,True,Urban,Diabetic
+36.0,Male,False,20.7,Normal,False,False,False,False,Rural,Normal
+74.1,Male,False,27.0,Overweight,True,False,False,False,Urban,Diabetic
+52.2,Male,False,26.4,Overweight,False,False,False,False,Urban,Diabetic
+63.8,Female,False,28.0,Overweight,True,False,False,True,Rural,Diabetic
+45.6,Female,False,23.3,Normal,True,True,False,False,Urban,Diabetic
+47.4,Male,False,19.4,Normal,False,False,False,False,Rural,Diabetic
+43.7,Male,False,30.3,Obese I,False,False,False,False,Urban,Diabetic
+54.9,Female,False,25.0,Overweight,False,False,False,False,Urban,Diabetic
+74.8,Male,False,29.8,Overweight,False,False,False,False,Urban,Diabetic
+65.1,Male,False,28.8,Overweight,True,False,False,True,Rural,Diabetic
+57.4,Male,False,24.3,Normal,False,False,True,False,Rural,Diabetic
+63.9,Male,False,27.9,Overweight,False,False,False,False,Urban,Diabetic
+38.7,Male,False,23.7,Normal,False,False,False,True,Rural,Normal
+55.4,Female,False,28.9,Overweight,False,False,True,False,Rural,Normal
+62.0,Male,False,28.0,Overweight,False,False,True,True,Rural,Diabetic
+78.8,Female,False,33.8,Obese I,False,False,False,True,Urban,Diabetic
+35.4,Female,False,35.0,Obese II+,False,False,False,False,Rural,Diabetic
+42.9,Male,False,26.6,Overweight,False,False,False,False,Rural,Diabetic
+52.7,Female,False,22.0,Normal,True,False,False,True,Rural,Diabetic
+49.6,Female,False,33.0,Obese I,False,False,True,True,Rural,Diabetic
+58.8,Male,False,29.0,Overweight,False,False,False,True,Urban,Diabetic
+59.6,Male,False,22.1,Normal,True,False,False,True,Rural,Diabetic
+61.2,Female,False,28.6,Overweight,False,False,True,True,Urban,Diabetic
+44.8,Male,False,27.4,Overweight,False,False,False,False,Urban,Diabetic
+35.5,Female,False,24.7,Normal,True,False,False,False,Urban,Diabetic
+57.1,Male,False,19.8,Normal,False,False,False,True,Rural,Prediabetes
+78.0,Female,False,16.0,Normal,True,False,True,True,Rural,Diabetic
+62.8,Male,False,23.0,Normal,False,False,False,False,Urban,Diabetic
+48.1,Male,False,22.0,Normal,True,False,False,False,Rural,Diabetic
+35.9,Male,False,21.1,Normal,False,False,False,False,Rural,Diabetic
+58.2,Female,False,26.1,Overweight,True,False,True,True,Rural,Diabetic
+72.5,Female,False,17.5,Normal,False,False,False,False,Urban,Diabetic
+52.2,Male,False,24.9,Normal,True,False,False,False,Rural,Diabetic
+55.8,Female,False,27.1,Overweight,True,False,False,True,Urban,Diabetic
+65.9,Female,False,22.3,Normal,False,False,True,True,Urban,Diabetic
+46.9,Male,False,21.6,Normal,True,False,True,False,Rural,Diabetic
+43.4,Male,False,17.5,Normal,False,False,False,False,Urban,Prediabetes
+50.7,Male,False,17.9,Normal,False,False,False,True,Rural,Prediabetes
+39.2,Female,False,25.6,Overweight,True,False,False,True,Rural,Diabetic
+57.3,Female,False,27.6,Overweight,False,False,True,True,Urban,Prediabetes
+53.9,Male,False,25.8,Overweight,False,False,True,False,Rural,Prediabetes
+61.8,Male,False,34.3,Obese I,True,False,False,True,Urban,Diabetic
+53.7,Female,False,26.4,Overweight,False,False,False,True,Rural,Diabetic
+47.2,Female,False,27.2,Overweight,True,False,True,True,Urban,Diabetic
+51.4,Male,False,19.8,Normal,False,False,False,True,Rural,Diabetic
+45.8,Male,False,20.0,Normal,True,False,True,False,Urban,Diabetic
+51.0,Female,False,27.8,Overweight,False,False,True,True,Rural,Prediabetes
+49.7,Female,False,26.2,Overweight,False,False,True,False,Urban,Diabetic
+46.6,Female,False,26.1,Overweight,False,False,False,False,Rural,Diabetic
+56.1,Female,False,28.8,Overweight,False,False,False,True,Urban,Prediabetes
+39.5,Female,False,28.0,Overweight,False,False,True,False,Urban,Diabetic
+49.5,Female,False,26.5,Overweight,False,False,False,False,Urban,Diabetic
+64.3,Male,False,26.1,Overweight,False,False,False,True,Rural,Diabetic
+47.6,Female,False,28.7,Overweight,True,False,True,True,Rural,Diabetic
+46.4,Male,False,27.9,Overweight,False,False,True,True,Rural,Prediabetes
+73.7,Female,False,28.0,Overweight,False,False,False,True,Rural,Diabetic
+53.7,Female,False,29.2,Overweight,False,False,False,False,Rural,Diabetic
+42.5,Female,True,32.8,Obese I,False,False,True,True,Rural,Diabetic
+43.0,Female,False,26.7,Overweight,False,False,True,False,Rural,Normal
+32.4,Female,False,24.3,Normal,False,False,True,True,Rural,Normal
+28.1,Female,False,25.4,Overweight,True,False,False,False,Urban,Diabetic
+49.6,Female,False,29.1,Overweight,False,False,True,True,Rural,Diabetic
+48.8,Male,False,28.9,Overweight,True,False,True,False,Urban,Diabetic
+51.8,Female,False,21.9,Normal,False,False,False,True,Urban,Diabetic
+60.7,Female,False,38.2,Obese II+,True,False,False,True,Urban,Diabetic
+68.0,Female,False,31.4,Obese I,False,False,True,True,Rural,Diabetic
+44.1,Male,False,16.3,Normal,False,False,True,True,Rural,Diabetic
+56.1,Male,False,22.3,Normal,False,False,False,True,Urban,Prediabetes
+33.8,Male,False,22.7,Normal,True,False,False,False,Urban,Prediabetes
+48.5,Female,False,22.0,Normal,True,False,False,True,Urban,Diabetic
+60.4,Female,False,18.8,Normal,False,True,True,False,Rural,Diabetic
+49.1,Female,False,27.9,Overweight,False,False,True,False,Urban,Diabetic
+61.6,Female,False,31.4,Obese I,True,False,False,True,Rural,Diabetic
+43.5,Male,False,30.0,Obese I,True,False,True,True,Urban,Diabetic
+38.8,Male,False,24.2,Normal,False,False,False,True,Urban,Diabetic
+59.4,Male,False,23.7,Normal,False,False,False,False,Urban,Diabetic
+32.0,Female,False,30.4,Obese I,True,False,True,False,Rural,Diabetic
+61.9,Male,False,17.5,Normal,False,False,False,False,Urban,Diabetic
+33.6,Female,False,20.1,Normal,True,False,False,False,Rural,Diabetic
+38.8,Male,False,31.8,Obese I,False,False,False,True,Urban,Diabetic
+32.5,Male,False,17.9,Normal,False,False,False,False,Urban,Normal
+25.0,Female,True,17.5,Normal,False,False,False,False,Urban,Prediabetes
+45.1,Female,False,27.6,Overweight,False,False,False,True,Rural,Prediabetes
+39.6,Male,False,27.1,Overweight,False,False,False,True,Urban,Diabetic
+52.7,Male,False,22.9,Normal,False,False,True,False,Urban,Normal
+40.0,Male,False,20.3,Normal,False,False,True,False,Rural,Normal
+39.2,Female,False,27.5,Overweight,True,False,False,False,Urban,Diabetic
+43.4,Female,False,27.5,Overweight,True,False,False,False,Urban,Diabetic
+43.1,Female,False,22.9,Normal,False,False,True,False,Rural,Normal
+66.8,Male,False,23.0,Normal,False,False,False,True,Rural,Diabetic
+37.9,Female,False,28.8,Overweight,False,False,False,False,Urban,Diabetic
+58.2,Female,False,37.9,Obese II+,False,False,True,True,Rural,Diabetic
+55.2,Female,False,31.4,Obese I,False,True,True,True,Urban,Diabetic
+59.7,Male,False,16.6,Normal,False,False,True,True,Rural,Normal
+51.9,Female,False,29.4,Overweight,True,False,False,True,Rural,Diabetic
+36.1,Male,False,18.1,Normal,False,False,False,True,Urban,Diabetic
+32.2,Female,True,23.1,Normal,False,True,True,True,Rural,Diabetic
+41.9,Male,False,30.0,Obese I,False,False,False,False,Urban,Diabetic
+44.3,Female,False,29.8,Overweight,True,True,False,True,Urban,Diabetic
+54.4,Female,False,23.3,Normal,True,False,False,True,Rural,Diabetic
+38.5,Male,False,23.8,Normal,False,False,True,False,Rural,Normal
+35.3,Female,False,24.7,Normal,False,False,True,False,Urban,Normal
+71.3,Female,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+32.4,Female,False,27.2,Overweight,False,False,False,False,Urban,Diabetic
+55.7,Male,False,24.2,Normal,False,False,False,True,Rural,Diabetic
+49.9,Male,False,29.4,Overweight,True,False,False,True,Urban,Diabetic
+34.5,Male,False,16.9,Normal,True,False,False,False,Rural,Diabetic
+80.3,Male,False,23.8,Normal,False,False,True,False,Urban,Prediabetes
+52.6,Male,False,24.5,Normal,False,False,False,True,Rural,Diabetic
+73.8,Male,False,24.2,Normal,False,False,True,True,Urban,Diabetic
+34.1,Female,False,28.0,Overweight,True,False,False,True,Rural,Diabetic
+26.6,Female,False,25.6,Overweight,True,False,True,False,Rural,Diabetic
+53.5,Male,False,17.5,Normal,False,False,True,True,Rural,Prediabetes
+32.0,Female,True,30.9,Obese I,False,False,False,False,Urban,Diabetic
+58.6,Female,False,23.1,Normal,False,False,False,True,Urban,Prediabetes
+50.4,Female,False,27.3,Overweight,False,False,True,False,Rural,Prediabetes
+18.0,Female,False,19.5,Normal,False,False,False,False,Urban,Prediabetes
+47.4,Male,False,25.1,Overweight,False,False,False,True,Urban,Diabetic
+58.6,Male,False,25.7,Overweight,False,False,True,True,Rural,Prediabetes
+40.9,Female,False,34.7,Obese I,False,False,False,False,Urban,Diabetic
+61.9,Male,False,23.9,Normal,True,False,True,False,Rural,Diabetic
+57.2,Female,False,29.5,Overweight,True,True,False,True,Urban,Diabetic
+54.0,Female,False,30.4,Obese I,True,False,True,False,Urban,Diabetic
+43.2,Male,False,25.5,Overweight,False,False,False,False,Urban,Diabetic
+68.5,Female,False,26.5,Overweight,False,False,True,True,Rural,Diabetic
+44.1,Female,False,26.1,Overweight,False,False,True,True,Rural,Diabetic
+73.3,Male,False,28.6,Overweight,True,False,False,True,Urban,Diabetic
+51.0,Female,False,28.5,Overweight,False,False,False,False,Rural,Diabetic
+51.2,Female,False,25.1,Overweight,True,False,True,True,Urban,Diabetic
+40.1,Male,False,22.5,Normal,False,False,False,True,Urban,Diabetic
+56.0,Female,False,21.0,Normal,False,False,False,True,Rural,Diabetic
+67.3,Male,False,25.4,Overweight,True,False,False,False,Urban,Prediabetes
+50.3,Male,False,25.7,Overweight,False,False,False,False,Rural,Diabetic
+50.3,Male,False,23.1,Normal,True,False,True,True,Urban,Diabetic
+51.3,Female,False,23.5,Normal,False,False,False,False,Urban,Diabetic
+65.4,Male,False,22.0,Normal,False,False,True,True,Rural,Normal
+41.1,Male,False,25.6,Overweight,False,False,True,False,Urban,Diabetic
+67.9,Female,False,35.0,Obese II+,False,False,False,True,Urban,Diabetic
+39.5,Female,True,28.5,Overweight,False,False,False,False,Rural,Diabetic
+46.9,Female,False,28.5,Overweight,False,False,False,True,Urban,Diabetic
+62.2,Male,False,20.4,Normal,False,False,False,True,Rural,Diabetic
+60.1,Female,False,22.3,Normal,False,False,False,True,Urban,Diabetic
+46.3,Male,False,19.3,Normal,False,False,True,True,Rural,Diabetic
+67.4,Female,False,30.0,Obese I,False,False,True,True,Urban,Diabetic
+76.3,Male,False,29.1,Overweight,False,False,True,True,Urban,Diabetic
+60.5,Male,False,30.7,Obese I,True,False,True,True,Rural,Diabetic
+60.1,Male,False,23.0,Normal,False,False,True,True,Urban,Diabetic
+67.8,Male,False,29.2,Overweight,False,False,False,False,Rural,Diabetic
+52.4,Male,False,22.7,Normal,False,False,False,False,Urban,Diabetic
+53.9,Female,False,21.5,Normal,False,False,False,False,Urban,Diabetic
+70.1,Male,False,26.8,Overweight,True,False,False,True,Urban,Diabetic
+64.4,Female,False,33.5,Obese I,False,False,False,True,Rural,Diabetic
+64.8,Male,False,26.2,Overweight,True,False,False,False,Urban,Diabetic
+47.7,Female,False,25.8,Overweight,False,False,False,False,Urban,Diabetic
+46.7,Male,False,19.0,Normal,False,False,False,True,Rural,Diabetic
+37.5,Male,False,22.6,Normal,True,False,False,False,Rural,Diabetic
+46.6,Male,False,20.6,Normal,False,False,False,False,Rural,Normal
+79.4,Female,False,35.6,Obese II+,False,True,True,True,Rural,Diabetic
+43.1,Female,False,26.0,Overweight,False,True,True,True,Urban,Diabetic
+49.4,Female,False,25.0,Overweight,True,False,True,False,Rural,Diabetic
+63.4,Male,False,18.8,Normal,False,False,True,False,Urban,Normal
+52.4,Female,False,27.3,Overweight,False,False,False,True,Urban,Diabetic
+45.9,Male,False,26.3,Overweight,False,False,True,False,Urban,Diabetic
+56.4,Female,False,23.6,Normal,True,False,False,True,Urban,Diabetic
+43.7,Female,True,20.7,Normal,True,False,False,True,Urban,Diabetic
+57.6,Female,False,29.3,Overweight,False,True,False,False,Rural,Diabetic
+39.8,Male,False,27.2,Overweight,False,False,False,False,Rural,Diabetic
+69.2,Male,False,25.8,Overweight,False,False,False,True,Rural,Diabetic
+31.6,Female,False,19.5,Normal,True,False,False,True,Urban,Diabetic
+63.3,Female,False,25.0,Overweight,False,False,True,True,Rural,Diabetic
+29.3,Female,True,33.3,Obese I,False,False,False,True,Urban,Diabetic
+62.7,Male,False,27.9,Overweight,False,False,False,True,Urban,Diabetic
+71.0,Male,False,22.4,Normal,False,False,False,False,Rural,Normal
+57.3,Female,False,24.9,Normal,False,False,False,True,Urban,Diabetic
+44.8,Female,False,23.3,Normal,False,False,False,False,Urban,Normal
+57.0,Female,False,23.8,Normal,False,False,False,True,Rural,Diabetic
+64.1,Female,False,27.9,Overweight,False,False,True,True,Urban,Diabetic
+52.1,Female,False,32.5,Obese I,True,False,True,True,Urban,Diabetic
+38.8,Male,False,22.8,Normal,False,False,False,True,Rural,Prediabetes
+45.5,Male,False,18.2,Normal,False,False,True,True,Urban,Diabetic
+62.5,Male,False,21.9,Normal,False,False,True,False,Rural,Normal
+58.2,Male,False,26.6,Overweight,True,False,False,False,Urban,Diabetic
+47.5,Female,False,25.0,Overweight,False,False,True,True,Rural,Diabetic
+25.3,Male,False,27.0,Overweight,False,False,True,False,Rural,Normal
+34.9,Female,False,25.7,Overweight,False,False,False,False,Urban,Diabetic
+44.7,Female,False,35.8,Obese II+,False,False,True,True,Rural,Diabetic
+61.9,Female,False,35.3,Obese II+,True,False,False,True,Rural,Diabetic
+82.7,Female,False,24.0,Normal,False,False,False,True,Urban,Diabetic
+36.5,Female,True,28.0,Overweight,False,True,False,True,Urban,Diabetic
+58.7,Male,False,30.7,Obese I,False,False,False,True,Urban,Diabetic
+31.6,Female,False,24.0,Normal,False,True,False,False,Rural,Prediabetes
+52.9,Male,False,29.4,Overweight,False,False,False,False,Rural,Diabetic
+54.1,Female,False,21.2,Normal,False,False,False,False,Rural,Diabetic
+71.7,Female,False,28.5,Overweight,False,False,True,True,Rural,Diabetic
+66.9,Female,False,20.7,Normal,False,False,True,False,Urban,Prediabetes
+65.6,Female,False,25.3,Overweight,False,False,False,False,Rural,Diabetic
+80.0,Male,False,29.7,Overweight,False,False,True,True,Rural,Diabetic
+36.8,Male,False,22.8,Normal,True,False,False,False,Urban,Diabetic
+80.1,Male,False,24.0,Normal,True,False,False,True,Rural,Diabetic
+54.4,Female,False,27.5,Overweight,False,False,True,False,Rural,Prediabetes
+57.4,Male,False,22.1,Normal,False,False,True,True,Urban,Diabetic
+59.0,Male,False,29.2,Overweight,False,False,True,True,Urban,Diabetic
+50.9,Female,False,23.5,Normal,False,False,False,False,Urban,Diabetic
+57.5,Female,False,28.8,Overweight,False,False,False,False,Rural,Diabetic
+60.9,Female,False,29.2,Overweight,False,False,True,True,Rural,Diabetic
+68.6,Female,False,19.5,Normal,False,False,False,True,Rural,Diabetic
+39.5,Female,False,30.2,Obese I,True,False,False,True,Urban,Diabetic
+66.6,Female,False,26.4,Overweight,True,False,False,True,Rural,Diabetic
+56.1,Male,False,21.3,Normal,False,False,False,True,Urban,Diabetic
+49.1,Female,False,25.7,Overweight,False,False,True,True,Urban,Diabetic
+36.5,Female,True,25.9,Overweight,False,False,False,False,Urban,Diabetic
+45.1,Female,False,35.4,Obese II+,False,False,False,False,Rural,Diabetic
+50.1,Female,False,25.6,Overweight,False,False,False,True,Urban,Diabetic
+38.5,Female,False,23.4,Normal,True,False,True,True,Rural,Prediabetes
+34.6,Male,False,28.2,Overweight,False,False,False,False,Rural,Normal
+81.2,Female,False,24.5,Normal,False,False,False,True,Rural,Diabetic
+50.2,Female,False,22.8,Normal,False,False,False,True,Urban,Diabetic
+40.8,Female,True,29.0,Overweight,False,False,True,True,Rural,Normal
+65.5,Female,False,20.9,Normal,False,False,False,False,Urban,Diabetic
+53.8,Female,False,29.6,Overweight,True,False,False,False,Rural,Diabetic
+47.6,Male,False,29.8,Overweight,True,False,False,True,Rural,Diabetic
+66.7,Female,False,24.8,Normal,False,False,True,True,Rural,Normal
+39.6,Female,False,22.4,Normal,False,False,False,False,Rural,Normal
+43.2,Female,False,27.5,Overweight,False,False,False,False,Rural,Diabetic
+49.0,Male,False,24.7,Normal,True,False,False,False,Rural,Diabetic
+61.8,Male,False,32.5,Obese I,False,False,True,True,Urban,Diabetic
+66.8,Male,False,27.9,Overweight,True,False,False,False,Urban,Diabetic
+57.4,Female,False,30.9,Obese I,True,False,True,False,Rural,Diabetic
+52.5,Male,False,30.1,Obese I,False,False,False,True,Urban,Diabetic
+65.7,Female,False,22.6,Normal,False,False,False,False,Urban,Diabetic
+61.0,Female,False,28.5,Overweight,False,False,True,True,Rural,Diabetic
+47.7,Female,False,27.5,Overweight,True,False,False,False,Rural,Diabetic
+41.5,Male,False,20.0,Normal,False,False,False,True,Urban,Diabetic
+48.4,Male,False,32.0,Obese I,False,False,False,False,Rural,Diabetic
+50.2,Female,False,36.8,Obese II+,False,True,False,True,Urban,Diabetic
+69.8,Male,False,29.2,Overweight,False,False,False,True,Urban,Diabetic
+32.2,Female,False,24.8,Normal,True,False,True,False,Rural,Prediabetes
+58.9,Male,False,32.7,Obese I,False,False,True,True,Rural,Diabetic
+57.4,Female,False,25.6,Overweight,False,False,False,False,Rural,Diabetic
+65.1,Male,False,29.4,Overweight,True,False,False,False,Urban,Diabetic
+57.1,Female,False,28.8,Overweight,False,True,True,False,Rural,Diabetic
+68.4,Male,False,19.9,Normal,False,False,True,True,Urban,Diabetic
+39.6,Female,False,31.0,Obese I,False,False,True,False,Rural,Diabetic
+56.5,Female,False,16.0,Normal,False,False,True,False,Rural,Diabetic
+21.3,Male,False,31.2,Obese I,True,False,False,False,Urban,Diabetic
+48.4,Female,False,22.0,Normal,False,False,False,False,Urban,Prediabetes
+42.7,Female,False,24.2,Normal,False,False,False,True,Rural,Prediabetes
+61.1,Female,False,27.9,Overweight,True,False,False,True,Urban,Diabetic
+52.1,Male,False,25.7,Overweight,False,False,False,False,Urban,Prediabetes
+45.3,Female,False,22.9,Normal,False,False,False,True,Urban,Diabetic
+53.0,Male,False,24.8,Normal,False,False,True,False,Rural,Normal
+51.6,Male,False,21.3,Normal,True,False,False,False,Urban,Diabetic
+48.3,Male,False,28.1,Overweight,False,False,False,False,Urban,Diabetic
+54.7,Female,False,35.2,Obese II+,False,False,True,False,Rural,Diabetic
+61.1,Male,False,27.6,Overweight,False,False,True,True,Rural,Diabetic
+44.5,Female,False,21.9,Normal,False,False,False,False,Rural,Prediabetes
+53.0,Male,False,29.4,Overweight,False,False,True,False,Rural,Prediabetes
+51.5,Male,False,24.8,Normal,True,False,True,True,Urban,Diabetic
+35.4,Male,False,27.8,Overweight,False,False,True,True,Urban,Diabetic
+39.0,Female,False,18.5,Normal,True,False,False,False,Rural,Prediabetes
+42.0,Female,False,16.4,Normal,True,False,False,False,Rural,Diabetic
+34.8,Female,False,30.7,Obese I,False,False,False,True,Urban,Diabetic
+44.8,Male,False,21.6,Normal,False,False,True,True,Rural,Prediabetes
+60.1,Male,False,25.8,Overweight,False,False,False,True,Urban,Diabetic
+66.6,Male,False,30.2,Obese I,False,False,False,True,Urban,Diabetic
+48.5,Female,False,27.5,Overweight,False,False,True,False,Rural,Diabetic
+58.6,Male,False,29.2,Overweight,False,False,True,True,Urban,Diabetic
+56.0,Male,False,27.6,Overweight,True,False,True,True,Urban,Diabetic
+51.0,Female,False,23.3,Normal,False,False,True,False,Rural,Normal
+62.5,Female,False,24.0,Normal,False,True,True,True,Rural,Diabetic
+42.5,Female,True,29.0,Overweight,False,False,True,False,Urban,Diabetic
+63.3,Male,False,19.9,Normal,False,False,False,False,Urban,Diabetic
+68.5,Female,False,31.3,Obese I,True,False,False,True,Rural,Diabetic
+46.0,Female,False,26.0,Overweight,False,False,False,True,Urban,Diabetic
+44.6,Male,False,22.6,Normal,False,False,True,True,Rural,Normal
+43.3,Female,False,24.7,Normal,False,False,False,False,Urban,Diabetic
+54.9,Female,False,19.3,Normal,True,False,True,True,Rural,Diabetic
+53.1,Male,False,25.1,Overweight,False,False,False,False,Rural,Diabetic
+62.1,Male,False,25.4,Overweight,False,False,True,True,Urban,Diabetic
+68.9,Male,False,24.4,Normal,False,False,False,False,Urban,Diabetic
+36.5,Female,False,33.5,Obese I,False,False,False,False,Rural,Diabetic
+77.1,Male,False,21.4,Normal,True,False,False,True,Urban,Diabetic
+46.2,Male,False,26.7,Overweight,False,False,True,False,Rural,Prediabetes
+58.9,Male,False,26.7,Overweight,False,False,True,False,Rural,Normal
+54.1,Female,False,22.0,Normal,True,False,False,False,Rural,Diabetic
+58.7,Female,False,33.3,Obese I,True,False,False,False,Urban,Diabetic
+47.2,Male,False,22.9,Normal,False,False,False,False,Rural,Prediabetes
+58.1,Male,False,17.2,Normal,True,False,False,False,Rural,Diabetic
+21.1,Female,False,18.7,Normal,False,False,False,False,Rural,Normal
+43.7,Female,False,33.4,Obese I,False,False,True,True,Rural,Diabetic
+52.7,Male,False,22.8,Normal,False,False,False,True,Rural,Diabetic
+51.4,Male,False,23.5,Normal,False,False,True,True,Rural,Prediabetes
+64.4,Female,False,25.8,Overweight,False,False,True,True,Rural,Diabetic
+66.2,Female,False,27.0,Overweight,True,False,False,True,Rural,Diabetic
+31.8,Female,False,33.0,Obese I,True,False,True,False,Rural,Diabetic
+49.7,Male,False,25.4,Overweight,False,False,False,True,Rural,Diabetic
+49.4,Female,False,29.3,Overweight,False,False,False,True,Rural,Diabetic
+54.6,Female,False,28.0,Overweight,False,True,True,False,Rural,Diabetic
+74.3,Male,False,29.8,Overweight,False,False,True,True,Urban,Diabetic
+50.8,Female,False,30.3,Obese I,False,False,True,True,Rural,Diabetic
+44.2,Female,False,30.3,Obese I,False,False,False,False,Rural,Diabetic
+55.9,Female,False,23.9,Normal,False,False,False,False,Urban,Diabetic
+52.8,Male,False,21.7,Normal,False,False,True,False,Rural,Normal
+40.0,Female,False,30.6,Obese I,True,False,True,False,Urban,Diabetic
+67.1,Male,False,27.1,Overweight,False,False,False,True,Urban,Diabetic
+66.0,Male,False,26.6,Overweight,False,False,False,False,Urban,Diabetic
+33.0,Male,False,25.3,Overweight,False,False,True,True,Urban,Prediabetes
+53.7,Female,False,20.8,Normal,False,False,False,False,Rural,Normal
+40.0,Male,False,23.2,Normal,False,False,False,False,Rural,Normal
+31.1,Male,False,22.7,Normal,False,False,True,False,Rural,Diabetic
+50.7,Female,False,28.8,Overweight,True,False,False,True,Urban,Diabetic
+72.4,Male,False,25.0,Overweight,False,False,False,False,Urban,Diabetic
+50.8,Male,False,20.3,Normal,False,False,True,False,Rural,Prediabetes
+38.0,Male,False,31.2,Obese I,False,False,False,False,Urban,Diabetic
+50.1,Female,False,22.9,Normal,True,True,False,False,Rural,Diabetic
+60.9,Male,False,22.9,Normal,False,False,True,False,Rural,Normal
+67.9,Female,False,38.1,Obese II+,True,False,False,True,Urban,Diabetic
+70.9,Male,False,25.0,Overweight,False,False,True,True,Urban,Diabetic
+39.6,Female,False,27.6,Overweight,False,False,True,False,Rural,Diabetic
+50.1,Female,False,25.4,Overweight,False,False,True,False,Rural,Normal
+54.1,Male,False,29.0,Overweight,False,False,True,False,Urban,Diabetic
+30.3,Female,True,23.8,Normal,False,False,True,False,Rural,Normal
+52.5,Female,False,31.5,Obese I,True,False,False,True,Rural,Diabetic
+52.0,Male,False,19.8,Normal,False,False,False,False,Rural,Diabetic
+44.3,Male,False,20.5,Normal,False,False,True,False,Rural,Normal
+42.5,Male,False,22.6,Normal,False,False,False,False,Urban,Diabetic
+26.8,Male,False,22.1,Normal,False,False,False,False,Urban,Normal
+30.6,Female,False,22.7,Normal,False,False,False,False,Rural,Normal
+31.6,Male,False,25.3,Overweight,False,False,False,False,Rural,Prediabetes
+31.9,Male,False,26.6,Overweight,False,False,False,True,Rural,Prediabetes
+45.7,Male,False,18.3,Normal,True,False,False,True,Urban,Diabetic
+43.3,Female,False,26.1,Overweight,False,True,False,True,Urban,Diabetic
+51.7,Male,False,20.8,Normal,True,False,False,False,Urban,Diabetic
+43.6,Female,False,19.0,Normal,False,False,True,False,Urban,Normal
+53.3,Female,False,22.1,Normal,False,True,False,True,Urban,Diabetic
+48.4,Male,False,28.6,Overweight,False,False,False,True,Rural,Diabetic
+47.5,Male,False,26.9,Overweight,True,False,False,True,Rural,Prediabetes
+49.0,Male,False,23.5,Normal,True,False,False,False,Rural,Diabetic
+51.8,Female,False,31.0,Obese I,False,False,True,False,Urban,Diabetic
+30.3,Female,False,27.2,Overweight,False,False,True,False,Rural,Normal
+19.2,Female,False,22.6,Normal,False,False,False,False,Urban,Normal
+38.3,Female,False,23.2,Normal,False,False,True,False,Rural,Normal
+49.8,Male,False,21.6,Normal,True,False,False,True,Rural,Diabetic
+58.7,Male,False,30.1,Obese I,False,False,False,True,Urban,Diabetic
+68.5,Female,False,30.6,Obese I,False,False,True,False,Rural,Diabetic
+51.8,Male,False,23.1,Normal,False,False,True,True,Rural,Prediabetes
+59.6,Female,False,29.4,Overweight,False,False,True,True,Urban,Diabetic
+40.8,Female,True,27.2,Overweight,False,False,False,True,Urban,Diabetic
+58.9,Male,False,22.5,Normal,False,False,True,True,Rural,Prediabetes
+62.3,Male,False,21.0,Normal,False,False,False,False,Rural,Diabetic
+51.2,Male,False,20.6,Normal,False,False,False,False,Rural,Prediabetes
+47.6,Male,False,23.6,Normal,False,False,False,False,Rural,Diabetic
+55.1,Male,False,17.1,Normal,False,False,True,True,Rural,Prediabetes
+53.8,Female,False,27.0,Overweight,False,False,False,True,Urban,Diabetic
+35.5,Female,True,26.6,Overweight,False,False,False,False,Urban,Diabetic
+18.0,Male,False,26.1,Overweight,False,False,True,False,Urban,Diabetic
+59.9,Male,False,22.3,Normal,False,False,False,False,Rural,Prediabetes
+51.1,Male,False,25.0,Overweight,False,False,False,False,Rural,Diabetic
+49.7,Female,False,33.3,Obese I,False,False,False,True,Urban,Diabetic
+56.8,Female,False,24.7,Normal,False,False,True,True,Urban,Diabetic
+52.6,Female,False,21.4,Normal,False,False,True,True,Rural,Diabetic
+49.8,Female,False,22.3,Normal,False,False,False,True,Urban,Diabetic
+52.2,Male,False,17.8,Normal,True,False,True,False,Rural,Prediabetes
+37.3,Female,False,19.3,Normal,False,False,True,False,Urban,Diabetic
+69.7,Male,False,17.5,Normal,False,False,False,False,Urban,Diabetic
+54.6,Male,False,29.3,Overweight,False,False,False,True,Urban,Diabetic
+65.8,Male,False,21.4,Normal,False,False,False,True,Rural,Prediabetes
+63.1,Female,False,29.4,Overweight,False,False,True,False,Rural,Diabetic
+71.8,Male,False,25.3,Overweight,False,False,True,False,Rural,Diabetic
+34.8,Male,False,21.7,Normal,True,False,False,False,Urban,Diabetic
+66.7,Male,False,33.4,Obese I,False,False,False,True,Rural,Diabetic
+67.5,Female,False,36.5,Obese II+,True,False,True,True,Rural,Diabetic
+47.2,Male,False,20.8,Normal,False,False,False,False,Urban,Prediabetes
+25.8,Male,False,22.2,Normal,False,False,False,False,Rural,Prediabetes
+79.7,Female,False,21.7,Normal,False,False,True,True,Rural,Diabetic
+52.6,Male,False,25.4,Overweight,False,False,False,False,Rural,Diabetic
+37.3,Male,False,31.7,Obese I,False,False,False,False,Urban,Diabetic
+56.6,Male,False,26.6,Overweight,False,False,False,True,Urban,Diabetic
+38.4,Male,False,25.4,Overweight,False,False,False,False,Urban,Diabetic
+49.9,Female,False,38.5,Obese II+,False,True,False,True,Urban,Diabetic
+72.9,Male,False,25.8,Overweight,False,False,False,False,Rural,Diabetic
+62.2,Male,False,23.8,Normal,False,False,False,True,Rural,Diabetic
+76.0,Female,False,20.9,Normal,False,False,False,True,Rural,Diabetic
+43.5,Female,False,29.7,Overweight,False,True,True,False,Urban,Diabetic
+59.8,Male,False,30.7,Obese I,False,False,False,False,Rural,Diabetic
+55.9,Male,False,25.0,Overweight,False,False,True,False,Urban,Diabetic
+56.4,Female,False,22.6,Normal,False,False,False,True,Urban,Diabetic
+58.6,Male,False,20.2,Normal,False,False,True,False,Rural,Normal
+43.2,Female,False,26.0,Overweight,False,False,False,True,Rural,Diabetic
+22.6,Female,False,22.4,Normal,False,False,False,False,Rural,Normal
+55.0,Female,False,18.7,Normal,False,False,False,False,Urban,Diabetic
+59.8,Female,False,32.9,Obese I,False,False,True,True,Rural,Prediabetes
+45.3,Female,False,21.6,Normal,False,False,False,True,Urban,Diabetic
+39.2,Male,False,29.6,Overweight,False,False,True,False,Urban,Diabetic
+70.6,Male,False,26.5,Overweight,False,False,False,True,Rural,Diabetic
+30.2,Male,False,29.9,Overweight,False,False,False,False,Rural,Normal
+54.6,Female,False,23.9,Normal,False,False,False,True,Urban,Diabetic
+66.4,Female,False,28.3,Overweight,True,False,False,False,Urban,Diabetic
+36.1,Female,False,29.7,Overweight,False,False,False,False,Urban,Diabetic
+55.4,Female,False,28.2,Overweight,False,False,True,True,Urban,Diabetic
+73.1,Female,False,31.0,Obese I,False,False,True,True,Rural,Diabetic
+46.5,Male,False,31.0,Obese I,False,False,True,False,Urban,Diabetic
+42.3,Male,False,26.2,Overweight,True,False,True,False,Urban,Diabetic
+60.9,Male,False,16.5,Normal,False,False,True,True,Rural,Prediabetes
+45.3,Male,False,27.2,Overweight,False,False,True,True,Rural,Diabetic
+47.4,Female,False,30.9,Obese I,True,False,False,False,Rural,Diabetic
+68.9,Female,False,29.4,Overweight,False,False,False,False,Urban,Diabetic
+53.1,Female,False,29.4,Overweight,True,False,True,True,Rural,Diabetic
+34.1,Male,False,24.1,Normal,False,False,False,False,Urban,Normal
+62.4,Male,False,21.5,Normal,False,False,False,True,Rural,Diabetic
+41.8,Female,False,26.9,Overweight,False,False,True,True,Rural,Prediabetes
+53.5,Female,False,25.7,Overweight,True,False,False,False,Rural,Diabetic
+42.1,Male,False,21.1,Normal,False,False,True,True,Rural,Diabetic
+55.7,Male,False,23.1,Normal,False,False,True,False,Rural,Normal
+37.5,Male,False,17.9,Normal,False,False,True,False,Urban,Diabetic
+64.3,Female,False,22.3,Normal,True,False,True,False,Rural,Diabetic
+48.9,Male,False,25.4,Overweight,False,False,False,True,Urban,Diabetic
+47.7,Female,False,28.6,Overweight,False,False,False,False,Urban,Diabetic
+49.6,Male,False,21.3,Normal,False,False,False,True,Urban,Prediabetes
+53.1,Male,False,20.0,Normal,False,False,False,False,Rural,Prediabetes
+62.6,Female,False,19.6,Normal,False,False,False,True,Rural,Diabetic
+64.3,Male,False,26.0,Overweight,False,False,True,True,Rural,Prediabetes
+54.9,Male,False,24.3,Normal,False,False,True,True,Rural,Prediabetes
+37.8,Male,False,21.7,Normal,False,False,False,True,Urban,Diabetic
+38.5,Male,False,20.1,Normal,False,False,True,True,Rural,Prediabetes
+61.7,Male,False,17.5,Normal,False,False,False,True,Urban,Diabetic
+57.1,Female,False,20.7,Normal,False,False,True,False,Urban,Normal
+54.1,Male,False,27.4,Overweight,False,False,False,True,Rural,Diabetic
+81.0,Male,False,28.7,Overweight,True,False,False,False,Rural,Diabetic
+72.9,Female,False,24.0,Normal,True,False,False,True,Rural,Diabetic
+55.8,Male,False,27.1,Overweight,False,False,True,True,Rural,Prediabetes
+40.8,Male,False,26.7,Overweight,False,False,False,False,Rural,Normal
+54.1,Male,False,25.7,Overweight,False,False,False,False,Rural,Diabetic
+45.2,Female,False,24.8,Normal,False,False,False,False,Rural,Diabetic
+47.4,Female,False,29.6,Overweight,True,False,True,True,Rural,Diabetic
+54.4,Male,False,25.7,Overweight,False,False,False,True,Rural,Diabetic
+51.0,Female,False,18.2,Normal,True,False,False,True,Urban,Diabetic
+56.2,Male,False,25.0,Overweight,False,False,True,False,Urban,Diabetic
+56.2,Male,False,25.8,Overweight,False,False,True,False,Rural,Normal
+52.6,Male,False,21.7,Normal,False,False,True,True,Rural,Diabetic
+56.3,Female,False,27.1,Overweight,True,True,True,True,Rural,Diabetic
+85.0,Male,False,23.6,Normal,False,False,True,True,Rural,Prediabetes
+63.1,Female,False,27.4,Overweight,True,False,True,True,Rural,Diabetic
+45.8,Female,False,25.2,Overweight,False,False,True,False,Rural,Diabetic
+49.2,Female,False,18.6,Normal,True,True,False,True,Rural,Diabetic
+38.5,Female,False,24.5,Normal,True,False,True,False,Urban,Diabetic
+58.6,Male,False,19.6,Normal,False,False,False,True,Rural,Diabetic
+44.4,Female,False,28.7,Overweight,False,False,False,True,Rural,Diabetic
+37.4,Female,False,33.5,Obese I,False,True,True,False,Urban,Diabetic
+50.3,Female,False,20.3,Normal,False,False,False,False,Urban,Diabetic
+53.5,Male,False,21.8,Normal,False,False,False,True,Rural,Diabetic
+45.8,Female,False,24.8,Normal,False,False,False,False,Urban,Diabetic
+26.8,Male,False,25.6,Overweight,False,False,False,False,Rural,Diabetic
+44.0,Male,False,23.1,Normal,False,False,False,True,Rural,Diabetic
+32.7,Male,False,21.2,Normal,True,False,True,False,Rural,Normal
+49.7,Male,False,20.9,Normal,False,False,True,True,Rural,Normal
+68.8,Male,False,29.5,Overweight,False,False,False,True,Urban,Diabetic
+59.0,Female,False,24.6,Normal,False,False,True,True,Rural,Prediabetes
+58.9,Male,False,19.6,Normal,False,False,True,False,Rural,Prediabetes
+44.1,Male,False,21.7,Normal,False,False,False,False,Urban,Diabetic
+61.6,Male,False,23.5,Normal,True,False,True,True,Rural,Diabetic
+47.8,Female,False,35.3,Obese II+,False,False,False,True,Urban,Diabetic
+52.7,Female,False,25.0,Overweight,True,False,True,True,Rural,Diabetic
+48.4,Male,False,26.2,Overweight,False,False,False,False,Rural,Diabetic
+65.9,Male,False,26.0,Overweight,False,False,True,True,Rural,Diabetic
+60.9,Male,False,24.6,Normal,False,False,False,False,Rural,Normal
+41.7,Male,False,28.3,Overweight,True,False,False,False,Urban,Diabetic
+33.3,Male,False,23.2,Normal,True,False,True,True,Rural,Diabetic
+47.1,Female,False,30.4,Obese I,False,False,False,False,Rural,Diabetic
+70.7,Male,False,26.1,Overweight,False,False,True,False,Urban,Diabetic
+48.7,Male,False,27.0,Overweight,False,False,True,False,Urban,Diabetic
+54.4,Male,False,27.7,Overweight,True,False,False,False,Urban,Diabetic
+50.0,Male,False,17.8,Normal,False,False,True,False,Rural,Diabetic
+51.3,Male,False,19.1,Normal,False,False,False,True,Rural,Diabetic
+51.1,Female,False,24.5,Normal,False,False,False,False,Rural,Diabetic
+66.4,Male,False,21.7,Normal,False,False,False,False,Rural,Diabetic
+42.3,Female,False,25.6,Overweight,False,False,False,False,Urban,Diabetic
+68.0,Female,False,33.7,Obese I,False,False,False,True,Rural,Diabetic
+52.5,Female,False,19.5,Normal,False,False,False,False,Urban,Prediabetes
+56.4,Female,False,29.7,Overweight,False,False,True,True,Rural,Diabetic
+77.7,Male,False,25.6,Overweight,False,False,True,True,Rural,Diabetic
+50.9,Male,False,17.9,Normal,False,False,False,True,Rural,Diabetic
+62.2,Female,False,16.7,Normal,False,True,False,True,Rural,Diabetic
+37.3,Male,False,24.9,Normal,False,False,True,True,Rural,Normal
+50.9,Male,False,20.8,Normal,False,False,False,False,Rural,Diabetic
+47.4,Male,False,29.6,Overweight,False,False,True,False,Urban,Diabetic
+44.1,Female,False,19.9,Normal,True,False,True,True,Urban,Diabetic
+57.7,Female,False,25.2,Overweight,False,False,True,False,Rural,Diabetic
+32.4,Male,False,25.5,Overweight,False,False,False,False,Urban,Diabetic
+54.9,Female,False,17.5,Normal,False,False,False,False,Rural,Normal
+62.0,Female,False,19.9,Normal,True,False,False,False,Rural,Diabetic
+55.0,Male,False,19.6,Normal,False,False,True,False,Rural,Prediabetes
+70.7,Male,False,26.5,Overweight,True,False,True,True,Rural,Diabetic
+70.6,Male,False,27.0,Overweight,False,False,True,True,Urban,Diabetic
+71.8,Female,False,33.6,Obese I,False,False,True,True,Rural,Diabetic
+70.6,Female,False,20.4,Normal,True,False,False,True,Rural,Diabetic
+48.2,Male,False,28.6,Overweight,True,False,True,True,Rural,Diabetic
+59.2,Female,False,27.1,Overweight,False,False,True,False,Urban,Diabetic
+51.4,Female,False,21.8,Normal,False,False,False,False,Rural,Diabetic
+34.5,Male,False,20.6,Normal,False,False,False,True,Rural,Prediabetes
+51.7,Female,False,32.9,Obese I,False,False,True,False,Rural,Diabetic
+29.6,Female,False,36.8,Obese II+,False,False,True,False,Rural,Prediabetes
+54.8,Male,False,20.6,Normal,False,False,True,True,Rural,Prediabetes
+39.5,Male,False,26.8,Overweight,False,False,True,False,Rural,Prediabetes
+63.4,Female,False,30.8,Obese I,False,False,False,True,Urban,Diabetic
+42.8,Female,False,26.4,Overweight,True,False,True,False,Rural,Diabetic
+37.9,Female,False,23.7,Normal,False,False,False,True,Urban,Diabetic
+65.3,Female,False,33.2,Obese I,False,False,True,False,Rural,Diabetic
+53.9,Male,False,27.2,Overweight,False,False,False,True,Rural,Diabetic
+67.7,Female,False,28.9,Overweight,True,False,False,False,Urban,Diabetic
+39.3,Male,False,27.4,Overweight,False,False,False,True,Urban,Diabetic
+39.6,Male,False,33.3,Obese I,True,False,True,False,Rural,Diabetic
+66.0,Female,False,38.5,Obese II+,False,False,True,True,Rural,Diabetic
+65.9,Female,False,24.8,Normal,True,False,False,True,Rural,Diabetic
+70.7,Female,False,28.8,Overweight,False,False,False,False,Urban,Diabetic
+61.7,Female,False,23.8,Normal,False,False,True,True,Urban,Diabetic
+55.1,Male,False,26.1,Overweight,True,False,False,True,Rural,Diabetic
+41.5,Male,False,26.4,Overweight,False,False,False,True,Rural,Prediabetes
+41.6,Female,False,25.7,Overweight,False,False,False,True,Urban,Prediabetes
+74.6,Female,False,31.5,Obese I,True,False,True,True,Rural,Diabetic
+54.5,Female,False,30.2,Obese I,True,False,False,True,Rural,Diabetic
+62.2,Female,False,22.2,Normal,False,False,False,True,Rural,Diabetic
+65.8,Male,False,19.4,Normal,False,False,True,False,Urban,Prediabetes
+62.2,Female,False,23.4,Normal,True,False,False,True,Rural,Diabetic
+62.0,Male,False,25.2,Overweight,False,False,True,True,Rural,Diabetic
+60.9,Female,False,22.2,Normal,False,False,True,True,Urban,Diabetic
+47.0,Female,False,24.1,Normal,True,False,False,True,Rural,Diabetic
+28.3,Female,False,30.5,Obese I,True,False,True,False,Rural,Diabetic
+48.2,Female,False,34.6,Obese I,False,False,False,True,Urban,Diabetic
+53.4,Female,False,30.5,Obese I,False,False,True,True,Rural,Diabetic
+73.0,Male,False,26.9,Overweight,True,False,False,False,Urban,Diabetic
+34.0,Male,False,34.6,Obese I,False,False,True,False,Rural,Diabetic
+44.8,Female,False,23.7,Normal,True,False,False,False,Urban,Diabetic
+40.1,Female,True,19.2,Normal,False,False,False,False,Rural,Normal
+47.2,Male,False,25.5,Overweight,False,False,True,False,Urban,Diabetic
+25.8,Female,False,20.4,Normal,True,False,True,True,Rural,Diabetic
+50.4,Female,False,31.3,Obese I,False,False,True,True,Rural,Diabetic
+73.1,Female,False,28.4,Overweight,False,False,True,True,Rural,Prediabetes
+66.9,Female,False,33.0,Obese I,True,False,False,True,Urban,Diabetic
+57.7,Male,False,27.3,Overweight,False,False,False,False,Urban,Diabetic
+72.3,Female,False,28.2,Overweight,False,False,True,False,Rural,Normal
+49.3,Male,False,25.1,Overweight,True,False,False,False,Urban,Diabetic
+62.5,Female,False,29.4,Overweight,False,False,True,False,Rural,Prediabetes
+46.6,Male,False,20.9,Normal,False,False,False,False,Urban,Prediabetes
+51.3,Male,False,26.0,Overweight,False,False,False,True,Rural,Diabetic
+55.0,Female,False,24.3,Normal,True,False,False,False,Urban,Diabetic
+52.1,Female,False,19.2,Normal,False,False,True,False,Rural,Prediabetes
+39.5,Female,True,27.5,Overweight,False,False,True,False,Rural,Normal
+54.6,Female,False,28.4,Overweight,False,False,False,True,Rural,Diabetic
+27.8,Male,False,25.5,Overweight,True,False,True,True,Rural,Diabetic
+55.5,Female,False,29.4,Overweight,False,False,True,True,Rural,Diabetic
+47.8,Male,False,30.8,Obese I,False,False,True,False,Urban,Diabetic
+51.9,Female,False,27.9,Overweight,False,False,True,True,Urban,Diabetic
+52.6,Female,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+57.3,Male,False,25.3,Overweight,False,False,False,False,Rural,Prediabetes
+36.7,Female,False,36.6,Obese II+,False,False,False,True,Rural,Diabetic
+52.1,Male,False,27.9,Overweight,False,False,False,False,Urban,Diabetic
+67.1,Male,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+42.7,Female,False,22.3,Normal,False,False,False,True,Rural,Prediabetes
+45.6,Male,False,19.4,Normal,False,False,False,True,Urban,Diabetic
+58.0,Male,False,18.5,Normal,True,False,False,True,Rural,Diabetic
+49.0,Female,False,25.5,Overweight,False,False,False,True,Rural,Diabetic
+63.3,Female,False,24.5,Normal,False,False,True,False,Urban,Prediabetes
+34.2,Male,False,22.3,Normal,False,False,True,True,Rural,Diabetic
+65.2,Male,False,21.4,Normal,False,False,True,False,Rural,Normal
+47.3,Male,False,21.6,Normal,True,False,False,False,Rural,Diabetic
+71.4,Female,False,22.8,Normal,False,False,True,True,Rural,Prediabetes
+40.4,Female,False,21.7,Normal,False,False,False,False,Rural,Normal
+48.9,Female,False,23.6,Normal,True,False,True,True,Rural,Diabetic
+53.7,Male,False,20.5,Normal,False,False,True,False,Urban,Prediabetes
+41.1,Female,True,17.9,Normal,False,True,True,False,Rural,Prediabetes
+66.2,Male,False,28.1,Overweight,False,False,True,True,Urban,Diabetic
+51.9,Male,False,27.4,Overweight,True,False,False,True,Urban,Diabetic
+54.8,Female,False,37.3,Obese II+,False,False,False,True,Urban,Diabetic
+44.0,Female,False,27.2,Overweight,False,False,False,False,Urban,Diabetic
+54.4,Female,False,30.2,Obese I,False,False,False,True,Urban,Diabetic
+57.0,Female,False,28.4,Overweight,False,False,False,False,Urban,Diabetic
+43.5,Male,False,18.8,Normal,False,False,True,False,Rural,Normal
+52.2,Female,False,27.2,Overweight,True,False,True,False,Urban,Diabetic
+58.7,Male,False,24.9,Normal,True,False,False,True,Rural,Diabetic
+55.2,Female,False,25.8,Overweight,False,False,False,False,Rural,Diabetic
+50.5,Female,False,36.7,Obese II+,False,False,False,True,Urban,Diabetic
+56.9,Male,False,26.1,Overweight,False,False,False,True,Urban,Diabetic
+57.4,Male,False,26.1,Overweight,False,False,False,False,Urban,Diabetic
+58.6,Female,False,25.4,Overweight,False,False,False,False,Urban,Diabetic
+55.3,Female,False,22.6,Normal,False,False,True,True,Urban,Prediabetes
+59.0,Female,False,27.6,Overweight,True,False,True,True,Rural,Diabetic
+73.3,Male,False,23.1,Normal,False,False,True,True,Rural,Diabetic
+47.8,Female,False,30.6,Obese I,False,False,True,True,Rural,Diabetic
+48.1,Male,False,21.6,Normal,True,False,True,True,Urban,Diabetic
+63.4,Male,False,26.2,Overweight,False,False,True,True,Rural,Diabetic
+53.5,Male,False,25.1,Overweight,False,False,True,True,Rural,Prediabetes
+48.4,Female,False,31.5,Obese I,False,True,False,False,Urban,Diabetic
+58.0,Male,False,27.7,Overweight,False,False,True,True,Urban,Prediabetes
+50.2,Female,False,22.7,Normal,False,False,False,False,Urban,Prediabetes
+51.6,Male,False,27.5,Overweight,False,False,False,True,Rural,Diabetic
+43.2,Female,False,35.9,Obese II+,True,False,True,True,Rural,Diabetic
+29.8,Male,False,32.9,Obese I,False,False,False,True,Rural,Diabetic
+44.8,Male,False,22.5,Normal,False,False,True,True,Rural,Normal
+66.0,Female,False,29.7,Overweight,True,False,False,False,Rural,Diabetic
+52.5,Male,False,24.2,Normal,True,False,False,True,Rural,Diabetic
+47.5,Female,False,23.9,Normal,False,False,False,False,Urban,Diabetic
+52.2,Female,False,16.0,Normal,True,False,True,True,Rural,Diabetic
+56.0,Female,False,25.9,Overweight,False,False,True,False,Rural,Diabetic
+44.0,Male,False,32.6,Obese I,False,False,False,False,Rural,Diabetic
+73.4,Male,False,26.3,Overweight,False,False,False,False,Urban,Diabetic
+46.0,Female,False,29.1,Overweight,False,False,False,True,Urban,Diabetic
+49.4,Male,False,24.0,Normal,False,False,False,True,Urban,Diabetic
+53.0,Male,False,28.6,Overweight,False,False,False,False,Rural,Diabetic
+23.8,Male,False,23.1,Normal,False,False,False,False,Rural,Normal
+65.1,Male,False,19.8,Normal,True,False,False,True,Rural,Diabetic
+42.6,Female,False,28.5,Overweight,False,False,True,False,Urban,Diabetic
+56.7,Female,False,25.3,Overweight,False,False,True,True,Rural,Diabetic
+31.7,Male,False,26.0,Overweight,False,False,True,False,Rural,Prediabetes
+42.6,Male,False,27.6,Overweight,False,False,True,False,Urban,Normal
+74.2,Female,False,22.0,Normal,False,False,False,True,Urban,Diabetic
+46.5,Female,False,31.3,Obese I,False,False,False,False,Rural,Diabetic
+49.3,Female,False,28.3,Overweight,True,False,False,True,Rural,Diabetic
+66.5,Female,False,17.8,Normal,False,False,True,True,Rural,Normal
+61.0,Male,False,35.0,Obese II+,False,False,True,True,Rural,Diabetic
+33.3,Male,False,18.9,Normal,False,False,True,True,Urban,Normal
+66.4,Male,False,21.9,Normal,False,False,True,True,Rural,Prediabetes
+41.0,Male,False,16.0,Normal,False,False,False,True,Rural,Prediabetes
+52.1,Female,False,27.1,Overweight,False,False,True,True,Rural,Diabetic
+58.4,Male,False,20.9,Normal,False,False,True,True,Rural,Prediabetes
+36.7,Female,True,29.9,Overweight,False,False,False,True,Urban,Prediabetes
+61.6,Male,False,24.5,Normal,True,False,False,True,Urban,Diabetic
+79.9,Female,False,23.1,Normal,True,False,False,False,Urban,Diabetic
+52.5,Male,False,26.4,Overweight,False,False,False,False,Urban,Diabetic
+49.5,Male,False,27.9,Overweight,False,False,True,False,Rural,Diabetic
+48.4,Male,False,22.2,Normal,False,False,False,False,Urban,Prediabetes
+40.4,Male,False,29.1,Overweight,False,False,False,True,Urban,Diabetic
+63.9,Male,False,22.8,Normal,False,False,False,True,Rural,Diabetic
+40.6,Female,False,24.8,Normal,False,False,True,False,Rural,Normal
+45.2,Female,False,25.9,Overweight,True,False,False,False,Rural,Diabetic
+49.8,Male,False,22.2,Normal,False,False,True,False,Rural,Prediabetes
+43.9,Male,False,21.8,Normal,False,False,False,False,Urban,Diabetic
+61.4,Male,False,24.8,Normal,False,False,False,True,Urban,Diabetic
+40.9,Female,False,23.3,Normal,False,False,False,True,Urban,Diabetic
+53.4,Male,False,26.3,Overweight,False,False,True,True,Rural,Diabetic
+47.9,Male,False,30.4,Obese I,True,False,True,True,Urban,Prediabetes
+53.9,Male,False,23.8,Normal,False,False,False,True,Urban,Diabetic
+55.6,Female,False,32.9,Obese I,True,False,False,False,Urban,Diabetic
+68.5,Male,False,29.5,Overweight,False,False,False,True,Urban,Diabetic
+43.0,Male,False,25.3,Overweight,False,False,False,True,Rural,Diabetic
+52.1,Female,False,21.7,Normal,True,False,True,True,Urban,Diabetic
+69.2,Female,False,36.0,Obese II+,False,False,False,True,Urban,Diabetic
+59.6,Female,False,19.3,Normal,False,False,True,True,Urban,Diabetic
+60.1,Female,False,33.2,Obese I,True,False,True,True,Rural,Diabetic
+57.0,Male,False,23.2,Normal,False,False,False,True,Rural,Prediabetes
+37.3,Female,False,28.5,Overweight,False,False,False,False,Rural,Prediabetes
+39.0,Female,False,28.6,Overweight,False,False,True,False,Rural,Normal
+64.4,Male,False,28.5,Overweight,False,False,True,True,Rural,Diabetic
+61.4,Female,False,28.8,Overweight,False,False,False,False,Urban,Diabetic
+49.1,Male,False,19.2,Normal,True,False,True,True,Urban,Diabetic
+60.4,Female,False,27.7,Overweight,True,False,False,True,Urban,Diabetic
+36.7,Male,False,27.2,Overweight,False,False,True,False,Urban,Prediabetes
+67.0,Male,False,28.4,Overweight,False,False,False,True,Urban,Diabetic
+62.2,Female,False,23.4,Normal,True,False,True,True,Rural,Diabetic
+57.2,Male,False,28.4,Overweight,False,False,False,True,Rural,Diabetic
+36.4,Female,True,27.8,Overweight,False,True,True,False,Rural,Diabetic
+34.3,Male,False,18.2,Normal,False,False,False,False,Rural,Normal
+60.7,Male,False,19.0,Normal,False,False,True,True,Rural,Normal
+37.0,Male,False,22.3,Normal,False,False,False,False,Urban,Normal
+32.5,Female,False,29.7,Overweight,True,False,False,False,Urban,Diabetic
+52.2,Female,False,31.4,Obese I,False,False,True,False,Rural,Diabetic
+32.6,Female,False,31.4,Obese I,True,False,False,False,Urban,Diabetic
+48.6,Male,False,23.1,Normal,False,False,False,False,Rural,Diabetic
+35.2,Female,False,27.3,Overweight,False,False,True,False,Urban,Diabetic
+43.1,Female,True,17.4,Normal,False,False,True,False,Rural,Normal
+62.7,Female,False,18.6,Normal,False,False,False,False,Rural,Prediabetes
+65.6,Male,False,27.7,Overweight,True,False,False,True,Urban,Diabetic
+49.5,Male,False,28.6,Overweight,False,False,True,False,Urban,Diabetic
+59.2,Female,False,25.0,Overweight,True,False,True,True,Urban,Diabetic
+57.8,Male,False,24.9,Normal,False,False,True,True,Rural,Normal
+52.3,Female,False,26.9,Overweight,False,False,False,False,Urban,Prediabetes
+54.2,Male,False,18.5,Normal,True,False,True,False,Rural,Diabetic
+68.5,Male,False,23.2,Normal,False,False,True,True,Rural,Diabetic
+54.2,Female,False,23.1,Normal,False,False,False,True,Rural,Diabetic
+42.2,Female,False,26.0,Overweight,False,False,True,False,Rural,Diabetic
+33.9,Male,False,22.7,Normal,False,False,False,False,Rural,Prediabetes
+40.9,Female,False,23.8,Normal,False,False,True,False,Rural,Normal
+63.3,Male,False,25.7,Overweight,False,False,False,False,Rural,Diabetic
+62.2,Male,False,32.2,Obese I,True,False,False,False,Urban,Diabetic
+52.3,Female,False,30.7,Obese I,True,False,True,False,Urban,Diabetic
+28.7,Male,False,26.0,Overweight,False,False,True,False,Urban,Diabetic
+26.4,Female,False,27.0,Overweight,False,False,False,False,Rural,Normal
+56.7,Female,False,24.2,Normal,False,False,True,True,Rural,Normal
+37.2,Male,False,25.2,Overweight,False,False,False,False,Rural,Prediabetes
+46.2,Male,False,27.7,Overweight,False,False,False,False,Rural,Diabetic
+54.0,Male,False,26.5,Overweight,False,False,False,True,Urban,Diabetic
+69.9,Female,False,29.4,Overweight,True,False,False,True,Urban,Diabetic
+41.2,Male,False,23.4,Normal,False,False,False,False,Rural,Normal
+56.4,Female,False,35.0,Obese II+,True,False,True,True,Rural,Diabetic
+49.7,Female,False,29.0,Overweight,False,False,True,True,Urban,Diabetic
+64.6,Female,False,29.3,Overweight,True,False,False,True,Urban,Diabetic
+76.4,Male,False,23.6,Normal,False,False,True,True,Rural,Diabetic
+37.1,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+60.8,Female,False,37.2,Obese II+,False,False,True,False,Urban,Diabetic
+60.3,Female,False,25.2,Overweight,True,False,False,True,Urban,Diabetic
+47.3,Male,False,23.0,Normal,False,False,False,True,Rural,Diabetic
+51.6,Male,False,23.3,Normal,False,False,True,False,Urban,Diabetic
+75.0,Female,False,27.9,Overweight,False,False,False,True,Urban,Diabetic
+48.0,Female,False,26.1,Overweight,False,False,False,True,Rural,Diabetic
+42.3,Male,False,22.6,Normal,False,False,False,False,Urban,Prediabetes
+56.8,Male,False,30.5,Obese I,False,False,True,True,Rural,Diabetic
+29.4,Female,False,22.8,Normal,False,False,False,False,Rural,Normal
+35.1,Female,False,28.0,Overweight,False,False,False,False,Urban,Diabetic
+62.5,Female,False,25.8,Overweight,False,False,False,True,Rural,Diabetic
+80.7,Female,False,19.3,Normal,True,False,False,True,Urban,Diabetic
+55.9,Female,False,29.4,Overweight,False,False,True,False,Urban,Diabetic
+38.2,Male,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+44.0,Female,False,24.9,Normal,False,False,False,True,Rural,Prediabetes
+51.6,Female,False,25.0,Overweight,False,False,True,True,Rural,Diabetic
+59.9,Male,False,21.6,Normal,False,False,False,False,Rural,Normal
+47.3,Female,False,19.1,Normal,False,False,True,True,Rural,Normal
+35.0,Male,False,26.3,Overweight,False,False,False,True,Urban,Prediabetes
+47.0,Female,False,27.9,Overweight,False,False,False,False,Urban,Diabetic
+56.0,Female,False,18.0,Normal,False,False,False,True,Urban,Diabetic
+36.9,Female,False,27.2,Overweight,False,False,False,True,Rural,Diabetic
+40.2,Female,False,21.8,Normal,True,False,True,False,Rural,Normal
+33.1,Male,False,26.1,Overweight,False,False,False,False,Urban,Diabetic
+39.4,Male,False,25.6,Overweight,False,False,False,False,Urban,Diabetic
+47.4,Male,False,25.6,Overweight,False,False,False,False,Urban,Diabetic
+45.7,Female,False,23.4,Normal,False,False,True,True,Urban,Diabetic
+59.9,Male,False,27.0,Overweight,True,False,False,True,Rural,Diabetic
+57.0,Female,False,31.3,Obese I,True,False,True,False,Urban,Diabetic
+49.0,Male,False,23.3,Normal,False,False,True,False,Urban,Prediabetes
+52.5,Female,False,31.3,Obese I,False,False,True,False,Rural,Diabetic
+63.2,Male,False,24.6,Normal,False,False,False,True,Rural,Prediabetes
+72.5,Female,False,26.3,Overweight,False,False,False,True,Rural,Diabetic
+40.4,Male,False,26.6,Overweight,False,False,False,False,Rural,Prediabetes
+55.7,Male,False,21.5,Normal,True,False,False,False,Rural,Prediabetes
+51.6,Male,False,17.7,Normal,False,False,False,True,Urban,Diabetic
+42.1,Female,False,25.6,Overweight,True,False,True,True,Rural,Diabetic
+62.1,Male,False,26.2,Overweight,True,False,False,False,Urban,Diabetic
+64.2,Male,False,22.8,Normal,False,False,False,False,Urban,Prediabetes
+19.5,Male,False,20.7,Normal,False,False,True,False,Urban,Normal
+76.9,Female,False,19.7,Normal,False,False,True,True,Rural,Diabetic
+49.4,Female,False,31.6,Obese I,False,False,False,False,Rural,Diabetic
+58.4,Male,False,19.3,Normal,False,False,True,True,Rural,Diabetic
+43.8,Male,False,21.7,Normal,False,False,False,True,Urban,Diabetic
+24.5,Female,False,33.1,Obese I,False,False,False,True,Urban,Diabetic
+55.4,Female,False,27.3,Overweight,False,False,False,False,Urban,Diabetic
+47.9,Male,False,19.5,Normal,False,False,False,False,Rural,Prediabetes
+49.2,Male,False,32.6,Obese I,False,False,False,False,Urban,Diabetic
+49.0,Male,False,25.6,Overweight,True,False,False,True,Urban,Diabetic
+34.8,Female,False,22.5,Normal,False,True,True,False,Rural,Prediabetes
+38.2,Female,False,21.9,Normal,False,False,True,True,Rural,Normal
+67.7,Male,False,17.7,Normal,False,False,False,True,Rural,Diabetic
+47.8,Male,False,29.5,Overweight,False,False,True,True,Urban,Diabetic
+44.9,Female,False,26.6,Overweight,False,False,True,True,Urban,Diabetic
+60.2,Female,False,24.8,Normal,False,True,True,False,Rural,Diabetic
+62.2,Female,False,31.5,Obese I,False,False,True,False,Urban,Diabetic
+58.2,Male,False,30.4,Obese I,True,False,False,False,Urban,Diabetic
+63.7,Male,False,22.0,Normal,False,False,False,True,Rural,Diabetic
+44.1,Female,True,25.5,Overweight,True,False,False,True,Urban,Diabetic
+24.2,Male,False,28.7,Overweight,False,False,True,False,Rural,Prediabetes
+53.7,Female,False,28.3,Overweight,False,False,False,False,Rural,Diabetic
+52.4,Male,False,27.4,Overweight,False,False,False,True,Urban,Diabetic
+52.2,Male,False,30.7,Obese I,True,False,False,True,Rural,Diabetic
+40.7,Female,False,26.1,Overweight,True,False,False,True,Urban,Diabetic
+47.3,Female,False,29.0,Overweight,False,False,False,False,Rural,Diabetic
+70.1,Male,False,29.6,Overweight,False,False,True,True,Rural,Diabetic
+47.7,Female,False,32.1,Obese I,False,True,False,True,Urban,Diabetic
+43.9,Female,False,21.6,Normal,True,True,False,True,Urban,Diabetic
+41.2,Male,False,24.7,Normal,True,False,True,False,Rural,Normal
+68.8,Male,False,28.6,Overweight,False,False,True,True,Urban,Diabetic
+58.1,Female,False,27.5,Overweight,False,False,True,True,Rural,Diabetic
+40.7,Male,False,24.1,Normal,True,False,False,True,Rural,Diabetic
+35.8,Male,False,25.7,Overweight,False,False,True,True,Rural,Diabetic
+47.6,Female,False,23.9,Normal,False,False,True,True,Rural,Diabetic
+34.5,Female,False,27.0,Overweight,False,False,False,False,Urban,Prediabetes
+47.7,Male,False,34.3,Obese I,False,False,False,True,Urban,Diabetic
+68.4,Male,False,25.9,Overweight,True,False,False,True,Rural,Diabetic
+60.0,Male,False,19.7,Normal,False,False,False,True,Rural,Prediabetes
+58.4,Female,False,23.0,Normal,True,False,False,False,Rural,Diabetic
+79.8,Female,False,27.4,Overweight,False,False,False,False,Urban,Diabetic
+39.4,Female,True,27.5,Overweight,False,False,True,True,Rural,Prediabetes
+62.7,Female,False,20.4,Normal,False,False,True,True,Urban,Prediabetes
+57.0,Female,False,33.0,Obese I,False,False,False,False,Rural,Diabetic
+48.1,Male,False,18.3,Normal,False,False,False,True,Rural,Diabetic
+57.8,Female,False,23.5,Normal,False,False,False,True,Rural,Diabetic
+59.6,Female,False,25.1,Overweight,False,False,True,False,Rural,Normal
+49.9,Female,False,23.0,Normal,True,False,False,True,Rural,Diabetic
+45.1,Male,False,26.6,Overweight,False,False,False,False,Rural,Diabetic
+40.0,Female,False,33.0,Obese I,False,False,True,False,Rural,Prediabetes
+37.7,Male,False,29.3,Overweight,False,False,False,False,Urban,Diabetic
+50.7,Female,False,26.6,Overweight,True,False,False,False,Urban,Diabetic
+49.9,Male,False,21.8,Normal,False,False,False,True,Urban,Diabetic
+65.0,Male,False,23.0,Normal,False,False,False,False,Urban,Prediabetes
+57.9,Female,False,33.5,Obese I,False,False,False,True,Rural,Diabetic
+51.3,Female,False,35.3,Obese II+,False,False,True,True,Rural,Diabetic
+34.1,Male,False,25.5,Overweight,False,False,False,True,Rural,Diabetic
+63.9,Female,False,21.7,Normal,True,True,False,True,Rural,Diabetic
+65.8,Male,False,34.5,Obese I,False,False,True,True,Urban,Diabetic
+47.1,Male,False,17.9,Normal,False,False,False,False,Rural,Normal
+35.3,Female,False,20.8,Normal,False,False,False,True,Urban,Diabetic
+50.9,Female,False,28.1,Overweight,False,True,True,False,Rural,Diabetic
+58.5,Female,False,26.2,Overweight,False,False,False,False,Urban,Diabetic
+51.1,Male,False,30.5,Obese I,True,False,True,True,Rural,Diabetic
+54.9,Male,False,31.3,Obese I,False,False,False,False,Urban,Diabetic
+50.7,Male,False,20.0,Normal,False,False,False,True,Rural,Diabetic
+65.7,Female,False,32.7,Obese I,False,True,False,True,Urban,Diabetic
+32.5,Female,False,30.1,Obese I,False,False,False,False,Urban,Diabetic
+60.7,Female,False,28.2,Overweight,False,False,False,True,Urban,Diabetic
+54.6,Male,False,27.1,Overweight,False,False,True,True,Urban,Diabetic
+61.0,Female,False,26.7,Overweight,False,False,True,False,Rural,Normal
+46.3,Male,False,33.2,Obese I,False,False,True,False,Urban,Diabetic
+23.8,Female,False,28.9,Overweight,True,False,False,True,Rural,Diabetic
+65.5,Male,False,18.9,Normal,False,False,True,True,Rural,Normal
+68.0,Female,False,21.5,Normal,False,False,False,True,Rural,Diabetic
+47.6,Female,False,26.1,Overweight,False,False,False,True,Rural,Diabetic
+42.7,Female,False,26.4,Overweight,False,False,False,False,Urban,Diabetic
+81.9,Male,False,20.4,Normal,False,False,False,True,Rural,Diabetic
+59.5,Female,False,27.3,Overweight,False,False,True,True,Rural,Prediabetes
+41.5,Female,False,25.1,Overweight,False,False,False,True,Urban,Diabetic
+33.4,Male,False,27.7,Overweight,True,False,True,False,Urban,Diabetic
+33.5,Female,False,27.6,Overweight,False,False,False,True,Urban,Diabetic
+48.5,Female,False,27.9,Overweight,False,False,True,True,Rural,Diabetic
+56.8,Male,False,21.8,Normal,True,False,False,True,Rural,Prediabetes
+58.1,Male,False,22.8,Normal,True,False,True,False,Rural,Diabetic
+52.4,Female,False,28.1,Overweight,False,False,False,True,Urban,Diabetic
+51.7,Male,False,25.1,Overweight,False,False,True,False,Rural,Diabetic
+55.0,Male,False,20.7,Normal,True,False,False,False,Urban,Diabetic
+67.0,Female,False,29.3,Overweight,False,False,False,True,Rural,Diabetic
+47.5,Female,False,22.6,Normal,True,False,False,True,Rural,Diabetic
+51.7,Male,False,33.0,Obese I,True,False,True,True,Urban,Diabetic
+62.1,Male,False,21.2,Normal,False,False,False,False,Urban,Prediabetes
+45.8,Male,False,22.2,Normal,False,False,False,False,Rural,Diabetic
+54.3,Male,False,22.1,Normal,False,False,False,False,Rural,Diabetic
+55.3,Female,False,31.2,Obese I,True,False,False,True,Rural,Diabetic
+42.6,Female,False,16.0,Normal,False,False,False,True,Rural,Diabetic
+59.0,Male,False,28.4,Overweight,False,False,True,False,Urban,Diabetic
+54.8,Female,False,32.6,Obese I,False,True,False,False,Rural,Diabetic
+61.8,Male,False,26.2,Overweight,True,False,False,True,Rural,Diabetic
+51.5,Female,False,31.4,Obese I,True,False,False,False,Urban,Diabetic
+65.0,Male,False,24.5,Normal,False,False,False,True,Urban,Diabetic
+48.6,Male,False,24.9,Normal,False,False,False,True,Rural,Diabetic
+48.8,Female,False,25.9,Overweight,False,False,True,False,Rural,Diabetic
+48.2,Male,False,26.7,Overweight,True,False,False,True,Rural,Diabetic
+56.7,Female,False,31.1,Obese I,False,False,False,True,Urban,Diabetic
+51.2,Female,False,19.7,Normal,False,True,True,True,Urban,Diabetic
+60.7,Female,False,25.0,Overweight,False,False,True,False,Rural,Prediabetes
+38.5,Female,False,22.7,Normal,False,False,True,False,Urban,Normal
+61.7,Female,False,30.3,Obese I,False,False,False,True,Rural,Diabetic
+56.6,Male,False,22.5,Normal,True,False,False,True,Rural,Diabetic
+59.4,Female,False,27.6,Overweight,True,False,False,True,Urban,Diabetic
+49.5,Female,False,35.1,Obese II+,False,True,False,False,Urban,Diabetic
+72.7,Female,False,28.7,Overweight,False,False,False,False,Urban,Diabetic
+62.7,Female,False,31.8,Obese I,True,False,False,False,Urban,Diabetic
+50.2,Female,False,22.2,Normal,False,False,True,False,Urban,Prediabetes
+45.8,Female,False,25.6,Overweight,True,False,False,False,Rural,Diabetic
+49.9,Male,False,29.9,Overweight,False,False,False,False,Rural,Diabetic
+43.1,Female,False,24.3,Normal,False,False,False,False,Urban,Prediabetes
+54.6,Female,False,26.5,Overweight,False,True,False,True,Rural,Diabetic
+52.7,Male,False,24.5,Normal,False,False,True,False,Rural,Prediabetes
+41.7,Male,False,27.0,Overweight,False,False,False,True,Urban,Diabetic
+56.8,Female,False,29.5,Overweight,True,False,True,True,Rural,Prediabetes
+63.6,Female,False,28.6,Overweight,False,False,False,True,Urban,Diabetic
+53.2,Female,False,27.9,Overweight,True,True,False,False,Rural,Diabetic
+46.3,Male,False,27.8,Overweight,True,False,False,True,Urban,Diabetic
+52.6,Male,False,21.4,Normal,False,False,False,True,Urban,Diabetic
+51.2,Male,False,26.4,Overweight,False,False,True,False,Rural,Diabetic
+54.9,Male,False,24.6,Normal,False,False,True,True,Rural,Normal
+52.0,Male,False,23.4,Normal,False,False,False,True,Urban,Diabetic
+55.4,Male,False,23.8,Normal,True,False,True,True,Urban,Diabetic
+21.2,Male,False,22.1,Normal,False,False,True,False,Rural,Normal
+63.3,Male,False,23.9,Normal,False,False,False,True,Urban,Diabetic
+65.8,Male,False,21.0,Normal,False,False,False,True,Rural,Prediabetes
+42.2,Female,False,16.0,Normal,False,False,False,True,Rural,Prediabetes
+65.3,Female,False,21.8,Normal,True,False,False,True,Urban,Diabetic
+38.8,Female,False,30.7,Obese I,False,True,True,False,Rural,Diabetic
+69.2,Female,False,28.3,Overweight,True,False,False,True,Rural,Diabetic
+47.6,Male,False,32.7,Obese I,False,False,False,True,Urban,Diabetic
+68.4,Female,False,36.8,Obese II+,False,False,False,True,Urban,Diabetic
+62.3,Female,False,33.6,Obese I,False,False,False,False,Rural,Diabetic
+49.1,Female,False,34.8,Obese I,False,False,True,False,Urban,Diabetic
+50.2,Female,False,36.6,Obese II+,False,False,False,True,Urban,Diabetic
+60.9,Female,False,29.1,Overweight,False,False,False,True,Urban,Diabetic
+43.8,Male,False,27.8,Overweight,False,False,False,False,Rural,Prediabetes
+46.4,Male,False,25.7,Overweight,False,False,False,True,Urban,Diabetic
+63.9,Female,False,16.9,Normal,True,False,True,False,Rural,Diabetic
+32.4,Female,False,26.4,Overweight,False,False,False,False,Urban,Diabetic
+44.0,Female,False,25.7,Overweight,True,False,False,True,Rural,Diabetic
+39.7,Male,False,28.1,Overweight,False,False,False,False,Urban,Diabetic
+27.0,Male,False,33.3,Obese I,False,False,False,False,Urban,Diabetic
+63.1,Male,False,22.4,Normal,False,False,False,True,Rural,Diabetic
+42.1,Male,False,28.1,Overweight,True,False,True,False,Rural,Diabetic
+49.7,Female,False,25.6,Overweight,True,False,False,True,Urban,Diabetic
+64.7,Male,False,23.8,Normal,False,False,False,False,Urban,Diabetic
+66.0,Male,False,26.8,Overweight,False,False,False,False,Urban,Diabetic
+68.3,Female,False,31.0,Obese I,False,False,True,True,Rural,Diabetic
+35.2,Male,False,27.6,Overweight,False,False,False,False,Urban,Diabetic
+47.0,Male,False,21.6,Normal,False,False,True,True,Rural,Prediabetes
+60.4,Male,False,30.7,Obese I,False,False,False,True,Urban,Diabetic
+62.7,Female,False,36.9,Obese II+,True,False,False,True,Rural,Diabetic
+61.7,Male,False,23.2,Normal,False,False,True,True,Rural,Prediabetes
+32.9,Male,False,21.9,Normal,False,False,False,True,Urban,Diabetic
+39.9,Male,False,26.6,Overweight,False,False,False,False,Urban,Diabetic
+26.0,Male,False,27.8,Overweight,False,False,False,False,Rural,Diabetic
+32.4,Female,True,26.7,Overweight,True,False,False,False,Urban,Diabetic
+50.2,Female,False,29.2,Overweight,False,False,True,True,Rural,Diabetic
+71.1,Female,False,30.5,Obese I,False,False,False,True,Urban,Diabetic
+37.3,Female,False,27.2,Overweight,False,False,False,False,Urban,Diabetic
+48.9,Male,False,28.2,Overweight,False,False,True,False,Rural,Diabetic
+47.3,Male,False,20.8,Normal,False,False,False,True,Urban,Diabetic
+43.2,Male,False,22.8,Normal,False,False,False,False,Urban,Prediabetes
+57.9,Female,False,25.1,Overweight,False,False,True,True,Rural,Diabetic
+34.2,Male,False,26.8,Overweight,False,False,False,True,Urban,Diabetic
+64.0,Female,False,24.8,Normal,False,False,True,True,Rural,Diabetic
+48.9,Female,False,23.1,Normal,False,False,False,True,Urban,Diabetic
+79.9,Male,False,19.9,Normal,False,False,False,True,Urban,Diabetic
+58.6,Male,False,23.8,Normal,False,False,False,False,Rural,Prediabetes
+69.8,Female,False,30.1,Obese I,True,True,True,True,Rural,Diabetic
+40.9,Male,False,28.4,Overweight,False,False,False,False,Urban,Diabetic
+34.6,Female,False,37.0,Obese II+,True,False,False,True,Urban,Diabetic
+51.5,Female,False,23.9,Normal,False,False,False,True,Urban,Diabetic
+54.3,Female,False,23.5,Normal,True,False,False,False,Rural,Diabetic
+69.9,Male,False,23.1,Normal,False,False,False,False,Urban,Diabetic
+79.8,Female,False,17.0,Normal,False,False,False,True,Rural,Prediabetes
+53.9,Male,False,20.2,Normal,False,False,False,True,Rural,Diabetic
+51.5,Male,False,29.8,Overweight,False,False,False,False,Rural,Diabetic
+41.7,Male,False,26.2,Overweight,False,False,False,False,Urban,Diabetic
+35.4,Female,False,19.9,Normal,False,True,True,False,Rural,Normal
+38.6,Female,False,22.4,Normal,False,True,False,False,Rural,Diabetic
+55.9,Male,False,25.6,Overweight,False,False,True,True,Urban,Diabetic
+58.2,Male,False,23.1,Normal,False,False,False,True,Rural,Diabetic
+60.3,Male,False,22.5,Normal,False,False,True,True,Rural,Normal
+76.4,Male,False,18.8,Normal,True,False,True,True,Rural,Diabetic
+23.3,Female,False,33.4,Obese I,False,False,True,True,Rural,Diabetic
+50.6,Male,False,21.4,Normal,False,False,True,False,Rural,Normal
+62.3,Female,False,30.7,Obese I,False,False,True,False,Rural,Diabetic
+64.1,Male,False,29.7,Overweight,False,False,False,False,Urban,Diabetic
+67.6,Male,False,16.0,Normal,False,False,False,True,Rural,Diabetic
+69.3,Female,False,26.7,Overweight,False,False,True,True,Rural,Diabetic
+46.3,Male,False,20.8,Normal,False,False,False,False,Rural,Prediabetes
+40.7,Female,False,29.4,Overweight,False,False,True,True,Rural,Diabetic
+30.9,Female,False,27.6,Overweight,False,True,False,False,Urban,Diabetic
+66.0,Female,False,32.5,Obese I,False,False,False,False,Urban,Diabetic
+49.4,Male,False,23.9,Normal,False,False,True,False,Urban,Normal
+60.7,Female,False,28.6,Overweight,False,False,False,False,Rural,Diabetic
+71.7,Male,False,27.3,Overweight,False,False,False,True,Urban,Diabetic
+49.4,Male,False,30.9,Obese I,True,False,False,True,Urban,Diabetic
+61.3,Male,False,26.9,Overweight,True,False,True,True,Rural,Diabetic
+42.9,Male,False,27.4,Overweight,True,False,True,True,Urban,Diabetic
+38.8,Female,False,28.9,Overweight,False,False,False,True,Urban,Diabetic
+57.0,Male,False,26.3,Overweight,False,False,False,False,Urban,Diabetic
+43.1,Male,False,25.2,Overweight,True,False,True,False,Urban,Diabetic
+51.3,Male,False,22.7,Normal,False,False,False,False,Urban,Diabetic
+53.1,Female,False,26.3,Overweight,True,False,True,False,Urban,Diabetic
+29.4,Female,True,26.5,Overweight,True,False,False,False,Rural,Prediabetes
+47.9,Female,False,31.3,Obese I,False,False,False,True,Rural,Diabetic
+48.5,Male,False,24.7,Normal,False,False,True,True,Rural,Prediabetes
+50.0,Female,False,33.7,Obese I,False,False,False,False,Rural,Diabetic
+58.9,Male,False,22.7,Normal,False,False,False,False,Rural,Normal
+70.7,Male,False,30.5,Obese I,False,False,False,True,Urban,Diabetic
+53.6,Male,False,22.1,Normal,False,False,True,False,Rural,Normal
+61.9,Male,False,21.0,Normal,False,False,False,True,Urban,Diabetic
+48.3,Female,False,20.3,Normal,False,True,True,False,Rural,Diabetic
+47.0,Male,False,29.9,Overweight,False,False,True,False,Urban,Diabetic
+60.7,Female,False,22.1,Normal,False,False,True,True,Urban,Diabetic
+55.1,Female,False,22.2,Normal,False,False,False,True,Urban,Diabetic
+42.1,Female,False,27.7,Overweight,True,False,False,False,Rural,Diabetic
+67.5,Male,False,22.6,Normal,False,False,False,True,Rural,Diabetic
+40.1,Female,False,25.4,Overweight,False,False,False,True,Urban,Diabetic
+31.7,Female,False,33.2,Obese I,False,False,False,True,Urban,Diabetic
+69.3,Male,False,25.7,Overweight,False,False,True,True,Urban,Diabetic
+46.0,Female,False,23.5,Normal,False,False,False,False,Rural,Diabetic
+70.3,Male,False,20.4,Normal,False,False,True,False,Urban,Normal
+51.7,Female,False,32.4,Obese I,False,False,False,True,Rural,Diabetic
+40.6,Male,False,20.3,Normal,False,False,False,False,Rural,Normal
+44.5,Male,False,30.0,Obese I,False,False,True,False,Urban,Diabetic
+59.6,Male,False,25.6,Overweight,False,False,True,True,Rural,Diabetic
+52.5,Male,False,17.0,Normal,True,False,True,True,Rural,Diabetic
+43.7,Male,False,29.8,Overweight,False,False,False,True,Urban,Diabetic
+60.2,Female,False,26.0,Overweight,False,False,False,True,Rural,Diabetic
+62.0,Female,False,25.3,Overweight,False,False,False,False,Rural,Diabetic
+71.5,Male,False,27.5,Overweight,False,False,False,True,Urban,Diabetic
+34.0,Male,False,20.8,Normal,False,False,True,False,Rural,Normal
+59.1,Male,False,23.8,Normal,True,False,False,False,Rural,Diabetic
+40.1,Female,False,26.1,Overweight,False,False,True,False,Rural,Diabetic
+65.7,Female,False,27.4,Overweight,False,False,True,True,Rural,Diabetic
+40.0,Female,False,21.8,Normal,False,False,True,False,Rural,Normal
+44.8,Female,False,26.2,Overweight,True,False,False,False,Rural,Diabetic
+47.4,Male,False,27.3,Overweight,False,False,False,True,Urban,Diabetic
+52.5,Female,False,29.3,Overweight,False,False,True,True,Rural,Prediabetes
+51.9,Female,False,19.5,Normal,True,False,False,True,Urban,Diabetic
+50.9,Female,False,25.2,Overweight,True,False,False,True,Urban,Diabetic
+67.4,Male,False,22.6,Normal,False,False,True,True,Urban,Diabetic
+55.3,Female,False,25.5,Overweight,False,False,False,True,Urban,Diabetic
+66.1,Female,False,20.8,Normal,False,False,False,True,Rural,Prediabetes
+33.5,Male,False,25.6,Overweight,True,False,False,True,Urban,Diabetic
+71.5,Male,False,21.6,Normal,False,False,True,True,Urban,Diabetic
+57.9,Male,False,25.8,Overweight,False,False,False,True,Rural,Diabetic
+58.9,Male,False,19.9,Normal,False,False,True,True,Rural,Diabetic
+43.9,Female,False,31.8,Obese I,False,False,False,False,Rural,Diabetic
+44.6,Female,False,28.1,Overweight,False,False,False,False,Rural,Diabetic
+44.0,Female,False,30.1,Obese I,False,True,True,True,Rural,Diabetic
+48.5,Male,False,19.1,Normal,False,False,False,True,Rural,Diabetic
+68.3,Female,False,27.2,Overweight,True,False,False,True,Rural,Diabetic
+58.8,Female,False,25.5,Overweight,False,False,False,False,Urban,Diabetic
+46.0,Male,False,27.2,Overweight,True,False,True,False,Rural,Diabetic
+43.1,Female,False,27.6,Overweight,True,False,False,False,Rural,Diabetic
+47.6,Female,False,33.5,Obese I,False,False,True,True,Urban,Diabetic
+54.8,Female,False,28.8,Overweight,False,False,True,False,Urban,Diabetic
+56.0,Male,False,25.8,Overweight,True,False,True,False,Rural,Diabetic
+40.3,Male,False,29.6,Overweight,True,False,True,True,Urban,Diabetic
+62.0,Male,False,24.9,Normal,False,False,True,False,Urban,Prediabetes
+52.9,Female,False,28.7,Overweight,False,False,True,True,Rural,Diabetic
+20.1,Female,False,24.5,Normal,False,False,True,False,Urban,Normal
+52.1,Male,False,28.1,Overweight,True,False,False,False,Urban,Diabetic
+40.4,Male,False,20.7,Normal,False,False,True,False,Rural,Normal
+47.3,Female,False,32.8,Obese I,False,False,True,True,Urban,Diabetic
+47.3,Female,False,31.1,Obese I,True,False,True,True,Rural,Diabetic
+70.1,Male,False,27.3,Overweight,True,False,False,True,Urban,Diabetic
+51.6,Male,False,23.7,Normal,True,False,False,True,Rural,Diabetic
+51.1,Male,False,28.4,Overweight,True,False,False,False,Urban,Diabetic
+52.7,Female,False,17.5,Normal,False,False,False,False,Urban,Prediabetes
+59.7,Female,False,25.6,Overweight,True,False,True,True,Rural,Diabetic
+34.2,Male,False,23.9,Normal,False,False,True,False,Rural,Normal
+50.1,Male,False,20.1,Normal,False,False,True,False,Rural,Normal
+68.8,Male,False,19.7,Normal,True,False,True,False,Urban,Diabetic
+58.6,Female,False,21.8,Normal,False,False,True,False,Urban,Normal
+55.4,Female,False,24.7,Normal,False,False,False,True,Rural,Prediabetes
+72.0,Male,False,17.5,Normal,True,False,True,False,Rural,Prediabetes
+50.7,Male,False,18.8,Normal,False,False,False,True,Urban,Diabetic
+45.1,Female,False,19.6,Normal,False,False,True,False,Rural,Diabetic
+38.5,Male,False,20.1,Normal,False,False,False,False,Urban,Diabetic
+34.0,Male,False,21.8,Normal,True,False,False,True,Rural,Diabetic
+62.6,Male,False,24.9,Normal,False,False,True,True,Rural,Normal
+76.3,Male,False,23.5,Normal,False,False,True,False,Urban,Normal
+41.5,Female,False,26.0,Overweight,False,False,False,False,Urban,Diabetic
+45.6,Female,False,27.9,Overweight,False,False,True,False,Urban,Diabetic
+35.6,Female,False,21.1,Normal,False,False,True,False,Rural,Normal
+36.0,Male,False,19.0,Normal,False,False,False,True,Rural,Diabetic
+41.7,Female,False,19.7,Normal,True,False,False,False,Urban,Prediabetes
+42.1,Female,False,25.3,Overweight,True,False,False,True,Urban,Diabetic
+44.4,Male,False,23.5,Normal,False,False,True,True,Urban,Diabetic
+43.5,Female,False,29.1,Overweight,False,False,True,True,Urban,Diabetic
+66.8,Male,False,23.0,Normal,False,False,False,True,Urban,Diabetic
+56.2,Female,False,17.7,Normal,False,False,True,False,Rural,Normal
+65.0,Female,False,30.9,Obese I,False,False,False,True,Rural,Diabetic
+41.6,Male,False,16.0,Normal,False,False,True,False,Rural,Normal
+36.5,Male,False,26.9,Overweight,True,False,True,False,Urban,Diabetic
+61.7,Male,False,23.6,Normal,False,False,True,True,Urban,Diabetic
+44.7,Female,False,35.1,Obese II+,False,False,True,False,Urban,Diabetic
+57.7,Female,False,33.5,Obese I,False,False,True,True,Urban,Diabetic
+41.4,Female,True,28.8,Overweight,False,False,False,False,Urban,Diabetic
+43.5,Female,False,16.0,Normal,True,False,True,True,Rural,Diabetic
+64.5,Female,False,22.1,Normal,False,True,False,True,Urban,Diabetic
+49.6,Female,False,24.1,Normal,False,False,False,True,Rural,Diabetic
+74.1,Male,False,25.9,Overweight,False,False,False,True,Urban,Diabetic
+41.0,Female,False,26.1,Overweight,False,False,True,True,Rural,Diabetic
+59.8,Female,False,26.9,Overweight,True,False,False,True,Rural,Diabetic
+42.3,Female,True,29.5,Overweight,False,False,True,False,Urban,Diabetic
+35.0,Male,False,16.4,Normal,False,False,False,False,Rural,Prediabetes
+55.4,Female,False,19.7,Normal,False,False,True,True,Rural,Diabetic
+43.9,Female,False,29.8,Overweight,False,False,True,True,Rural,Prediabetes
+49.6,Male,False,31.9,Obese I,False,False,False,True,Urban,Diabetic
+35.5,Male,False,24.8,Normal,False,False,False,False,Urban,Prediabetes
+55.5,Male,False,25.6,Overweight,True,False,False,True,Urban,Diabetic
+49.6,Female,False,29.1,Overweight,True,False,False,False,Urban,Diabetic
+68.2,Female,False,33.8,Obese I,False,False,False,True,Urban,Diabetic
+53.5,Female,False,17.5,Normal,True,False,False,False,Urban,Diabetic
+41.5,Male,False,27.6,Overweight,False,False,False,True,Urban,Diabetic
+41.5,Female,False,23.5,Normal,False,False,True,False,Urban,Normal
+51.4,Male,False,18.9,Normal,True,False,True,False,Rural,Diabetic
+43.7,Female,False,24.9,Normal,False,False,False,False,Rural,Normal
+55.3,Male,False,23.8,Normal,False,False,True,False,Urban,Diabetic
+64.1,Female,False,27.9,Overweight,False,False,False,True,Rural,Diabetic
+64.4,Female,False,28.9,Overweight,True,False,False,False,Urban,Diabetic
+66.8,Male,False,20.5,Normal,True,False,True,True,Rural,Diabetic
+48.6,Male,False,29.6,Overweight,True,False,False,True,Rural,Diabetic
+67.1,Male,False,19.6,Normal,False,False,False,False,Rural,Diabetic
+60.1,Male,False,24.1,Normal,False,False,False,True,Rural,Diabetic
+52.6,Female,False,20.8,Normal,False,False,True,True,Rural,Normal
+47.4,Female,False,32.8,Obese I,False,False,False,True,Urban,Diabetic
+33.9,Male,False,32.2,Obese I,True,False,True,False,Urban,Diabetic
+47.7,Female,False,26.9,Overweight,False,False,True,True,Urban,Diabetic
+39.8,Male,False,25.5,Overweight,False,False,False,False,Rural,Diabetic
+48.8,Female,False,18.6,Normal,True,False,False,True,Urban,Diabetic
+71.6,Female,False,17.9,Normal,False,False,True,True,Rural,Normal
+42.3,Female,False,16.7,Normal,False,False,True,True,Rural,Prediabetes
+65.8,Male,False,20.7,Normal,True,False,True,False,Rural,Diabetic
+66.5,Female,False,22.1,Normal,False,False,False,True,Rural,Diabetic
+67.3,Male,False,23.8,Normal,False,False,False,True,Urban,Diabetic
+50.3,Male,False,23.9,Normal,False,False,False,True,Urban,Diabetic
+48.4,Female,False,17.7,Normal,True,False,False,False,Rural,Diabetic
+65.5,Male,False,22.8,Normal,False,False,True,False,Rural,Prediabetes
+34.8,Female,False,26.7,Overweight,True,False,False,False,Rural,Diabetic
+60.0,Female,False,26.0,Overweight,False,False,False,False,Rural,Diabetic
+41.1,Male,False,23.7,Normal,False,False,False,False,Rural,Normal
+24.8,Female,False,23.9,Normal,False,False,False,False,Urban,Diabetic
+37.1,Male,False,18.3,Normal,False,False,True,False,Rural,Normal
+37.2,Female,False,26.1,Overweight,False,False,True,True,Rural,Diabetic
+39.8,Female,True,23.9,Normal,True,True,False,False,Urban,Diabetic
+46.8,Female,False,21.5,Normal,False,False,False,True,Urban,Diabetic
+52.9,Male,False,22.5,Normal,False,False,True,False,Urban,Prediabetes
+31.9,Female,False,26.0,Overweight,True,False,False,True,Urban,Diabetic
+53.0,Female,False,25.5,Overweight,True,False,True,True,Rural,Diabetic
+45.2,Female,False,19.6,Normal,False,False,True,True,Rural,Normal
+49.1,Male,False,26.4,Overweight,False,False,False,False,Rural,Diabetic
+52.0,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+49.3,Female,False,16.3,Normal,True,False,True,True,Rural,Diabetic
+71.9,Male,False,23.1,Normal,False,False,True,True,Rural,Diabetic
+28.2,Female,False,18.7,Normal,False,False,False,False,Urban,Prediabetes
+49.2,Male,False,28.6,Overweight,False,False,False,True,Urban,Diabetic
+39.7,Male,False,24.9,Normal,False,False,False,False,Urban,Diabetic
+53.6,Female,False,24.6,Normal,True,False,False,True,Rural,Diabetic
+49.4,Male,False,29.7,Overweight,False,False,True,False,Rural,Diabetic
+68.6,Female,False,23.8,Normal,False,False,False,False,Urban,Diabetic
+54.3,Male,False,26.7,Overweight,False,False,False,True,Urban,Diabetic
+60.3,Male,False,28.5,Overweight,True,False,True,False,Rural,Diabetic
+57.1,Male,False,27.7,Overweight,True,False,True,True,Rural,Diabetic
+56.7,Male,False,24.4,Normal,False,False,True,False,Urban,Prediabetes
+51.7,Female,False,22.2,Normal,False,False,False,True,Rural,Diabetic
+54.4,Male,False,17.9,Normal,False,False,False,True,Urban,Diabetic
+35.9,Female,False,32.3,Obese I,False,False,False,False,Rural,Diabetic
+56.8,Female,False,24.0,Normal,False,False,False,True,Rural,Diabetic
+47.7,Male,False,28.9,Overweight,False,False,True,False,Rural,Normal
+68.2,Male,False,29.9,Overweight,False,False,False,True,Urban,Diabetic
+48.4,Female,False,27.5,Overweight,True,False,True,True,Urban,Diabetic
+56.9,Female,False,19.2,Normal,False,False,False,True,Urban,Diabetic
+68.5,Male,False,22.7,Normal,False,False,False,False,Rural,Diabetic
+42.5,Female,False,20.7,Normal,False,False,False,False,Rural,Diabetic
+34.1,Female,False,31.2,Obese I,False,False,False,False,Rural,Diabetic
+41.2,Female,False,18.2,Normal,False,False,True,False,Rural,Normal
+40.3,Female,False,24.0,Normal,True,False,True,False,Rural,Normal
+60.6,Male,False,21.4,Normal,False,False,False,True,Urban,Diabetic
+64.6,Female,False,25.3,Overweight,False,False,False,True,Rural,Diabetic
+47.1,Male,False,25.6,Overweight,False,False,True,False,Rural,Prediabetes
+52.0,Male,False,16.4,Normal,False,False,False,False,Rural,Normal
+61.9,Male,False,30.4,Obese I,False,False,True,False,Rural,Diabetic
+50.9,Female,False,27.6,Overweight,False,False,True,True,Rural,Diabetic
+78.4,Male,False,21.9,Normal,True,False,True,True,Rural,Diabetic
+51.5,Male,False,34.8,Obese I,False,False,False,True,Urban,Diabetic
+49.9,Male,False,20.0,Normal,True,False,False,False,Rural,Diabetic
+47.7,Male,False,23.9,Normal,False,False,True,True,Rural,Prediabetes
+34.1,Female,False,17.5,Normal,False,False,True,False,Rural,Normal
+46.5,Male,False,26.5,Overweight,False,False,False,True,Urban,Diabetic
+64.7,Male,False,25.3,Overweight,False,False,True,False,Urban,Diabetic
+61.3,Male,False,26.7,Overweight,False,False,True,False,Rural,Diabetic
+47.7,Female,False,27.8,Overweight,False,False,False,False,Urban,Diabetic
+65.5,Female,False,26.2,Overweight,True,False,False,False,Rural,Diabetic
+41.5,Female,False,26.6,Overweight,False,False,True,True,Urban,Diabetic
+57.1,Male,False,19.6,Normal,True,False,False,False,Urban,Diabetic
+18.0,Male,False,20.7,Normal,False,False,False,False,Rural,Normal
+58.9,Female,False,30.0,Obese I,True,False,False,True,Rural,Diabetic
+57.7,Female,False,27.4,Overweight,True,False,False,False,Urban,Diabetic
+60.0,Female,False,27.1,Overweight,True,False,False,True,Rural,Diabetic
+58.4,Male,False,25.6,Overweight,False,False,True,True,Rural,Diabetic
+47.2,Male,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+45.4,Male,False,21.1,Normal,False,False,False,True,Rural,Diabetic
+77.4,Female,False,20.2,Normal,True,True,False,True,Rural,Diabetic
+52.1,Male,False,24.6,Normal,False,False,False,False,Rural,Diabetic
+62.5,Male,False,23.8,Normal,True,False,False,True,Rural,Diabetic
+60.4,Female,False,28.1,Overweight,True,False,False,False,Urban,Diabetic
+41.1,Female,False,24.9,Normal,False,False,False,True,Rural,Diabetic
+18.0,Female,False,27.9,Overweight,False,False,True,False,Rural,Normal
+55.5,Female,False,29.2,Overweight,False,False,True,False,Urban,Diabetic
+60.5,Female,False,23.8,Normal,False,False,False,False,Rural,Normal
+51.0,Male,False,23.5,Normal,False,False,False,True,Rural,Diabetic
+78.4,Female,False,23.2,Normal,False,False,False,True,Urban,Diabetic
+79.0,Male,False,23.1,Normal,False,False,False,True,Urban,Diabetic
+45.2,Female,False,26.2,Overweight,False,False,False,True,Urban,Diabetic
+65.0,Male,False,30.5,Obese I,False,False,False,False,Urban,Diabetic
+45.0,Male,False,33.8,Obese I,False,False,False,False,Rural,Diabetic
+42.3,Female,False,32.5,Obese I,False,False,True,True,Rural,Diabetic
+51.4,Female,False,27.7,Overweight,False,False,True,False,Urban,Diabetic
+63.4,Male,False,24.3,Normal,True,False,True,False,Rural,Prediabetes
+50.2,Female,False,27.8,Overweight,False,False,True,False,Rural,Normal
+59.0,Female,False,23.8,Normal,False,False,True,True,Rural,Prediabetes
+63.4,Male,False,24.7,Normal,False,False,True,True,Rural,Prediabetes
+58.9,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+61.0,Male,False,25.8,Overweight,False,False,True,True,Urban,Diabetic
+50.7,Male,False,22.4,Normal,False,False,False,True,Urban,Diabetic
+42.0,Male,False,23.8,Normal,False,False,False,False,Rural,Normal
+49.5,Male,False,26.9,Overweight,False,False,True,False,Rural,Normal
+52.6,Female,False,28.0,Overweight,False,False,False,True,Urban,Diabetic
+63.6,Female,False,26.5,Overweight,False,False,True,True,Rural,Diabetic
+36.8,Male,False,30.6,Obese I,False,False,False,True,Urban,Prediabetes
+42.4,Male,False,22.3,Normal,False,False,False,False,Urban,Normal
+49.9,Male,False,17.5,Normal,True,False,True,False,Urban,Diabetic
+42.8,Female,False,22.1,Normal,False,False,True,False,Urban,Normal
+55.8,Female,False,22.5,Normal,True,True,False,False,Rural,Diabetic
+45.1,Female,False,26.5,Overweight,False,False,True,False,Rural,Diabetic
+45.9,Male,False,25.3,Overweight,False,False,True,False,Rural,Prediabetes
+36.5,Female,True,23.0,Normal,True,False,False,False,Rural,Prediabetes
+48.6,Female,False,20.1,Normal,False,False,True,True,Rural,Normal
+23.4,Male,False,18.9,Normal,False,False,False,False,Rural,Normal
+43.5,Male,False,29.7,Overweight,False,False,False,False,Urban,Diabetic
+44.0,Male,False,24.7,Normal,False,False,False,True,Rural,Normal
+67.2,Male,False,24.7,Normal,False,False,False,True,Urban,Diabetic
+39.8,Female,False,23.7,Normal,False,False,False,False,Rural,Normal
+66.5,Female,False,32.5,Obese I,False,False,False,False,Urban,Prediabetes
+75.7,Male,False,30.1,Obese I,False,False,False,True,Rural,Diabetic
+37.5,Male,False,20.2,Normal,False,False,False,False,Rural,Normal
+55.8,Male,False,23.7,Normal,False,False,True,True,Rural,Diabetic
+48.4,Male,False,23.7,Normal,False,False,False,False,Rural,Diabetic
+53.9,Female,False,26.3,Overweight,True,False,True,True,Rural,Diabetic
+72.7,Female,False,23.8,Normal,False,False,False,True,Rural,Prediabetes
+40.6,Male,False,23.1,Normal,False,False,False,False,Rural,Normal
+31.5,Female,False,27.1,Overweight,False,False,False,False,Urban,Diabetic
+65.5,Male,False,25.1,Overweight,True,False,False,True,Rural,Diabetic
+50.1,Female,False,24.8,Normal,False,False,False,False,Rural,Prediabetes
+73.1,Male,False,25.8,Overweight,True,False,True,True,Rural,Diabetic
+58.9,Female,False,25.8,Overweight,True,False,False,True,Urban,Diabetic
+71.4,Male,False,23.6,Normal,False,False,True,True,Rural,Prediabetes
+48.7,Female,False,26.4,Overweight,False,False,False,True,Urban,Diabetic
+29.4,Female,False,24.3,Normal,False,False,False,False,Rural,Normal
+27.9,Female,True,30.8,Obese I,False,True,False,True,Rural,Diabetic
+83.6,Male,False,28.1,Overweight,False,False,False,True,Rural,Diabetic
+53.4,Male,False,22.7,Normal,False,False,False,False,Rural,Prediabetes
+30.8,Male,False,28.8,Overweight,False,False,True,False,Urban,Prediabetes
+59.6,Male,False,26.9,Overweight,False,False,True,True,Urban,Diabetic
+31.7,Male,False,17.9,Normal,False,False,True,False,Rural,Normal
+51.8,Male,False,20.8,Normal,True,False,False,True,Rural,Diabetic
+47.3,Male,False,21.6,Normal,False,False,False,False,Urban,Diabetic
+45.3,Female,False,20.6,Normal,True,False,False,True,Rural,Diabetic
+34.5,Male,False,25.1,Overweight,True,False,False,False,Rural,Diabetic
+50.8,Female,False,34.2,Obese I,False,False,True,True,Urban,Diabetic
+50.8,Female,False,26.6,Overweight,False,True,False,True,Rural,Prediabetes
+34.0,Female,False,27.3,Overweight,False,False,True,True,Rural,Diabetic
+66.2,Female,False,26.3,Overweight,False,False,False,False,Urban,Diabetic
+49.6,Male,False,31.0,Obese I,True,False,False,False,Rural,Diabetic
+55.3,Male,False,23.5,Normal,False,False,False,True,Rural,Diabetic
+60.8,Male,False,23.1,Normal,True,False,True,False,Rural,Diabetic
+64.8,Male,False,23.7,Normal,False,False,True,True,Rural,Prediabetes
+50.1,Male,False,23.0,Normal,False,False,False,True,Rural,Diabetic
+63.3,Male,False,32.2,Obese I,True,False,False,False,Urban,Diabetic
+60.9,Male,False,22.4,Normal,True,False,True,True,Rural,Diabetic
+36.5,Female,False,31.2,Obese I,False,False,False,True,Urban,Prediabetes
+30.8,Male,False,29.7,Overweight,False,False,True,False,Rural,Normal
+27.2,Female,False,31.6,Obese I,False,False,True,False,Urban,Diabetic
+49.7,Male,False,22.4,Normal,False,False,False,False,Urban,Prediabetes
+31.5,Female,False,28.7,Overweight,True,False,True,False,Rural,Diabetic
+71.3,Male,False,16.0,Normal,False,False,False,False,Rural,Diabetic
+61.8,Male,False,20.0,Normal,False,False,False,False,Rural,Prediabetes
+65.5,Female,False,25.3,Overweight,False,False,True,True,Rural,Diabetic
+50.9,Male,False,33.2,Obese I,False,False,True,True,Urban,Diabetic
+29.7,Female,False,19.8,Normal,False,False,False,False,Urban,Diabetic
+38.7,Female,False,23.7,Normal,False,False,True,False,Rural,Normal
+38.9,Male,False,22.3,Normal,True,False,True,False,Rural,Prediabetes
+67.2,Male,False,29.4,Overweight,False,False,False,True,Urban,Diabetic
+50.6,Female,False,22.1,Normal,False,False,True,False,Urban,Prediabetes
+50.6,Male,False,18.1,Normal,False,False,True,False,Rural,Diabetic
+67.6,Female,False,32.1,Obese I,False,False,True,True,Rural,Diabetic
+30.5,Male,False,29.6,Overweight,False,False,True,True,Rural,Prediabetes
+53.7,Male,False,29.7,Overweight,False,False,True,True,Rural,Diabetic
+56.6,Female,False,24.1,Normal,False,False,False,False,Rural,Normal
+45.8,Female,False,28.1,Overweight,True,False,False,True,Rural,Diabetic
+59.4,Female,False,20.3,Normal,False,False,False,False,Rural,Prediabetes
+60.6,Male,False,31.9,Obese I,False,False,True,True,Rural,Diabetic
+57.6,Male,False,31.4,Obese I,False,False,False,False,Urban,Diabetic
+62.8,Male,False,25.0,Overweight,False,False,False,True,Rural,Diabetic
+41.4,Male,False,26.2,Overweight,False,False,True,True,Rural,Diabetic
+23.7,Female,False,27.1,Overweight,False,False,True,True,Rural,Normal
+47.3,Female,False,27.1,Overweight,True,False,True,True,Urban,Diabetic
+57.7,Male,False,16.0,Normal,False,False,False,False,Rural,Normal
+36.2,Female,False,35.4,Obese II+,False,False,False,False,Urban,Diabetic
+35.7,Male,False,27.8,Overweight,False,False,False,False,Urban,Diabetic
+61.5,Male,False,27.6,Overweight,False,False,False,False,Rural,Diabetic
+52.8,Male,False,24.6,Normal,False,False,True,True,Rural,Normal
+61.4,Male,False,23.4,Normal,False,False,False,True,Urban,Diabetic
+55.5,Male,False,28.2,Overweight,False,False,True,True,Urban,Diabetic
+42.3,Female,False,20.8,Normal,False,False,False,False,Rural,Diabetic
+55.0,Male,False,17.5,Normal,True,False,False,True,Rural,Diabetic
+31.1,Female,False,20.7,Normal,False,True,True,False,Rural,Prediabetes
+53.6,Male,False,29.6,Overweight,False,False,True,True,Urban,Diabetic
+58.3,Female,False,31.4,Obese I,False,False,False,True,Urban,Diabetic
+43.2,Female,False,26.3,Overweight,True,False,False,True,Rural,Diabetic
+66.4,Male,False,20.0,Normal,False,False,True,True,Urban,Prediabetes
+66.8,Male,False,24.8,Normal,True,False,False,False,Rural,Diabetic
+65.5,Male,False,25.1,Overweight,False,False,True,True,Urban,Diabetic
+61.3,Female,False,31.7,Obese I,True,False,True,False,Urban,Diabetic
+62.3,Female,False,32.4,Obese I,True,False,True,False,Rural,Diabetic
+34.6,Female,False,29.3,Overweight,False,False,False,False,Rural,Diabetic
+75.3,Female,False,20.6,Normal,False,False,True,True,Urban,Diabetic
+48.0,Male,False,24.9,Normal,False,False,False,False,Rural,Normal
+52.7,Female,False,24.7,Normal,False,False,False,False,Urban,Diabetic
+42.6,Male,False,27.2,Overweight,False,False,False,False,Rural,Prediabetes
+75.6,Female,False,25.7,Overweight,False,False,False,False,Rural,Diabetic
+59.6,Female,False,16.5,Normal,False,False,True,False,Rural,Normal
+50.4,Male,False,25.8,Overweight,False,False,False,True,Urban,Diabetic
+37.3,Female,False,17.5,Normal,False,False,True,True,Urban,Diabetic
+69.8,Female,False,21.2,Normal,True,False,True,False,Rural,Prediabetes
+42.5,Female,False,38.6,Obese II+,False,False,False,True,Rural,Diabetic
+45.6,Female,False,17.6,Normal,True,False,False,False,Rural,Diabetic
+43.4,Female,False,30.6,Obese I,False,False,False,True,Urban,Diabetic
+48.1,Male,False,26.3,Overweight,True,False,False,True,Rural,Diabetic
+78.1,Female,False,30.9,Obese I,True,False,True,True,Rural,Diabetic
+50.1,Male,False,21.5,Normal,False,False,True,True,Rural,Diabetic
+40.0,Male,False,21.3,Normal,False,False,True,False,Urban,Diabetic
+48.0,Male,False,20.3,Normal,False,False,True,True,Urban,Diabetic
+47.3,Male,False,23.1,Normal,True,False,False,False,Rural,Diabetic
+59.4,Female,False,30.1,Obese I,True,False,True,False,Rural,Diabetic
+56.1,Female,False,24.3,Normal,False,False,True,True,Rural,Normal
+30.6,Female,False,25.0,Overweight,True,False,False,True,Urban,Diabetic
+50.6,Female,False,34.1,Obese I,False,False,True,True,Urban,Diabetic
+24.9,Female,False,19.1,Normal,True,False,True,False,Urban,Prediabetes
+55.5,Male,False,24.5,Normal,False,False,True,False,Rural,Normal
+57.7,Female,False,23.3,Normal,True,False,False,False,Urban,Diabetic
+47.4,Male,False,24.3,Normal,True,False,True,True,Rural,Diabetic
+29.3,Male,False,23.0,Normal,False,False,True,False,Rural,Normal
+46.2,Male,False,19.3,Normal,False,False,False,False,Urban,Diabetic
+54.7,Female,False,27.4,Overweight,False,False,False,True,Rural,Diabetic
+48.3,Female,False,36.1,Obese II+,False,False,False,False,Rural,Diabetic
+65.7,Female,False,32.1,Obese I,False,False,False,True,Rural,Diabetic
+61.7,Female,False,26.0,Overweight,False,False,False,False,Rural,Diabetic
+62.5,Male,False,28.6,Overweight,False,False,False,False,Rural,Diabetic
+36.1,Male,False,27.1,Overweight,False,False,True,True,Urban,Diabetic
+34.9,Male,False,18.1,Normal,True,False,False,True,Rural,Diabetic
+50.4,Female,False,20.3,Normal,False,False,False,False,Rural,Diabetic
+30.2,Male,False,24.4,Normal,False,False,False,False,Rural,Normal
+34.4,Male,False,23.2,Normal,False,False,True,True,Urban,Prediabetes
+74.8,Female,False,27.8,Overweight,False,True,False,True,Rural,Diabetic
+59.0,Male,False,23.5,Normal,True,False,True,False,Rural,Diabetic
+34.1,Male,False,30.5,Obese I,True,False,True,True,Urban,Diabetic
+53.2,Female,False,21.6,Normal,False,False,True,True,Rural,Prediabetes
+57.5,Male,False,25.5,Overweight,False,False,False,False,Rural,Diabetic
+75.9,Male,False,20.4,Normal,False,False,True,True,Rural,Prediabetes
+58.3,Female,False,16.0,Normal,False,False,False,True,Rural,Diabetic
+59.2,Male,False,21.7,Normal,False,False,True,True,Rural,Diabetic
+48.5,Female,False,23.7,Normal,False,False,False,True,Rural,Diabetic
+51.1,Female,False,31.8,Obese I,False,False,True,True,Rural,Diabetic
+35.5,Male,False,22.2,Normal,False,False,True,False,Urban,Normal
+25.6,Male,False,26.0,Overweight,False,False,False,False,Rural,Prediabetes
+25.4,Female,False,21.0,Normal,False,False,True,False,Urban,Normal
+56.6,Female,False,21.9,Normal,False,False,False,True,Rural,Diabetic
+50.0,Male,False,34.4,Obese I,False,False,False,True,Rural,Diabetic
+55.4,Male,False,24.7,Normal,False,False,False,True,Urban,Prediabetes
+64.2,Male,False,27.6,Overweight,False,False,False,True,Urban,Diabetic
+38.8,Female,False,24.5,Normal,False,False,False,True,Urban,Diabetic
+65.8,Female,False,24.2,Normal,False,False,False,False,Rural,Prediabetes
+45.2,Female,False,20.8,Normal,True,False,False,True,Urban,Diabetic
+47.8,Female,False,29.0,Overweight,False,False,False,False,Rural,Prediabetes
+57.1,Male,False,19.9,Normal,False,False,True,True,Rural,Normal
+45.7,Female,False,25.6,Overweight,False,False,False,False,Urban,Diabetic
+60.1,Male,False,21.8,Normal,False,False,False,True,Rural,Diabetic
+49.7,Male,False,26.7,Overweight,True,False,False,False,Urban,Diabetic
+50.9,Female,False,31.5,Obese I,False,False,True,False,Rural,Diabetic
+55.0,Female,False,35.2,Obese II+,True,False,True,True,Rural,Diabetic
+48.3,Male,False,31.0,Obese I,False,False,True,False,Rural,Diabetic
+48.5,Male,False,21.9,Normal,False,False,False,True,Rural,Diabetic
+49.3,Female,False,16.0,Normal,False,False,False,True,Rural,Prediabetes
+69.5,Female,False,35.2,Obese II+,False,False,False,True,Rural,Diabetic
+42.8,Male,False,18.5,Normal,False,False,False,True,Rural,Diabetic
+36.7,Male,False,32.2,Obese I,False,False,True,True,Rural,Diabetic
+51.5,Female,False,35.2,Obese II+,True,False,False,True,Urban,Diabetic
+31.4,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+56.6,Male,False,24.9,Normal,False,False,True,True,Rural,Normal
+61.8,Female,False,25.2,Overweight,True,False,False,True,Rural,Diabetic
+70.8,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+44.0,Male,False,19.4,Normal,False,False,True,True,Urban,Diabetic
+47.6,Male,False,32.3,Obese I,False,False,False,True,Urban,Diabetic
+60.3,Female,False,34.5,Obese I,False,False,False,True,Urban,Diabetic
+74.8,Male,False,29.0,Overweight,False,False,True,True,Urban,Diabetic
+42.3,Female,False,28.7,Overweight,False,False,False,False,Rural,Normal
+27.5,Female,False,33.4,Obese I,False,False,False,False,Urban,Diabetic
+48.1,Male,False,24.5,Normal,True,False,False,False,Urban,Diabetic
+44.3,Male,False,21.8,Normal,True,False,True,False,Rural,Prediabetes
+62.9,Male,False,23.6,Normal,False,False,True,True,Rural,Diabetic
+50.8,Female,False,25.6,Overweight,True,False,False,False,Rural,Prediabetes
+52.2,Male,False,17.5,Normal,False,False,False,True,Urban,Diabetic
+51.6,Male,False,23.1,Normal,True,False,True,True,Rural,Diabetic
+68.3,Female,False,30.0,Obese I,False,False,False,False,Urban,Diabetic
+74.9,Male,False,24.4,Normal,False,False,False,True,Rural,Diabetic
+47.5,Male,False,25.3,Overweight,False,False,True,True,Urban,Diabetic
+64.6,Female,False,22.7,Normal,True,False,False,True,Rural,Diabetic
+19.4,Male,False,21.4,Normal,False,False,False,False,Rural,Diabetic
+57.1,Male,False,36.1,Obese II+,True,False,True,True,Rural,Diabetic
+63.6,Male,False,21.8,Normal,True,False,False,False,Rural,Diabetic
+30.1,Male,False,24.7,Normal,False,False,True,False,Rural,Normal
+58.0,Male,False,18.2,Normal,False,False,True,False,Urban,Prediabetes
+51.5,Female,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+42.5,Female,False,19.1,Normal,True,False,True,True,Urban,Diabetic
+35.3,Female,False,22.6,Normal,True,False,True,False,Rural,Diabetic
+45.9,Male,False,28.9,Overweight,False,False,False,True,Urban,Diabetic
+23.0,Male,False,17.9,Normal,True,False,True,True,Urban,Prediabetes
+40.7,Male,False,26.6,Overweight,False,False,False,False,Rural,Diabetic
+52.9,Male,False,27.4,Overweight,False,False,True,False,Urban,Diabetic
+51.1,Female,False,20.5,Normal,False,False,True,True,Urban,Diabetic
+44.8,Male,False,29.8,Overweight,True,False,False,False,Rural,Diabetic
+62.1,Female,False,27.1,Overweight,False,False,False,False,Rural,Diabetic
+32.5,Female,False,20.1,Normal,True,False,True,False,Rural,Normal
+61.1,Female,False,30.7,Obese I,True,False,False,True,Urban,Diabetic
+62.9,Female,False,28.4,Overweight,True,False,False,True,Rural,Diabetic
+57.4,Female,False,21.1,Normal,False,False,False,False,Rural,Diabetic
+74.7,Male,False,25.4,Overweight,False,False,True,False,Urban,Diabetic
+55.3,Male,False,18.6,Normal,False,False,True,False,Rural,Prediabetes
+35.4,Female,False,24.9,Normal,True,False,True,True,Urban,Diabetic
+39.4,Male,False,23.0,Normal,False,False,False,False,Rural,Normal
+44.6,Male,False,26.8,Overweight,False,False,True,False,Rural,Prediabetes
+44.2,Female,False,17.1,Normal,True,False,True,False,Rural,Prediabetes
+52.0,Female,False,21.0,Normal,False,False,True,True,Urban,Diabetic
+52.4,Female,False,27.3,Overweight,False,False,True,True,Rural,Diabetic
+52.9,Male,False,23.8,Normal,True,False,False,False,Urban,Diabetic
+32.0,Male,False,21.3,Normal,False,False,True,True,Rural,Normal
+44.8,Male,False,25.4,Overweight,False,False,False,False,Rural,Prediabetes
+78.9,Female,False,24.7,Normal,False,False,True,False,Rural,Diabetic
+50.3,Female,False,42.1,Obese II+,False,False,False,True,Rural,Diabetic
+67.4,Female,False,19.7,Normal,False,False,False,True,Urban,Diabetic
+60.7,Male,False,18.9,Normal,False,False,False,True,Rural,Diabetic
+60.8,Male,False,28.3,Overweight,False,False,False,True,Urban,Diabetic
+62.9,Male,False,22.4,Normal,False,False,False,True,Rural,Diabetic
+70.2,Female,False,34.0,Obese I,False,True,False,True,Urban,Diabetic
+65.1,Female,False,28.7,Overweight,False,False,False,True,Rural,Diabetic
+34.3,Female,True,26.3,Overweight,False,False,False,False,Rural,Normal
+47.6,Male,False,25.1,Overweight,False,False,True,True,Urban,Diabetic
+43.1,Female,False,20.7,Normal,False,False,False,False,Urban,Diabetic
+62.8,Female,False,18.9,Normal,True,False,False,False,Rural,Diabetic
+52.7,Male,False,16.0,Normal,True,False,True,True,Rural,Diabetic
+46.2,Male,False,30.2,Obese I,False,False,True,False,Urban,Diabetic
+57.6,Male,False,18.6,Normal,False,False,False,True,Urban,Diabetic
+54.8,Female,False,27.4,Overweight,False,False,False,True,Urban,Diabetic
+37.0,Female,False,21.3,Normal,False,False,True,False,Rural,Diabetic
+51.1,Female,False,24.5,Normal,False,False,True,True,Rural,Prediabetes
+40.7,Female,False,25.1,Overweight,True,False,True,True,Urban,Diabetic
+61.0,Male,False,26.4,Overweight,False,False,False,True,Urban,Diabetic
+51.4,Male,False,22.1,Normal,False,False,True,True,Rural,Normal
+40.2,Male,False,32.3,Obese I,True,False,False,False,Urban,Diabetic
+60.4,Male,False,21.2,Normal,False,False,False,False,Urban,Diabetic
+33.1,Male,False,29.6,Overweight,False,False,True,False,Rural,Prediabetes
+78.2,Female,False,23.6,Normal,False,False,True,False,Rural,Normal
+59.4,Female,False,18.1,Normal,False,False,True,True,Rural,Normal
+32.0,Male,False,18.4,Normal,False,False,False,False,Rural,Normal
+61.0,Female,False,20.8,Normal,False,False,False,True,Rural,Diabetic
+43.0,Male,False,25.5,Overweight,False,False,False,False,Rural,Normal
+59.0,Female,False,29.8,Overweight,True,False,False,True,Rural,Diabetic
+60.1,Female,False,26.6,Overweight,False,False,True,False,Urban,Diabetic
+40.3,Female,False,25.0,Overweight,True,False,True,False,Rural,Prediabetes
+54.8,Female,False,31.7,Obese I,True,False,False,True,Rural,Diabetic
+46.9,Male,False,21.9,Normal,False,False,False,False,Urban,Diabetic
+30.2,Male,False,24.1,Normal,True,False,False,True,Urban,Diabetic
+65.3,Female,False,27.0,Overweight,True,False,False,False,Urban,Diabetic
+47.2,Male,False,26.2,Overweight,False,False,True,False,Rural,Diabetic
+59.7,Male,False,25.3,Overweight,False,False,False,False,Rural,Diabetic
+67.3,Female,False,27.4,Overweight,False,False,True,False,Rural,Normal
+57.0,Female,False,25.7,Overweight,False,False,False,False,Urban,Diabetic
+32.7,Female,False,40.4,Obese II+,False,False,False,True,Urban,Diabetic
+55.7,Male,False,25.5,Overweight,False,False,False,False,Urban,Diabetic
+57.0,Female,False,27.6,Overweight,False,False,False,True,Rural,Diabetic
+45.3,Male,False,19.2,Normal,True,False,False,False,Rural,Diabetic
+47.7,Female,False,19.8,Normal,False,False,True,True,Urban,Diabetic
+55.6,Female,False,27.8,Overweight,False,False,False,True,Urban,Diabetic
+59.0,Female,False,19.0,Normal,False,False,False,False,Urban,Diabetic
+49.4,Male,False,23.8,Normal,False,False,False,False,Urban,Prediabetes
+45.9,Male,False,21.9,Normal,True,False,True,True,Rural,Diabetic
+41.9,Male,False,21.3,Normal,False,False,False,False,Rural,Normal
+43.3,Male,False,16.0,Normal,False,False,True,True,Rural,Normal
+66.7,Male,False,26.5,Overweight,False,False,True,True,Rural,Diabetic
+50.7,Female,False,36.7,Obese II+,False,False,False,False,Urban,Diabetic
+59.1,Female,False,25.6,Overweight,True,False,False,True,Rural,Diabetic
+40.7,Male,False,21.1,Normal,False,False,True,False,Rural,Diabetic
+49.6,Male,False,31.7,Obese I,False,False,False,True,Rural,Diabetic
+51.3,Male,False,18.1,Normal,False,False,True,False,Rural,Normal
+32.8,Male,False,23.2,Normal,True,False,True,False,Rural,Prediabetes
+68.7,Female,False,26.4,Overweight,False,False,False,False,Rural,Diabetic
+58.0,Female,False,17.3,Normal,False,False,False,True,Rural,Diabetic
+72.4,Male,False,19.2,Normal,False,False,True,False,Rural,Normal
+39.8,Male,False,21.4,Normal,True,False,True,False,Rural,Prediabetes
+60.4,Male,False,21.7,Normal,True,False,False,False,Rural,Diabetic
+73.7,Male,False,25.2,Overweight,True,False,False,True,Urban,Diabetic
+46.7,Female,False,26.9,Overweight,True,True,False,True,Urban,Diabetic
+45.4,Female,False,27.4,Overweight,True,False,True,False,Rural,Diabetic
+63.7,Male,False,24.0,Normal,True,False,False,True,Rural,Diabetic
+50.1,Female,False,35.1,Obese II+,False,True,True,True,Rural,Diabetic
+48.5,Female,False,20.1,Normal,False,False,False,False,Rural,Normal
+50.0,Male,False,28.0,Overweight,False,False,True,True,Urban,Diabetic
+48.3,Female,False,31.4,Obese I,False,False,False,False,Rural,Diabetic
+48.0,Female,False,23.6,Normal,False,False,True,True,Rural,Normal
+75.3,Male,False,22.1,Normal,True,False,False,True,Urban,Prediabetes
+56.1,Female,False,26.3,Overweight,False,False,False,True,Rural,Diabetic
+39.3,Female,False,25.7,Overweight,False,False,False,True,Urban,Diabetic
+37.8,Female,False,28.6,Overweight,True,False,True,False,Rural,Prediabetes
+39.4,Female,False,18.2,Normal,True,False,True,False,Urban,Prediabetes
+50.8,Male,False,26.7,Overweight,False,False,True,True,Rural,Diabetic
+41.3,Male,False,22.8,Normal,False,False,True,False,Urban,Diabetic
+32.7,Female,False,37.6,Obese II+,False,False,False,True,Urban,Prediabetes
+29.9,Female,False,16.0,Normal,True,False,True,True,Rural,Normal
+51.8,Male,False,25.0,Overweight,False,False,True,True,Urban,Diabetic
+44.5,Female,False,29.8,Overweight,False,False,False,False,Urban,Diabetic
+43.6,Female,False,23.1,Normal,False,False,True,False,Urban,Normal
+53.4,Female,False,27.9,Overweight,False,False,False,True,Urban,Diabetic
+64.6,Male,False,23.6,Normal,False,False,False,True,Urban,Diabetic
+49.7,Female,False,34.0,Obese I,True,False,True,False,Urban,Diabetic
+65.2,Female,False,31.8,Obese I,True,False,False,True,Urban,Diabetic
+63.4,Female,False,29.6,Overweight,False,False,True,False,Rural,Prediabetes
+69.4,Male,False,23.2,Normal,False,False,False,True,Urban,Diabetic
+44.4,Female,False,23.7,Normal,False,False,True,False,Rural,Normal
+48.6,Female,False,28.6,Overweight,False,False,False,False,Rural,Prediabetes
+31.6,Male,False,29.2,Overweight,True,False,True,True,Rural,Diabetic
+64.0,Female,False,27.2,Overweight,False,False,True,True,Urban,Diabetic
+47.2,Female,False,31.3,Obese I,True,False,False,True,Rural,Diabetic
+40.6,Male,False,17.4,Normal,False,False,False,True,Rural,Prediabetes
+69.7,Female,False,20.9,Normal,False,False,True,False,Urban,Prediabetes
+52.2,Female,False,26.7,Overweight,False,False,False,False,Rural,Prediabetes
+68.4,Female,False,28.1,Overweight,False,True,False,True,Rural,Diabetic
+56.7,Female,False,25.7,Overweight,False,False,False,False,Rural,Diabetic
+62.0,Female,False,22.3,Normal,False,False,True,False,Rural,Normal
+41.7,Male,False,16.0,Normal,False,False,False,False,Rural,Normal
+30.9,Female,True,33.7,Obese I,False,False,True,True,Rural,Diabetic
+53.5,Female,False,28.0,Overweight,False,False,False,False,Urban,Diabetic
+51.8,Female,False,32.0,Obese I,False,False,False,True,Urban,Diabetic
+29.7,Male,False,27.7,Overweight,True,False,False,False,Urban,Diabetic
+48.1,Female,False,35.7,Obese II+,False,False,False,False,Urban,Diabetic
+26.2,Male,False,26.3,Overweight,True,False,False,False,Urban,Diabetic
+56.3,Male,False,17.8,Normal,False,False,True,False,Rural,Normal
+48.1,Male,False,25.0,Overweight,False,False,False,False,Rural,Diabetic
+33.9,Male,False,28.0,Overweight,True,False,False,False,Urban,Diabetic
+54.5,Male,False,20.6,Normal,False,False,True,False,Rural,Normal
+63.9,Male,False,24.4,Normal,False,False,True,False,Urban,Prediabetes
+50.8,Female,False,31.9,Obese I,False,False,False,False,Rural,Diabetic
+58.4,Male,False,28.3,Overweight,False,False,True,True,Urban,Diabetic
+65.0,Male,False,23.7,Normal,True,False,True,False,Urban,Diabetic
+36.1,Female,False,31.2,Obese I,False,False,True,True,Rural,Diabetic
+43.3,Female,False,32.0,Obese I,True,False,False,True,Urban,Diabetic
+54.9,Male,False,32.3,Obese I,False,False,False,False,Urban,Diabetic
+43.0,Female,False,22.6,Normal,False,False,False,False,Urban,Normal
+35.5,Female,True,22.0,Normal,False,False,False,True,Rural,Diabetic
+36.3,Male,False,31.7,Obese I,True,False,True,False,Urban,Diabetic
+74.1,Female,False,30.6,Obese I,False,False,False,True,Urban,Diabetic
+42.7,Male,False,24.2,Normal,False,False,False,True,Urban,Diabetic
+57.6,Male,False,24.2,Normal,False,False,True,False,Urban,Normal
+39.3,Male,False,22.4,Normal,True,False,False,False,Urban,Diabetic
+67.3,Male,False,27.7,Overweight,False,False,True,False,Rural,Diabetic
+57.6,Female,False,23.6,Normal,False,False,False,True,Urban,Diabetic
+38.9,Female,False,27.4,Overweight,True,False,False,False,Urban,Prediabetes
+32.5,Male,False,24.7,Normal,True,False,True,True,Rural,Diabetic
+51.2,Male,False,28.1,Overweight,True,False,False,False,Rural,Diabetic
+63.4,Female,False,24.8,Normal,False,False,False,False,Urban,Diabetic
+42.5,Male,False,21.2,Normal,False,False,False,False,Urban,Diabetic
+32.1,Male,False,28.3,Overweight,False,False,False,False,Rural,Normal
+36.3,Female,False,18.5,Normal,False,False,False,False,Urban,Diabetic
+54.2,Male,False,25.2,Overweight,True,False,False,False,Urban,Diabetic
+49.6,Female,False,26.0,Overweight,False,False,False,True,Rural,Diabetic
+52.9,Male,False,18.0,Normal,False,False,False,False,Urban,Prediabetes
+57.2,Female,False,29.0,Overweight,False,False,False,False,Rural,Diabetic
+45.5,Male,False,25.7,Overweight,False,False,True,False,Urban,Diabetic
+59.6,Female,False,23.4,Normal,False,False,False,True,Urban,Diabetic
+35.3,Male,False,27.5,Overweight,False,False,True,False,Rural,Normal
+64.6,Female,False,31.1,Obese I,False,False,False,False,Urban,Diabetic
+59.8,Male,False,23.0,Normal,False,False,False,False,Urban,Diabetic
+55.5,Female,False,30.0,Obese I,False,False,True,False,Rural,Diabetic
+58.8,Male,False,16.1,Normal,False,False,True,True,Rural,Normal
+51.1,Female,False,17.5,Normal,False,False,True,False,Urban,Diabetic
+57.1,Female,False,28.7,Overweight,False,False,False,False,Urban,Prediabetes
+70.4,Male,False,21.0,Normal,False,False,True,True,Rural,Normal
+60.5,Male,False,24.5,Normal,True,False,True,False,Urban,Diabetic
+61.6,Male,False,32.0,Obese I,False,False,False,True,Urban,Diabetic
+49.6,Male,False,22.2,Normal,False,False,True,True,Rural,Diabetic
+34.5,Female,False,29.8,Overweight,True,False,True,False,Rural,Prediabetes
+52.1,Male,False,20.1,Normal,False,False,True,False,Rural,Normal
+71.1,Male,False,25.3,Overweight,False,False,False,True,Rural,Diabetic
+57.2,Female,False,26.8,Overweight,False,False,False,True,Urban,Diabetic
+59.1,Male,False,32.9,Obese I,False,False,False,False,Rural,Diabetic
+45.8,Female,False,24.3,Normal,True,False,False,False,Urban,Diabetic
+71.1,Male,False,24.9,Normal,False,False,False,True,Rural,Diabetic
+34.2,Female,False,23.2,Normal,False,False,False,False,Rural,Normal
+78.5,Male,False,19.7,Normal,False,False,False,False,Urban,Diabetic
+54.4,Male,False,28.7,Overweight,False,False,True,False,Rural,Diabetic
+31.8,Female,False,27.0,Overweight,True,False,False,True,Rural,Diabetic
+59.3,Male,False,24.8,Normal,False,False,False,False,Rural,Normal
+56.1,Female,False,25.8,Overweight,False,False,False,False,Rural,Diabetic
+55.7,Male,False,23.4,Normal,False,False,True,False,Urban,Prediabetes
+47.2,Male,False,23.9,Normal,False,False,True,True,Rural,Prediabetes
+53.3,Female,False,35.4,Obese II+,True,False,True,False,Rural,Diabetic
+29.5,Female,True,30.0,Obese I,True,False,False,False,Urban,Diabetic
+33.8,Male,False,28.3,Overweight,False,False,True,True,Rural,Prediabetes
+32.2,Female,False,34.3,Obese I,False,False,True,False,Rural,Prediabetes
+29.5,Male,False,23.3,Normal,False,False,False,True,Urban,Prediabetes
+53.7,Male,False,22.6,Normal,False,False,True,False,Urban,Normal
+39.6,Female,False,25.2,Overweight,False,False,False,True,Rural,Diabetic
+56.7,Male,False,27.0,Overweight,False,False,True,True,Urban,Diabetic
+63.3,Male,False,29.9,Overweight,False,False,True,True,Rural,Diabetic
+59.8,Male,False,24.1,Normal,False,False,True,True,Urban,Diabetic
+28.6,Male,False,27.3,Overweight,True,False,True,False,Urban,Diabetic
+58.7,Female,False,19.7,Normal,False,False,True,True,Urban,Diabetic
+46.5,Female,False,17.2,Normal,False,False,False,False,Rural,Diabetic
+61.2,Female,False,30.6,Obese I,False,False,True,True,Rural,Diabetic
+40.2,Male,False,27.3,Overweight,True,False,True,False,Rural,Diabetic
+43.2,Female,False,30.8,Obese I,False,False,False,True,Urban,Diabetic
+42.0,Female,True,23.7,Normal,False,False,True,True,Rural,Normal
+85.0,Female,False,31.7,Obese I,False,False,False,True,Urban,Diabetic
+31.5,Female,True,17.5,Normal,False,False,False,False,Urban,Normal
+57.8,Female,False,35.0,Obese II+,False,False,False,False,Rural,Diabetic
+45.2,Female,False,28.1,Overweight,True,False,True,True,Rural,Diabetic
+54.1,Male,False,27.0,Overweight,False,False,True,False,Rural,Prediabetes
+76.9,Male,False,24.7,Normal,True,False,True,True,Urban,Diabetic
+47.3,Female,False,24.8,Normal,False,False,True,True,Rural,Prediabetes
+39.8,Male,False,25.3,Overweight,False,False,False,False,Urban,Diabetic
+48.5,Male,False,23.6,Normal,False,False,True,False,Urban,Normal
+31.7,Male,False,25.3,Overweight,False,False,False,False,Rural,Prediabetes
+41.5,Male,False,24.2,Normal,True,False,True,True,Rural,Prediabetes
+54.3,Male,False,25.3,Overweight,True,False,False,True,Rural,Diabetic
+47.0,Male,False,25.4,Overweight,False,False,False,False,Urban,Diabetic
+53.3,Female,False,35.7,Obese II+,False,False,False,True,Urban,Diabetic
+50.5,Female,False,28.4,Overweight,False,False,True,False,Rural,Diabetic
+45.2,Male,False,24.9,Normal,True,False,True,True,Urban,Diabetic
+48.5,Female,False,25.3,Overweight,True,False,True,True,Urban,Diabetic
+35.7,Female,False,28.6,Overweight,False,False,True,False,Rural,Normal
+67.6,Male,False,22.2,Normal,False,False,True,False,Rural,Normal
+33.7,Female,False,28.3,Overweight,False,False,False,True,Rural,Diabetic
+35.8,Female,False,28.4,Overweight,True,False,False,True,Rural,Diabetic
+63.6,Male,False,26.0,Overweight,False,False,True,True,Rural,Diabetic
+50.3,Female,False,19.2,Normal,False,False,True,True,Urban,Diabetic
+64.4,Female,False,29.4,Overweight,False,False,False,False,Urban,Diabetic
+59.4,Male,False,34.0,Obese I,False,False,False,True,Urban,Diabetic
+51.3,Female,False,27.7,Overweight,True,False,False,False,Urban,Diabetic
+42.2,Male,False,25.7,Overweight,False,False,True,True,Rural,Normal
+56.9,Female,False,25.4,Overweight,True,False,False,True,Rural,Diabetic
+45.3,Male,False,24.1,Normal,False,False,True,True,Rural,Normal
+28.8,Male,False,26.3,Overweight,True,False,True,False,Urban,Diabetic
+45.2,Male,False,25.9,Overweight,False,False,True,False,Rural,Diabetic
+54.3,Female,False,17.6,Normal,False,False,False,True,Rural,Prediabetes
+59.3,Female,False,25.2,Overweight,True,False,False,False,Urban,Diabetic
+33.5,Female,True,28.1,Overweight,False,False,True,False,Urban,Prediabetes
+66.2,Male,False,32.3,Obese I,False,False,True,False,Urban,Diabetic
+41.9,Female,False,17.5,Normal,False,False,False,True,Urban,Diabetic
+46.9,Female,False,33.4,Obese I,False,False,False,False,Urban,Prediabetes
+51.1,Female,False,23.5,Normal,True,False,False,False,Urban,Diabetic
+68.8,Male,False,21.2,Normal,True,False,True,False,Rural,Prediabetes
+65.9,Male,False,19.9,Normal,False,False,False,True,Rural,Diabetic
+43.9,Male,False,27.9,Overweight,False,False,False,True,Urban,Diabetic
+63.8,Female,False,26.1,Overweight,False,False,False,False,Rural,Diabetic
+63.5,Male,False,19.6,Normal,False,False,True,True,Urban,Prediabetes
+61.3,Female,False,25.6,Overweight,False,False,True,False,Rural,Normal
+28.8,Male,False,23.8,Normal,True,False,False,False,Urban,Diabetic
+42.2,Male,False,21.8,Normal,False,False,True,True,Rural,Prediabetes
+34.9,Female,True,30.4,Obese I,True,False,True,False,Urban,Diabetic
+51.2,Male,False,25.9,Overweight,False,False,False,False,Urban,Diabetic
+53.7,Female,False,34.2,Obese I,False,False,True,True,Urban,Diabetic
+72.1,Male,False,19.5,Normal,False,False,True,True,Urban,Prediabetes
+49.8,Female,False,32.9,Obese I,False,False,True,True,Rural,Diabetic
+46.4,Female,False,29.0,Overweight,False,False,False,False,Rural,Diabetic
+38.7,Male,False,23.1,Normal,False,False,True,True,Urban,Prediabetes
+51.6,Female,False,29.7,Overweight,False,False,False,False,Urban,Diabetic
+34.3,Male,False,27.2,Overweight,True,False,False,True,Rural,Diabetic
+53.8,Female,False,22.5,Normal,False,False,True,True,Urban,Diabetic
+59.4,Male,False,28.1,Overweight,False,False,False,False,Rural,Diabetic
+45.7,Female,False,34.6,Obese I,True,True,False,True,Urban,Diabetic
+51.2,Male,False,22.9,Normal,False,False,True,False,Rural,Normal
+44.8,Male,False,27.8,Overweight,False,False,False,True,Rural,Diabetic
+53.2,Male,False,25.7,Overweight,False,False,False,True,Urban,Diabetic
+58.0,Male,False,16.8,Normal,True,False,True,True,Rural,Diabetic
+46.8,Male,False,23.7,Normal,False,False,True,True,Rural,Normal
+47.3,Female,False,28.1,Overweight,False,False,True,False,Rural,Diabetic
+56.3,Male,False,17.7,Normal,True,False,True,False,Rural,Diabetic
+65.6,Male,False,23.9,Normal,True,False,True,False,Rural,Diabetic
+40.0,Female,False,28.2,Overweight,False,False,True,True,Urban,Diabetic
+46.9,Female,False,26.9,Overweight,True,False,False,True,Rural,Diabetic
+73.5,Male,False,21.3,Normal,True,False,False,True,Urban,Diabetic
+48.2,Male,False,20.3,Normal,True,False,True,False,Urban,Diabetic

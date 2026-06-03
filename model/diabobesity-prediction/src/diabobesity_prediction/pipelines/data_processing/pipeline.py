@@ -60,7 +60,7 @@ def create_data_processing_pipeline(**kwargs) -> Pipeline:
                 func = encode_residence,
                 inputs = ["diabetes_train_sex_encoded", "diabetes_test_sex_encoded", "params:data_processing.residence_map"],
                 outputs = ["diabetes_train_residence_encoded", "diabetes_test_residence_encoded"],
-                name = "encode_residence_map"
+                name = "encode_residence_node"
             ),
             node(
                 func = convert_age,

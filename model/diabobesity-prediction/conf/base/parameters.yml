@@ -37,3 +37,20 @@ data_processing:
   residence_map:
     rural: 0
     urban: 1
+
+
+feature_engineering:
+
+  # Train / Validation split
+  val_size:     0.20   # 80 % train, 20 % validation (from train.csv)
+  random_state: 42     # seed for reproducibility across all runs.
+ 
+  # Feature / target separation
+  target_col: diabetes_status
+ 
+  drop_cols:
+    - diabetes_status        # encoded integer target — must not be a feature
+    - diabetes_status_raw    # raw string label kept only for reporting
+ 
+  smote_random_state: 42
+  smote_k_neighbors:  5

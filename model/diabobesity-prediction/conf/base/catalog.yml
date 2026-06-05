@@ -27,6 +27,7 @@ diabetes_test_raw:
       physically_active:        bool
       has_hypertension:         bool
 
+# data_processing outputs (data/02_intermediate/)
 
 diabetes_train_cleaned:
   type: pandas.ParquetDataset
@@ -40,3 +41,83 @@ diabetes_test_cleaned:
   filepath: data/02_intermediate/diabetes_test_cleaned.parquet
   save_args:
     engine: pyarrow
+
+ 
+# feature_engineering outputs (data/03_primary/)
+
+diabetes_train_featured:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/diabetes_train_featured.parquet
+ 
+diabetes_test_featured:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/diabetes_test_featured.parquet
+ 
+# --- training outputs (data/06_models/) ---
+# scaler:
+#   type: pickle.PickleDataset
+#   filepath: data/06_models/scaler.pkl
+ 
+# label_encoder:
+#   type: pickle.PickleDataset
+#   filepath: data/06_models/label_encoder.pkl
+ 
+# --- evaluation outputs (data/08_reporting/) ---
+# evaluation_report:
+#   type: json.JSONDataset
+#   filepath: data/08_reporting/evaluation_report.json
+ 
+ 
+# FEATURE ENGINEERING OUTPUTS  (data/03_primary/)
+# Written by the feature_engineering pipeline.
+# Read by the training pipeline.
+ 
+# ── Feature matrices (X)
+ 
+X_train:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/X_train.parquet
+  save_args:
+    engine: pyarrow
+ 
+X_val:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/X_val.parquet
+  save_args:
+    engine: pyarrow
+ 
+X_test:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/X_test.parquet
+  save_args:
+    engine: pyarrow
+ 
+# Target vectors (y)
+ 
+y_train_final:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/y_train.parquet
+  save_args:
+    engine: pyarrow
+ 
+y_val_final:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/y_val.parquet
+  save_args:
+    engine: pyarrow
+ 
+y_test_final:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/y_test.parquet
+  save_args:
+    engine: pyarrow
+ 
+# Fitted scaler artifact
+# The MinMaxScaler fitted on the training set.
+# Saved here so the FastAPI backend can load it at inference time and apply
+# the exact same scaling transformation to new patient inputs.
+ 
+scaler:
+  type: pickle.PickleDataset
+  filepath: data/06_models/scaler.pkl
+ 

@@ -54,3 +54,13 @@ feature_engineering:
  
   smote_random_state: 42
   smote_k_neighbors:  5
+
+
+training:
+  
+  # MLflow experiment tracking
+  mlflow_experiment_name: diabetes_dss_training
+
+  # Cross-validation
+  cv_folds: 5  # number of stratified k-fold splits used for candidate evaluation
+  random_state: 42

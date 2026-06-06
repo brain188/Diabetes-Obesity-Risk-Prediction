@@ -52,15 +52,7 @@ diabetes_train_featured:
 diabetes_test_featured:
   type: pandas.ParquetDataset
   filepath: data/03_primary/diabetes_test_featured.parquet
- 
-# --- training outputs (data/06_models/) ---
-# scaler:
-#   type: pickle.PickleDataset
-#   filepath: data/06_models/scaler.pkl
- 
-# label_encoder:
-#   type: pickle.PickleDataset
-#   filepath: data/06_models/label_encoder.pkl
+
  
 # --- evaluation outputs (data/08_reporting/) ---
 # evaluation_report:
@@ -120,4 +112,37 @@ y_test_final:
 scaler:
   type: pickle.PickleDataset
   filepath: data/06_models/scaler.pkl
- 
+
+
+# Training intermediate outputs (data/04_feature/)
+
+candidate_results:
+  type: pickle.PickleDataset
+  filepath: data/04_feature/candidate_results.pkl
+
+best_val_metrics:
+  type: json.JSONDataset
+  filepath: data/04_feature/best_val_metrics.json
+
+best_model_name:
+  type: pickle.PickleDataset
+  filepath: data/04_feature/best_model_name.pkl
+
+best_model:
+  type: pickle.PickleDataset
+  filepath: data/04_feature/best_model.pkl
+
+evaluation_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/evaluation_report.json
+
+
+# Training Outputs (data/06_models/)
+
+trained_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/trained_model.pkl
+
+model_metadata:
+  type: json.JSONDataset
+  filepath: data/08_reporting/model_metadata.json

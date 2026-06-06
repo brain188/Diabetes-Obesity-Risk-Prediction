@@ -1,0 +1,57 @@
+{
+  "model_name": "CatBoost",
+  "test_metrics": {
+    "accuracy": 0.7305,
+    "f1_macro": 0.6171,
+    "f1_weighted": 0.7577,
+    "precision_macro": 0.599,
+    "recall_macro": 0.6664,
+    "roc_auc_ovr": 0.8454
+  },
+  "classification_report": {
+    "Normal": {
+      "precision": 0.5431309904153354,
+      "recall": 0.6995884773662552,
+      "f1-score": 0.6115107913669064,
+      "support": 243.0
+    },
+    "Prediabetes": {
+      "precision": 0.3075313807531381,
+      "recall": 0.525,
+      "f1-score": 0.38786279683377306,
+      "support": 280.0
+    },
+    "Diabetic": {
+      "precision": 0.946236559139785,
+      "recall": 0.7745429925524713,
+      "f1-score": 0.8518242740134029,
+      "support": 1477.0
+    },
+    "accuracy": 0.7305,
+    "macro avg": {
+      "precision": 0.5989663101027528,
+      "recall": 0.6663771566395754,
+      "f1-score": 0.6170659540713608,
+      "support": 2000.0
+    },
+    "weighted avg": {
+      "precision": 0.8078405075656339,
+      "recall": 0.7305,
+      "f1-score": 0.7576715790667053,
+      "support": 2000.0
+    }
+  },
+  "threshold": {
+    "opt_threshold": 0.347209,
+    "thresh_low_high": 0.347209,
+    "thresh_high": 0.547209,
+    "youden_j": 0.664324,
+    "sensitivity": 0.84507,
+    "specificity": 0.819253,
+    "description": {
+      "low": "P(Diabetic) < 0.3472",
+      "moderate": "0.3472 <= P(Diabetic) < 0.5472",
+      "high": "P(Diabetic) >= 0.5472"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "accuracy": 0.7345,
+  "f1_macro": 0.6105,
+  "f1_weighted": 0.761,
+  "precision_macro": 0.59,
+  "recall_macro": 0.6602,
+  "roc_auc_ovr": 0.8393
+}

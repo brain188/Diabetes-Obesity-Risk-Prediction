@@ -52,12 +52,6 @@ diabetes_train_featured:
 diabetes_test_featured:
   type: pandas.ParquetDataset
   filepath: data/03_primary/diabetes_test_featured.parquet
-
- 
-# --- evaluation outputs (data/08_reporting/) ---
-# evaluation_report:
-#   type: json.JSONDataset
-#   filepath: data/08_reporting/evaluation_report.json
  
  
 # FEATURE ENGINEERING OUTPUTS  (data/03_primary/)
@@ -146,3 +140,44 @@ trained_model:
 model_metadata:
   type: json.JSONDataset
   filepath: data/08_reporting/model_metadata.json
+
+
+# EVALUATION OUTPUTS  (data/08_reporting/ and data/06_models/)
+# Written by the evaluation pipeline.
+# Plots stored as pickle (bytes) so they can be opened as PNG files directly.
+ 
+# Confusion matrix plot
+confusion_matrix_png:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/confusion_matrix.png
+ 
+# ROC curves plot
+roc_curves_png:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/roc_curves.png
+ 
+# SHAP plots
+shap_bar_png:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/shap_bar.png
+ 
+shap_beeswarm_png:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/shap_beeswarm.png
+ 
+# SHAP explainer artifact
+# Fitted SHAP TreeExplainer — loaded by the FastAPI backend at startup
+# and reused for every per-patient explanation request.
+ 
+shap_explainer:
+  type: pickle.PickleDataset
+  filepath: data/06_models/shap_explainer.pkl
+ 
+# Full evaluation report
+# JSON with all metrics, thresholds, feature names, and classification report.
+# Served by the FastAPI /model/info endpoint.
+ 
+full_evaluation_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/full_evaluation_report.json
+ 

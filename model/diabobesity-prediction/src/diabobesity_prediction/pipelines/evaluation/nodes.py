@@ -126,7 +126,7 @@ def plot_confusion_matrix(
     trained_model: Any,
     X_test: pd.DataFrame,
     y_test: pd.DataFrame,
-) -> bytes:
+) -> str:
     """
     Generate and return a confusion matrix figure as PNG bytes.
     Two panels are produced side-by-side:
@@ -163,21 +163,27 @@ def plot_confusion_matrix(
 
     # Right panel: normalised proportions
     ConfusionMatrixDisplay(
-        confusion_matrix = cm_norm.round(3),
+        confusion_matrix = cm_norm,
         display_labels   = CLASS_NAMES,
-    ).plot(ax=axes[1], cmap="Blues", colorbar=False)
+    ).plot(ax=axes[1], cmap="Blues", colorbar=False, values_format=".2%")
     axes[1].set_title("Row-Normalised (Recall per Class)", fontweight="bold")
     axes[1].set_xlabel("Predicted Label")
     axes[1].set_ylabel("True Label")
 
     plt.tight_layout()
 
-    # Serialise to bytes
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+    output_path = "data/08_reporting/confusion_matrix.png"
+
+    plt.savefig(
+        output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
     plt.close(fig)
-    buf.seek(0)
-    img_bytes = buf.read()
+
+    log.info("Confusion matrix saved to %s", output_path)
+
 
     # Log the cell-level breakdown
     tn_row = cm[0]   # Normal row
@@ -187,9 +193,9 @@ def plot_confusion_matrix(
     log.info("  True Normal      → predicted Normal=%d  Prediabetes=%d  Diabetic=%d", *tn_row)
     log.info("  True Prediabetes → predicted Normal=%d  Prediabetes=%d  Diabetic=%d", *pr_row)
     log.info("  True Diabetic    → predicted Normal=%d  Prediabetes=%d  Diabetic=%d", *db_row)
-    log.info("Confusion matrix plot generated (%d bytes).", len(img_bytes))
+    # log.info("Confusion matrix plot generated (%d bytes).", len(img_bytes))
 
-    return img_bytes
+    return output_path
 
 
 
@@ -197,7 +203,7 @@ def plot_roc_curves(
     trained_model: Any,
     X_test: pd.DataFrame,
     y_test: pd.DataFrame,
-) -> bytes:
+) -> str:
     """
     Generate per-class one-vs-rest ROC curves and return as PNG bytes.
 
@@ -248,14 +254,19 @@ def plot_roc_curves(
 
     plt.tight_layout()
 
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png", dpi=150, bbox_inches="tight")
-    plt.close(fig)
-    buf.seek(0)
-    img_bytes = buf.read()
+    output_path = "data/08_reporting/roc_curves.png"
 
-    log.info("ROC curves plot generated (%d bytes).", len(img_bytes))
-    return img_bytes
+    plt.savefig(
+        output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
+    plt.close(fig)
+
+    log.info("ROC curves saved to %s", output_path)
+
+    return output_path
 
 
 
@@ -263,7 +274,7 @@ def compute_shap_values(
     trained_model: Any,
     X_train: pd.DataFrame,
     X_test: pd.DataFrame,
-) -> tuple[bytes, bytes]:
+) -> tuple[str, str]:
     """
     Compute SHAP values and produce two global explanation plots.
 
@@ -334,12 +345,17 @@ def compute_shap_values(
     )
     plt.tight_layout()
 
-    buf1 = io.BytesIO()
-    plt.savefig(buf1, format="png", dpi=150, bbox_inches="tight")
+    bar_output_path = "data/08_reporting/shap_bar.png"
+
+    plt.savefig(
+        bar_output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
     plt.close()
-    buf1.seek(0)
-    bar_bytes = buf1.read()
-    log.info("SHAP bar chart generated (%d bytes).", len(bar_bytes))
+
+    log.info("SHAP bar chart saved to %s", bar_output_path)
 
     # Plot 2: Beeswarm — SHAP distributions for the Diabetic class
     if isinstance(shap_values, list):
@@ -361,14 +377,22 @@ def compute_shap_values(
     )
     plt.tight_layout()
 
-    buf2 = io.BytesIO()
-    plt.savefig(buf2, format="png", dpi=150, bbox_inches="tight")
-    plt.close()
-    buf2.seek(0)
-    beeswarm_bytes = buf2.read()
-    log.info("SHAP beeswarm plot generated (%d bytes).", len(beeswarm_bytes))
+    beeswarm_output_path = "data/08_reporting/shap_beeswarm.png"
 
-    return bar_bytes, beeswarm_bytes
+    plt.savefig(
+        beeswarm_output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
+    plt.close()
+
+    log.info(
+        "SHAP beeswarm plot saved to %s",
+        beeswarm_output_path,
+    )
+
+    return bar_output_path, beeswarm_output_path
 
 
 

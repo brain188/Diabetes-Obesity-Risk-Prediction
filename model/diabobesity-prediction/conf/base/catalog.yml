@@ -148,22 +148,20 @@ model_metadata:
  
 # Confusion matrix plot
 confusion_matrix_png:
-  type: pickle.PickleDataset
-  filepath: data/08_reporting/confusion_matrix.png
- 
-# ROC curves plot
+  type: text.TextDataset
+  filepath: data/08_reporting/confusion_matrix_path.txt
+
 roc_curves_png:
-  type: pickle.PickleDataset
-  filepath: data/08_reporting/roc_curves.png
- 
-# SHAP plots
+  type: text.TextDataset
+  filepath: data/08_reporting/roc_curves_path.txt
+
 shap_bar_png:
-  type: pickle.PickleDataset
-  filepath: data/08_reporting/shap_bar.png
- 
+  type: text.TextDataset
+  filepath: data/08_reporting/shap_bar_path.txt
+
 shap_beeswarm_png:
-  type: pickle.PickleDataset
-  filepath: data/08_reporting/shap_beeswarm.png
+  type: text.TextDataset
+  filepath: data/08_reporting/shap_beeswarm_path.txt
  
 # SHAP explainer artifact
 # Fitted SHAP TreeExplainer — loaded by the FastAPI backend at startup

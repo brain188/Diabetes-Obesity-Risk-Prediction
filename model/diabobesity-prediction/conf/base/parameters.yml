@@ -64,3 +64,18 @@ training:
   # Cross-validation
   cv_folds: 5  # number of stratified k-fold splits used for candidate evaluation
   random_state: 42
+
+
+prediction:
+  feature_names:
+    - age
+    - sex
+    - is_pregnant
+    - bmi
+    - bmi_category
+    - family_history_diabetes
+    - previous_gdm
+    - physically_active
+    - has_hypertension
+    - residence
+ 

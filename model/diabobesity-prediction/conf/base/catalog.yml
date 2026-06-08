@@ -180,4 +180,33 @@ shap_explainer:
 full_evaluation_report:
   type: json.JSONDataset
   filepath: data/08_reporting/full_evaluation_report.json
+
+
+
+
+# Prediction pipeline catalog entries
+
+raw_patient:
+  type: kedro.io.MemoryDataset
+
+# Prediction pipeline intermediates (all in-memory)
+
+validated_patient:
+  type: kedro.io.MemoryDataset
+
+patient_features:
+  type: kedro.io.MemoryDataset
+
+prediction_output:
+  type: kedro.io.MemoryDataset
+
+risk_band_output:
+  type: kedro.io.MemoryDataset
+
+explanation_output:
+  type: kedro.io.MemoryDataset
+
+# Final prediction response
+prediction_response:
+  type: kedro.io.MemoryDataset
  

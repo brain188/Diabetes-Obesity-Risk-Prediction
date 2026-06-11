@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import io
 import logging
 from typing import Any
 
@@ -12,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import shap
+from lime import lime_tabular
 from sklearn.metrics import (
     ConfusionMatrixDisplay,
     accuracy_score,
@@ -432,6 +432,184 @@ def save_shap_explainer(
 
     return explainer
 
+def compute_lime_explanation(
+    trained_model: Any,
+    X_train: pd.DataFrame,
+    X_test: pd.DataFrame,
+    model_metadata: dict[str, Any],
+) -> str:
+    """
+    Generate a LIME explanation for one representative test patient and
+    return it as a file path.
+
+    WHY LIME alongside SHAP?
+    ------------------------
+    SHAP and LIME provide complementary perspectives on model behaviour.
+    SHAP values are theoretically grounded (Shapley values) and globally
+    consistent — all SHAP values sum to the prediction.
+    LIME fits a local linear model around one data point, which is simpler
+    to communicate to non-technical stakeholders and provides a second
+    independent verification of which features matter.
+
+    Including both in the evaluation report strengthens the explainability
+    argument in the project documentation and satisfies the architecture
+    diagram requirement.
+
+    The patient explained here is the first test patient whose true label
+    is Diabetic — chosen because that is the most clinically relevant case.
+    """
+
+    feature_names = model_metadata.get("feature_names", X_train.columns.tolist())
+
+    explainer = lime_tabular.LimeTabularExplainer(
+        training_data = X_train.values,
+        feature_names = feature_names,
+        class_names   = ["Normal", "Prediabetes", "Diabetic"],
+        mode          = "classification",
+        random_state  = 42,
+    )
+
+    # Pick first Diabetic patient from the test set for the explanation
+    y_pred = trained_model.predict(X_test)
+    diabetic_indices = [i for i, p in enumerate(y_pred) if p == 2]
+    patient_idx = diabetic_indices[0] if diabetic_indices else 0
+
+    lime_exp = explainer.explain_instance(
+        data_row   = X_test.values[patient_idx],
+        predict_fn = trained_model.predict_proba,
+        num_features = min(10, len(feature_names)),
+        num_samples  = 1000,
+        labels       = (2,),   # Explain the Diabetic class
+    )
+
+    fig = lime_exp.as_pyplot_figure(label=2)
+    fig.set_size_inches(12, 7)
+    fig.suptitle(
+        f"LIME Explanation — Test Patient {patient_idx}  (Predicted: Diabetic)",
+        fontsize=13, fontweight="bold",
+    )
+    plt.tight_layout()
+
+    output_path = "data/08_reporting/lime_explanation.png"
+
+    plt.savefig(
+        output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
+    plt.close(fig)
+
+    log.info(
+        "LIME explanation generated for patient %d and saved to %s",
+        patient_idx,
+        output_path,
+    )
+
+    return output_path
+
+
+
+def plot_feature_importance(
+    trained_model: Any,
+    model_metadata: dict[str, Any],
+) -> str:
+    """
+    Plot the model's native feature importances as a horizontal bar chart.
+
+    WHY native feature importance alongside SHAP?
+    ---------------------------------------------
+    SHAP global importance (mean |SHAP|) accounts for feature interactions
+    and is the most accurate measure of a feature's contribution.
+    Native importance (e.g. CatBoost's gain-based importance) is computed
+    differently — it measures how often a feature is used in splits and
+    by how much it reduces impurity.
+
+    Comparing SHAP importance with native importance:
+    - Agreement between methods = strong evidence a feature truly matters
+    - Disagreement = worth investigating (possible interaction effects
+      or scale sensitivity)
+
+    Including both satisfies the architecture diagram's explainability
+    layer requirement and provides a richer evidence base for the report.
+    """
+    feature_names = model_metadata.get("feature_names", [])
+
+    # Extract importances
+    if hasattr(trained_model, "get_feature_importance"):
+        # CatBoost
+        importances = trained_model.get_feature_importance()
+    elif hasattr(trained_model, "feature_importances_"):
+        importances = trained_model.feature_importances_
+    else:
+        log.warning("Model has no native feature importance — skipping plot.")
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.text(0.5, 0.5, "Feature importance not available for this model type.",
+                ha="center", va="center", fontsize=12)
+
+        output_path = "data/08_reporting/feature_importance.png"
+        plt.savefig(
+            output_path,
+            dpi=150,
+            bbox_inches="tight"
+        )
+
+        plt.close(fig)
+
+        log.info(
+            "Feature importance placeholder saved to %s",
+            output_path,
+        )
+
+        return output_path
+
+    # Sort by importance descending
+    importance_df = (
+        pd.DataFrame({"feature": feature_names, "importance": importances})
+        .sort_values("importance", ascending=True)   # ascending for horizontal bar
+    )
+
+    fig, ax = plt.subplots(figsize=(11, 7))
+    colors = ["#2E75B6" if v >= importance_df["importance"].median()
+              else "#AEC6CF"
+              for v in importance_df["importance"]]
+
+    ax.barh(importance_df["feature"], importance_df["importance"],
+            color=colors, edgecolor="black")
+    ax.set_xlabel("Feature Importance (Model-Native)", fontsize=12)
+    ax.set_title(
+        f"Feature Importance — {model_metadata.get('model_name', 'Model')} (Native)",
+        fontsize=13, fontweight="bold",
+    )
+    ax.axvline(
+        x=importance_df["importance"].mean(),
+        color="red", linestyle="--", lw=1.5,
+        label=f"Mean = {importance_df['importance'].mean():.4f}",
+    )
+    ax.legend(fontsize=10)
+
+    for bar, val in zip(ax.patches, importance_df["importance"]):
+        ax.text(val + 0.001, bar.get_y() + bar.get_height() / 2,
+                f"{val:.4f}", va="center", fontsize=9)
+
+    plt.tight_layout()
+
+    output_path = "data/08_reporting/feature_importance.png"
+
+    plt.savefig(
+        output_path,
+        dpi=150,
+        bbox_inches="tight"
+    )
+
+    plt.close(fig)
+
+    log.info(
+        "Feature importance plot saved to %s",
+        output_path,
+    )
+
+    return output_path
 
 
 def build_evaluation_report(

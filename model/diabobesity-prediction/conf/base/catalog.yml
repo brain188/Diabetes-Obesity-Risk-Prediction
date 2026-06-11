@@ -162,6 +162,14 @@ shap_bar_png:
 shap_beeswarm_png:
   type: text.TextDataset
   filepath: data/08_reporting/shap_beeswarm_path.txt
+
+lime_explanation_png:
+  type: text.TextDataset
+  filepath: data/08_reporting/lime_explanation_path.txt
+
+feature_importance_png:
+  type: text.TextDataset
+  filepath: data/08_reporting/feature_importance_path.txt
  
 # SHAP explainer artifact
 # Fitted SHAP TreeExplainer — loaded by the FastAPI backend at startup

@@ -1,6 +1,7 @@
 fastapi
 uvicorn[standard]
 pydantic
+pydantic-settings
 sqlalchemy
 alembic
 psycopg2-binary
@@ -24,7 +25,6 @@ matplotlib
 plotly
 pillow
 pytest
-loguru
 pytest-asyncio
 coverage
 black

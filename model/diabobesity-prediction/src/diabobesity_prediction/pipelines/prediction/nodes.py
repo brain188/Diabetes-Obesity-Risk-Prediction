@@ -23,7 +23,7 @@ BOOL_FALSY   = {"false", "0", "no"}
 # Categorical allowed values (after lowercasing)
 ALLOWED_SEX       = {"male", "female"}
 ALLOWED_RESIDENCE = {"urban", "rural"}
-ALLOWED_BMI_CAT   = {"normal", "overweight", "obese i", "obese ii+"}
+ALLOWED_BMI_CAT   = {"normal", "overweight", "obese i", "obese ii+"}  # matches BMI_CAT_OBESE_II in constants.py
 
 # Target class integer → string label
 TARGET_LABELS = {0: "Normal", 1: "Prediabetes", 2: "Diabetic"}
@@ -160,7 +160,7 @@ def preprocess_patient_input(
     pd.DataFrame — shape (1, n_features), scaled to [0, 1]
     """
     SEX_MAP       = {"female": 0, "male": 1}
-    BMI_CAT_MAP   = {"normal": 0, "overweight": 1, "obese i": 2, "obese ii+": 3}
+    BMI_CAT_MAP   = {"normal": 0, "overweight": 1, "obese i": 2, "obese ii+": 3}  # must stay in sync with constants.BMI_CAT_OBESE_II
     RESIDENCE_MAP = {"rural": 0, "urban": 1}
 
     # Apply categorical encodings

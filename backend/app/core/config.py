@@ -46,13 +46,17 @@ class Settings(BaseSettings):
     BCRYPT_ROUNDS: int = 12
 
     # ML Artifacts
-    # Path to the model directory produced by the Kedro pipelines
-    ML_ARTIFACTS_DIR: Path = Path("../model/kedro_project/data")
-    TRAINED_MODEL_PATH: Path = Path("../model/kedro_project/data/06_models/trained_model.pkl")
-    SCALER_PATH: Path = Path("../model/kedro_project/data/06_models/scaler.pkl")
-    SHAP_EXPLAINER_PATH: Path = Path("../model/kedro_project/data/06_models/shap_explainer.pkl")
-    MODEL_METADATA_PATH: Path = Path("../model/kedro_project/data/08_reporting/model_metadata.json")
-    EVAL_REPORT_PATH: Path = Path("../model/kedro_project/data/08_reporting/full_evaluation_report.json")
+    ML_ARTIFACTS_BASE: Path = Path("../model/diabobesity-prediction/data")
+
+    # Model paths
+    TRAINED_MODEL_PATH: Path = ML_ARTIFACTS_BASE / "06_models/trained_model.pkl"
+    SCALER_PATH: Path = ML_ARTIFACTS_BASE / "06_models/scaler.pkl"
+    SHAP_EXPLAINER_PATH: Path = ML_ARTIFACTS_BASE / "06_models/shap_explainer.pkl"
+    LIME_BACKGROUND_PATH: Path = ML_ARTIFACTS_BASE / "06_models/lime_background.pkl"
+
+    # Reporting artifacts (metadata)
+    MODEL_METADATA_PATH: Path = ML_ARTIFACTS_BASE / "08_reporting/model_metadata.json"
+    EVAL_REPORT_PATH: Path = ML_ARTIFACTS_BASE / "08_reporting/full_evaluation_report.json"
     
     # Model version tracking
     MODEL_VERSION: str = "1.0.0"

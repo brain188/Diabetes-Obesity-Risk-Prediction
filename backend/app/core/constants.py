@@ -3,6 +3,9 @@ Application-wide constants.
 Centralised here so magic strings/numbers never appear inline in business logic.
 """
 
+DIABETES_THRESH_LOW_MODERATE: float = 0.3472   # P(Diabetic) >= this → Moderate
+DIABETES_THRESH_MODERATE_HIGH: float = 0.5472  # P(Diabetic) >= this → High
+
 # =============================================================================
 # Risk Band Labels
 # =============================================================================

@@ -55,7 +55,7 @@ class ObesityPrediction(BaseModel):
     bmi_category: str = Field(..., description="BMI category")
     risk_class: str = Field(..., description="Risk class (Low/Moderate/High)")
     risk_color: str = Field(..., description="Color code for UI")
-    class_label: str = Field(..., description="Obesity class (Normal/Overweight/Obese)")
+    obesity_class: str = Field(..., description="Obesity class (Normal/Overweight/Obese)")
     
     model_config = ConfigDict(
         json_schema_extra={
@@ -64,7 +64,7 @@ class ObesityPrediction(BaseModel):
                 "bmi_category": "Normal",
                 "risk_class": "Low",
                 "risk_color": "#2ECC71",
-                "class_label": "Normal"
+                "obesity_class": "Normal"
             }
         }
     )
@@ -124,7 +124,7 @@ class PredictionResponse(BaseModel):
                     "bmi_category": "Normal",
                     "risk_class": "Low",
                     "risk_color": "#2ECC71",
-                    "class_label": "Normal"
+                    "obesity_class": "Normal"
                 },
                 "model_version": "1.0.0",
                 "prediction_date": "2024-01-15T10:30:00Z",

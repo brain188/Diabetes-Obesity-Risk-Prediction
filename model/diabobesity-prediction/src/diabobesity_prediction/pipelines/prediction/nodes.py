@@ -403,12 +403,156 @@ def explain_prediction(
     }
 
 
+def explain_prediction_lime(
+    trained_model: Any,
+    patient_features: pd.DataFrame,
+    X_train: pd.DataFrame,
+    model_metadata: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    Generate a LIME explanation for a single patient prediction.
+
+    LIME fits a local linear model around this specific patient's data point
+    to explain which features pushed the prediction in the observed direction.
+
+    WHY LIME at inference time alongside SHAP?
+    ------------------------------------------
+    SHAP provides theoretically grounded additive feature attributions.
+    LIME provides a simpler local linear approximation that is often easier
+    to communicate to non-technical healthcare workers ("if your BMI were
+    lower, your risk score would drop by X").
+
+    Serving both gives the frontend two complementary explanation views.
+
+    Parameters
+    ----------
+    trained_model    : fitted estimator
+    patient_features : scaled single-row DataFrame (same used for SHAP)
+    X_train          : training features — LIME uses these as the background
+    model_metadata   : provides feature_names and target_encoding
+
+    Returns
+    -------
+    dict with keys:
+        ``lime_explanation``  — list of {feature, weight, direction} dicts
+                                sorted by |weight| descending
+        ``predicted_label``   — string label for the class being explained
+    """
+    from lime import lime_tabular
+
+    feature_names = model_metadata.get("feature_names", patient_features.columns.tolist())
+
+    explainer = lime_tabular.LimeTabularExplainer(
+        training_data = X_train.values,
+        feature_names = feature_names,
+        class_names   = ["Normal", "Prediabetes", "Diabetic"],
+        mode          = "classification",
+        random_state  = 42,
+    )
+
+    # Explain toward the Diabetic class (class index 2) — most clinically relevant
+    lime_exp = explainer.explain_instance(
+        data_row     = patient_features.values[0],
+        predict_fn   = trained_model.predict_proba,
+        num_features = min(10, len(feature_names)),
+        num_samples  = 500,
+        labels       = (2,),
+    )
+
+    raw_explanation = lime_exp.as_list(label=2)
+
+    explanation = [
+        {
+            "feature"  : item[0],
+            "weight"   : round(float(item[1]), 6),
+            "direction": "increases_risk" if item[1] > 0 else "decreases_risk",
+        }
+        for item in sorted(raw_explanation, key=lambda x: abs(x[1]), reverse=True)
+    ]
+
+    log.info("LIME explanation (Diabetic class, top features):")
+    for e in explanation[:5]:
+        log.info("  %-30s : %.4f  (%s)", e["feature"], e["weight"], e["direction"])
+
+    return {
+        "lime_explanation": explanation,
+        "predicted_label" : "Diabetic",
+    }
+
+
+def get_feature_importance(
+    trained_model: Any,
+    model_metadata: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    Return the model's native feature importances as a ranked list.
+
+    This is model-specific importance (gain-based for CatBoost/XGBoost,
+    MDI for Random Forest) — different from SHAP importance but useful
+    as a complementary view.
+
+    Parameters
+    ----------
+    trained_model  : fitted estimator
+    model_metadata : provides feature_names
+
+    Returns
+    -------
+    dict with keys:
+        ``feature_importance`` — list of {feature, importance, rank} dicts
+                                 sorted by importance descending
+        ``method``             — string describing how importance was computed
+    """
+    feature_names = model_metadata.get("feature_names", [])
+
+    if hasattr(trained_model, "get_feature_importance"):
+        # CatBoost
+        importances = trained_model.get_feature_importance()
+        method      = "CatBoost gain-based importance"
+    elif hasattr(trained_model, "feature_importances_"):
+        # XGBoost, LightGBM, RandomForest
+        importances = trained_model.feature_importances_
+        method      = "Mean Decrease in Impurity (MDI)"
+    else:
+        log.warning("Model has no native feature importance attribute.")
+        return {
+            "feature_importance": [],
+            "method"            : "Not available for this model type",
+        }
+
+    ranked = sorted(
+        [
+            {
+                "feature"   : feat,
+                "importance": round(float(imp), 6),
+                "rank"      : rank + 1,
+            }
+            for rank, (feat, imp) in enumerate(
+                sorted(zip(feature_names, importances),
+                       key=lambda x: x[1], reverse=True)
+            )
+        ],
+        key=lambda x: x["rank"],
+    )
+
+    log.info("Feature importance (%s):", method)
+    for item in ranked[:5]:
+        log.info("  #%d  %-30s : %.4f", item["rank"], item["feature"], item["importance"])
+
+    return {
+        "feature_importance": ranked,
+        "method"            : method,
+    }
+
+
 
 def build_prediction_response(
     validated_patient: dict[str, Any],
     prediction_output: dict[str, Any],
     risk_band_output: dict[str, Any],
     explanation_output: dict[str, Any],
+    lime_explanation_output: dict[str, Any],
+    feature_importance_output: dict[str, Any],
 ) -> dict[str, Any]:
     """
     Assemble the complete prediction response that the FastAPI endpoint
@@ -452,6 +596,13 @@ def build_prediction_response(
         "top_risk_factors"       : explanation_output["top_risk_factors"],
         "top_protective_factors" : explanation_output["top_protective_factors"],
         "shap_base_value"        : explanation_output["base_value"],
+
+        # LIME explanation
+        "lime_explanation" : lime_explanation_output["lime_explanation"],
+
+        # Native Feature Importance
+        "feature_importance"        : feature_importance_output["feature_importance"],
+        "feature_importance_method" : feature_importance_output["method"],
 
         # Echo patient input back for the frontend display
         "patient_input"    : {

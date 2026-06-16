@@ -9,6 +9,7 @@ from .nodes import (
     plot_feature_importance,
     plot_roc_curves,
     save_shap_explainer,
+    save_lime_background,
 )
 
 
@@ -100,6 +101,12 @@ def create_evaluation_pipeline(**kwargs) -> Pipeline:
                 ],
                 outputs = "full_evaluation_report",
                 name    = "build_evaluation_report_node",
+            ),
+            node(
+                func    = save_lime_background,
+                inputs  = ["X_train"],
+                outputs = "lime_background",
+                name    = "save_lime_background_node",
             ),
         ]
     )

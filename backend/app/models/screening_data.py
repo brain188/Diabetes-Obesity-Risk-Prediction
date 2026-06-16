@@ -143,10 +143,11 @@ class ScreeningData(Base, TimestampMixin):
     )
     
     # Lifestyle factors
-    physical_activity: Mapped[int] = mapped_column(
-        Integer,
+    physical_activity: Mapped[bool] = mapped_column(
+        Boolean,
         nullable=False,
-        comment="Physical activity level (days per week, 0-7)"
+        default=False,
+        comment="Whether patient is physically active (Yes/No)"
     )
     
     # Medical history (boolean flags)

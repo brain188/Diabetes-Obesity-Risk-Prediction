@@ -19,7 +19,7 @@ class ScreeningDataRequest(BaseModel):
     blood_pressure: Optional[str] = Field(None, pattern=r'^\d{2,3}/\d{2,3}$', description="Blood pressure (e.g., '120/80')")
     
     # Lifestyle factors
-    physical_activity: bool = Field(default=False, description="Physical activity")
+    physical_activity: bool = Field(..., description="Whether the patient is physically active")
     
     # Medical history
     family_history_diabetes: bool = Field(default=False, description="Family history of diabetes")

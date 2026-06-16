@@ -187,6 +187,9 @@ full_evaluation_report:
   type: json.JSONDataset
   filepath: data/08_reporting/full_evaluation_report.json
 
+lime_background:
+  type: pickle.PickleDataset
+  filepath: data/06_models/lime_background.pkl
 
 
 
@@ -212,7 +215,12 @@ risk_band_output:
 explanation_output:
   type: kedro.io.MemoryDataset
 
+lime_explanation_output:
+  type: kedro.io.MemoryDataset
+
+feature_importance_output:
+  type: kedro.io.MemoryDataset
+
 # Final prediction response
 prediction_response:
   type: kedro.io.MemoryDataset
- 

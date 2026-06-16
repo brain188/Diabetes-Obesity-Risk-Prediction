@@ -7,6 +7,8 @@ from .nodes import (
     preprocess_patient_input,
     run_prediction,
     validate_patient_input,
+    explain_prediction_lime,
+    get_feature_importance,
 )
 
 
@@ -65,12 +67,35 @@ def create_prediction_pipeline(**kwargs) -> Pipeline:
                 name    = "explain_prediction_node",
             ),
             node(
+                func    = explain_prediction_lime,
+                inputs  = [
+                    "trained_model",
+                    "patient_features",
+                    "X_train",
+                    "model_metadata",
+                ],
+                outputs = "lime_explanation_output",
+                name    = "explain_prediction_lime_node",
+            ),
+
+            node(
+                func    = get_feature_importance,
+                inputs  = [
+                    "trained_model",
+                    "model_metadata",
+                ],
+                outputs = "feature_importance_output",
+                name    = "get_feature_importance_node",
+            ),
+            node(
                 func    = build_prediction_response,
                 inputs  = [
                     "validated_patient",
                     "prediction_output",
                     "risk_band_output",
                     "explanation_output",
+                    "lime_explanation_output",
+                    "feature_importance_output",
                 ],
                 outputs = "prediction_response",
                 name    = "build_prediction_response_node",

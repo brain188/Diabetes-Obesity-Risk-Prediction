@@ -716,3 +716,29 @@ def build_evaluation_report(
 
     log.info("Full evaluation report compiled successfully.")
     return report
+
+
+def save_lime_background(
+    X_train: pd.DataFrame,
+    n_samples: int = 500,
+) -> pd.DataFrame:
+    """
+    Save a representative sample of X_train as the LIME background dataset.
+
+    LIME needs to know the realistic distribution of feature values to
+    generate meaningful perturbations around a patient's data point.
+    Using a sample of the actual training data is the most accurate approach.
+
+    Saved to data/06_models/lime_background.pkl via the catalog.
+    Loaded at startup by ModelLoader alongside the other artifacts.
+    """
+    background = X_train.sample(
+        n=min(n_samples, len(X_train)),
+        random_state=42,
+    ).reset_index(drop=True)
+
+    log.info(
+        "LIME background dataset saved: %d rows x %d features",
+        len(background), background.shape[1],
+    )
+    return background

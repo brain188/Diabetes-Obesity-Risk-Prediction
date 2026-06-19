@@ -81,6 +81,20 @@ class HealthcareWorker(Base, TimestampMixin):
         nullable=True,
         comment="Timestamp of last successful login"
     )
+
+    # Refresh Token
+    refresh_token: Mapped[Optional[str]] = mapped_column(
+        String(255),
+        nullable=True,
+        unique=True,
+        comment="Current valid refresh token (hashed)"
+    )
+    
+    refresh_token_expires: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="Expiration time for refresh token"
+    )
     
     # Password reset
     password_reset_token: Mapped[Optional[str]] = mapped_column(
@@ -118,6 +132,7 @@ class HealthcareWorker(Base, TimestampMixin):
     __table_args__ = (
         Index("idx_hw_email_active", "email", "is_active"),
         Index("idx_hw_created_at", "created_at"),
+        Index("idx_hw_refresh_token", "refresh_token"),
     )
     
     def __repr__(self) -> str:

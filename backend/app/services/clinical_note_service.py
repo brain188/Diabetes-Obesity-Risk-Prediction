@@ -6,7 +6,7 @@ Handles creation, retrieval, and management of clinical notes.
 import logging
 from typing import List, Optional, Tuple
 
-from app.core.exceptions import NotFoundError, ValidationError
+from app.core.exceptions import NotFoundError
 from app.repositories.clinical_note_repository import ClinicalNoteRepository
 from app.repositories.patient_repository import PatientRepository
 from app.repositories.audit_log_repository import AuditLogRepository
@@ -145,7 +145,8 @@ class ClinicalNoteService:
                 patient_name="",  # Will be filled from patient query if needed
                 visit_id=note.visit_id,
                 author_id=note.author_id,
-                author_name=note.author.full_name if note.author else None,
+                # Avoid lazy-loading relationships in async context (MissingGreenlet in tests)
+                author_name=None,
                 title=note.title,
                 content=note.content,
                 note_type=note.note_type,
@@ -199,7 +200,8 @@ class ClinicalNoteService:
             patient_name=patient_name,
             visit_id=note.visit_id,
             author_id=note.author_id,
-            author_name=note.author.full_name if note.author else None,
+            # Avoid lazy-loading relationships (can trigger MissingGreenlet in async tests)
+            author_name=None,
             title=note.title,
             content=note.content,
             note_type=note.note_type,
@@ -268,7 +270,8 @@ class ClinicalNoteService:
             patient_name=patient_name,
             visit_id=note.visit_id,
             author_id=note.author_id,
-            author_name=note.author.full_name if note.author else None,
+            # Avoid accessing lazy-loaded relationship (can trigger MissingGreenlet in async tests)
+            author_name=None,
             title=note.title,
             content=note.content,
             note_type=note.note_type,

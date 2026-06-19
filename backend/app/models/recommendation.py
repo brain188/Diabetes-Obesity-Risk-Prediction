@@ -8,7 +8,8 @@ from sqlalchemy import Column, String, Integer, Text, ForeignKey, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base, generate_uuid
+from app.core.database import Base
+from app.models.base import generate_uuid
 
 
 class Recommendation(Base):
@@ -21,7 +22,7 @@ class Recommendation(Base):
     
     # Primary key
     recommendation_id = Column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=generate_uuid,
         nullable=False,
@@ -30,7 +31,7 @@ class Recommendation(Base):
     
     # Foreign key to prediction
     prediction_id = Column(
-        UUID(as_uuid=False),
+        String(36),
         ForeignKey("predictions.prediction_id", ondelete="CASCADE"),
         nullable=False,
         unique=True,  # One recommendation per prediction

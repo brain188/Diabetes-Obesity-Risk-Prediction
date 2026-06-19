@@ -3,10 +3,10 @@ Repository for Patient model operations.
 """
 
 import logging
-from datetime import date
+from datetime import date, datetime
 from typing import List, Optional, Tuple
 
-from sqlalchemy import select, or_, func
+from sqlalchemy import select, or_, func, and_
 from sqlalchemy.orm import selectinload
 
 from app.core.exceptions import DuplicateError, NotFoundError
@@ -65,7 +65,9 @@ class PatientRepository(BaseRepository[Patient]):
             sex=sex.capitalize(),
             worker_id=worker_id,
             contact_info=contact_info,
-            national_id=national_id
+            national_id=national_id,
+            is_active=True,  # New patients are active by default
+            deleted_at=None
         )
         
         logger.info(f"Created patient: {full_name} (ID: {patient.patient_id})")
@@ -85,7 +87,8 @@ class PatientRepository(BaseRepository[Patient]):
         self,
         query: str,
         skip: int = 0,
-        limit: int = 20
+        limit: int = 20,
+        include_inactive: bool = False
     ) -> Tuple[List[Patient], int]:
         """
         Search patients by name or patient ID.
@@ -94,6 +97,7 @@ class PatientRepository(BaseRepository[Patient]):
             query: Search query (name or patient ID)
             skip: Number of records to skip
             limit: Maximum records to return
+            include_inactive: Whether to include inactive patients
             
         Returns:
             Tuple of (patients list, total count)
@@ -101,21 +105,25 @@ class PatientRepository(BaseRepository[Patient]):
         try:
             # Build search condition
             search_term = f"%{query}%"
-            stmt = select(Patient).where(
-                or_(
-                    Patient.full_name.ilike(search_term),
-                    Patient.patient_id.ilike(search_term),
-                    Patient.national_id.ilike(search_term) if Patient.national_id.isnot(None) else False
-                )
-            )
+            
+            # Base condition
+            conditions = [
+                Patient.full_name.ilike(search_term),
+                Patient.patient_id.ilike(search_term),
+                Patient.national_id.ilike(search_term),
+            ]
+            
+            stmt = select(Patient).where(or_(*conditions))
+            
+            # Filter by active status
+            if not include_inactive:
+                stmt = stmt.where(Patient.is_active == True)
             
             # Get total count
-            count_stmt = select(func.count()).select_from(Patient).where(
-                or_(
-                    Patient.full_name.ilike(search_term),
-                    Patient.patient_id.ilike(search_term)
-                )
-            )
+            count_stmt = select(func.count()).select_from(Patient).where(or_(*conditions))
+            if not include_inactive:
+                count_stmt = count_stmt.where(Patient.is_active == True)
+            
             count_result = await self.session.execute(count_stmt)
             total = count_result.scalar() or 0
             
@@ -129,10 +137,13 @@ class PatientRepository(BaseRepository[Patient]):
             logger.error(f"Failed to search patients with query '{query}': {str(e)}")
             raise
     
+    
+    
     async def get_patient_with_visits(
         self,
         patient_id: str,
-        include_visits: bool = True
+        include_visits: bool = True,
+        include_inactive: bool = False
     ) -> Optional[Patient]:
         """
         Get patient with optional eager loading of visits.
@@ -140,12 +151,16 @@ class PatientRepository(BaseRepository[Patient]):
         Args:
             patient_id: Patient identifier
             include_visits: Whether to load screening visits
+            include_inactive: Whether to include inactive patients
             
         Returns:
             Patient instance or None
         """
         try:
             stmt = select(Patient).where(Patient.patient_id == patient_id)
+            
+            if not include_inactive:
+                stmt = stmt.where(Patient.is_active == True)
             
             if include_visits:
                 stmt = stmt.options(selectinload(Patient.screening_visits))
@@ -160,7 +175,8 @@ class PatientRepository(BaseRepository[Patient]):
         self,
         worker_id: str,
         skip: int = 0,
-        limit: int = 20
+        limit: int = 20,
+        include_inactive: bool = False
     ) -> Tuple[List[Patient], int]:
         """
         Get all patients registered by a specific healthcare worker.
@@ -169,18 +185,27 @@ class PatientRepository(BaseRepository[Patient]):
             worker_id: Healthcare worker identifier
             skip: Number of records to skip
             limit: Maximum records to return
+            include_inactive: Whether to include inactive patients
             
         Returns:
             Tuple of (patients list, total count)
         """
         try:
+            # Build query with active filter
+            filters = {"worker_id": worker_id}
+            if not include_inactive:
+                filters["is_active"] = True
+            
             # Get total count
-            total = await self.count(worker_id=worker_id)
+            total = await self.count(**filters)
             
             # Get paginated results
             stmt = select(Patient).where(
                 Patient.worker_id == worker_id
-            ).offset(skip).limit(limit).order_by(Patient.created_at.desc())
+            )
+            if not include_inactive:
+                stmt = stmt.where(Patient.is_active == True)
+            stmt = stmt.offset(skip).limit(limit).order_by(Patient.created_at.desc())
             
             result = await self.session.execute(stmt)
             patients = list(result.scalars().all())
@@ -206,7 +231,7 @@ class PatientRepository(BaseRepository[Patient]):
             Updated Patient instance
         """
         # Don't allow updating certain fields
-        forbidden_fields = {"patient_id", "worker_id", "created_at"}
+        forbidden_fields = {"patient_id", "worker_id", "created_at", "is_active", "deleted_at"}
         update_data = {k: v for k, v in kwargs.items() if k not in forbidden_fields and v is not None}
         
         if not update_data:
@@ -226,6 +251,118 @@ class PatientRepository(BaseRepository[Patient]):
         patient = await self.update(patient_id, **update_data)
         logger.info(f"Updated patient {patient_id}")
         return patient
+    
+    async def soft_delete_patient(
+        self,
+        patient_id: str,
+        worker_id: str
+    ) -> bool:
+        """
+        Soft delete a patient (mark as inactive).
+        
+        Args:
+            patient_id: Patient identifier
+            worker_id: Healthcare worker performing the deletion
+            
+        Returns:
+            True if deleted, False otherwise
+        """
+        try:
+            stmt = select(Patient).where(
+                and_(
+                    Patient.patient_id == patient_id,
+                    Patient.is_active == True
+                )
+            )
+            result = await self.session.execute(stmt)
+            patient = result.scalar_one_or_none()
+            
+            if not patient:
+                return False
+            
+            # Soft delete
+            patient.is_active = False
+            patient.deleted_at = datetime.utcnow()
+            
+            await self.session.flush()
+            await self.session.refresh(patient)
+            
+            logger.info(f"Soft deleted patient {patient_id} by worker {worker_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to soft delete patient {patient_id}: {str(e)}")
+            raise
+    
+    async def restore_patient(
+        self,
+        patient_id: str,
+        worker_id: str
+    ) -> bool:
+        """
+        Restore a soft-deleted patient.
+        
+        Args:
+            patient_id: Patient identifier
+            worker_id: Healthcare worker performing the restoration
+            
+        Returns:
+            True if restored, False otherwise
+        """
+        try:
+            stmt = select(Patient).where(
+                and_(
+                    Patient.patient_id == patient_id,
+                    Patient.is_active == False
+                )
+            )
+            result = await self.session.execute(stmt)
+            patient = result.scalar_one_or_none()
+            
+            if not patient:
+                return False
+            
+            # Restore
+            patient.is_active = True
+            patient.deleted_at = None
+            
+            await self.session.flush()
+            await self.session.refresh(patient)
+            
+            logger.info(f"Restored patient {patient_id} by worker {worker_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to restore patient {patient_id}: {str(e)}")
+            raise
+    
+    async def get_active_patients_count(self, worker_id: Optional[str] = None) -> int:
+        """
+        Get count of active patients.
+        
+        Args:
+            worker_id: Optional worker ID to filter by
+            
+        Returns:
+            Count of active patients
+        """
+        filters = {"is_active": True}
+        if worker_id:
+            filters["worker_id"] = worker_id
+        return await self.count(**filters)
+    
+    async def get_deleted_patients_count(self, worker_id: Optional[str] = None) -> int:
+        """
+        Get count of deleted patients.
+        
+        Args:
+            worker_id: Optional worker ID to filter by
+            
+        Returns:
+            Count of deleted patients
+        """
+        filters = {"is_active": False}
+        if worker_id:
+            filters["worker_id"] = worker_id
+        return await self.count(**filters)
     
     async def get_patient_age(self, patient_id: str) -> Optional[int]:
         """Get the current age of a patient."""
@@ -259,5 +396,6 @@ class PatientRepository(BaseRepository[Patient]):
             "sex": patient.sex,
             "total_visits": total_visits,
             "last_visit_date": last_visit,
-            "registered_at": patient.created_at
+            "registered_at": patient.created_at,
+            "is_active": patient.is_active
         }

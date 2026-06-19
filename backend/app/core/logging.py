@@ -135,12 +135,31 @@ class AuditLogger:
     def __init__(self):
         self.logger = get_logger("audit")
     
-    def log_login(self, user_id: str, success: bool, ip_address: str, details: str = None):
-        """Log authentication attempts."""
+    def log_login(self, user_id: str = None, email: str = None, success: bool = False, 
+                  ip_address: str = None, details: str = None, user_agent: str = None,
+                  request_id: str = None):
+        """
+        Log authentication attempts.
+        
+        Args:
+            user_id: User identifier (worker_id) - for successful logins
+            email: Email address - for failed login attempts
+            success: Whether login was successful
+            ip_address: Client IP address
+            details: Additional details
+            user_agent: Client user agent
+            request_id: Request ID for tracing
+        """
         status = "SUCCESS" if success else "FAILED"
+        user_info = email if email else (user_id if user_id else "unknown")
         self.logger.info(
-            f"AUDIT | LOGIN | User: {user_id} | Status: {status} | IP: {ip_address} | Details: {details}"
+            f"AUDIT | LOGIN | User: {user_info} | Status: {status} | "
+            f"IP: {ip_address} | UA: {user_agent} | Request: {request_id} | Details: {details}"
         )
+    
+    def log_logout(self, user_id: str, ip_address: str, request_id: str = None):
+        """Log user logout events."""
+        self.logger.info(f"AUDIT | LOGOUT | User: {user_id} | IP: {ip_address} | Request: {request_id}")
     
     def log_logout(self, user_id: str, ip_address: str):
         """Log user logout events."""

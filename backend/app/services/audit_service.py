@@ -4,7 +4,7 @@ Handles systematic logging of all security-relevant events.
 """
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Dict, Any
 
 from app.repositories.audit_log_repository import AuditLogRepository
@@ -165,7 +165,7 @@ class AuditService:
         Returns:
             Dictionary with audit summary statistics
         """
-        start_date = datetime.now(datetime.timezone.utc) - timedelta(days=days)
+        start_date = datetime.now(timezone.utc) - timedelta(days=days)
         
         # Get events by type
         event_counts = {}
@@ -194,7 +194,7 @@ class AuditService:
         return {
             "period_days": days,
             "start_date": start_date.isoformat(),
-            "end_date": datetime.now(datetime.timezone.utc).isoformat(),
+            "end_date": datetime.now(timezone.utc).isoformat(),
             "event_counts": event_counts,
             "failed_logins": failed_login_count,
             "total_events": sum(event_counts.values())
@@ -245,7 +245,7 @@ class AuditService:
         Returns:
             True if suspicious activity detected
         """
-        start_time = datetime.now(datetime.timezone.utc) - timedelta(minutes=time_window_minutes)
+        start_time = datetime.now(timezone.utc) - timedelta(minutes=time_window_minutes)
         
         # Get recent login attempts
         logs = await self.audit_repo.get_user_audit_trail(

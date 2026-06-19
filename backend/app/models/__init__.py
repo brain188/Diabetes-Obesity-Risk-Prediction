@@ -3,7 +3,10 @@ Models module for SQLAlchemy ORM entities.
 All database tables are defined here.
 """
 
-from app.models.base import Base, TimestampMixin, generate_uuid
+from app.core.database import Base
+from app.models.base import TimestampMixin, generate_uuid
+
+# Import ALL models to register them with Base.metadata
 from app.models.healthcare_worker import HealthcareWorker
 from app.models.patient import Patient
 from app.models.screening_data import ScreeningData, ScreeningVisit

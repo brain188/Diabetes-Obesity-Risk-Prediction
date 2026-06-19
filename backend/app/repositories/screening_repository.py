@@ -3,7 +3,7 @@ Repository for ScreeningVisit and ScreeningData operations.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional, Tuple
 
 from sqlalchemy import select, desc, func
@@ -43,7 +43,7 @@ class ScreeningRepository:
         visit = await self.visit_repo.create(
             patient_id=patient_id,
             notes=notes,
-            visit_date=datetime.now(datetime.timezone.utc)
+            visit_date=datetime.now(timezone.utc)
         )
         
         logger.info(f"Created screening visit {visit.visit_id} for patient {patient_id}")
@@ -89,7 +89,7 @@ class ScreeningRepository:
             bmi=bmi,
             bmi_category=bmi_category,
             age=age,
-            **{k: v for k, v in data.items() if v is not None}
+            **{k: v for k, v in data.items() if v is not None and k not in ("bmi", "bmi_category")}
         )
         
         logger.info(f"Saved screening data for visit {visit_id}")
@@ -158,7 +158,7 @@ class ScreeningRepository:
             # Build query
             stmt = select(ScreeningVisit).where(
                 ScreeningVisit.patient_id == patient_id
-            )
+            ).options(selectinload(ScreeningVisit.screening_data))
             
             if include_predictions:
                 stmt = stmt.options(selectinload(ScreeningVisit.prediction))
@@ -185,6 +185,8 @@ class ScreeningRepository:
         try:
             stmt = select(ScreeningVisit).where(
                 ScreeningVisit.patient_id == patient_id
+            ).options(
+                selectinload(ScreeningVisit.screening_data)
             ).order_by(desc(ScreeningVisit.visit_date)).limit(1)
             
             result = await self.session.execute(stmt)

@@ -2,15 +2,19 @@
 Prediction model for storing ML model outputs.
 """
 
-from datetime import datetime
-from typing import Optional
+from datetime import datetime, timezone
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Index
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, generate_uuid
+from app.core.database import Base  
+from app.models.base import generate_uuid
 
+if TYPE_CHECKING:
+    from app.models.screening_data import ScreeningVisit
+    from app.models.recommendation import Recommendation
+    from app.models.explanation import SHAPExplanation
 
 class Prediction(Base):
     """
@@ -21,8 +25,8 @@ class Prediction(Base):
     __tablename__ = "predictions"
     
     # Primary key
-    prediction_id = Column(
-        UUID(as_uuid=False),
+    prediction_id: Mapped[str] = mapped_column(
+        String(36),
         primary_key=True,
         default=generate_uuid,
         nullable=False,
@@ -30,8 +34,8 @@ class Prediction(Base):
     )
     
     # Foreign key to screening visit
-    visit_id = Column(
-        UUID(as_uuid=False),
+    visit_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("screening_visits.visit_id", ondelete="CASCADE"),
         nullable=False,
         unique=True,  # One prediction per visit
@@ -40,71 +44,71 @@ class Prediction(Base):
     )
     
     # Diabetes prediction (from ML model)
-    diabetes_probability = Column(
+    diabetes_probability: Mapped[float] = mapped_column(
         Float,
         nullable=False,
         doc="Probability of diabetes (0.0 to 1.0)"
     )
     
-    diabetes_risk_class = Column(
+    diabetes_risk_class: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
         doc="Risk class: Low/Moderate/High"
     )
     
-    diabetes_class = Column(
+    diabetes_class: Mapped[Optional[str]] = mapped_column(
         String(20),
         nullable=True,
         doc="Detailed class: Normal/Prediabetes/Diabetic"
     )
     
     # Obesity prediction (from rule-based system)
-    obesity_probability = Column(
+    obesity_probability: Mapped[Optional[float]] = mapped_column(
         Float,
         nullable=True,
         doc="Probability of obesity (0.0 to 1.0) - derived from BMI"
     )
     
-    obesity_risk_class = Column(
+    obesity_risk_class: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
         doc="Risk class: Low/Moderate/High"
     )
     
-    obesity_class = Column(
+    obesity_class: Mapped[Optional[str]] = mapped_column(
         String(20),
         nullable=True,
         doc="Obesity class: Normal/Overweight/Obese"
     )
     
     # Model metadata
-    model_version = Column(
+    model_version: Mapped[str] = mapped_column(
         String(50),
         nullable=False,
         doc="Version of the model used for prediction"
     )
     
-    prediction_date = Column(
+    prediction_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=datetime.utcnow,
+        default=datetime.now(timezone.utc),
         nullable=False,
         doc="Timestamp when prediction was made"
     )
     
     # Prediction latency tracking
-    latency_ms = Column(
+    latency_ms: Mapped[Optional[float]] = mapped_column(
         Float,
         nullable=True,
         doc="Prediction latency in milliseconds"
     )
     
     # Relationships
-    visit = relationship(
+    visit: Mapped["ScreeningVisit"] = relationship(
         "ScreeningVisit",
         back_populates="prediction"
     )
     
-    recommendation = relationship(
+    recommendation: Mapped[Optional["Recommendation"]] = relationship(
         "Recommendation",
         back_populates="prediction",
         uselist=False,
@@ -112,7 +116,7 @@ class Prediction(Base):
         doc="Clinical recommendations based on this prediction"
     )
     
-    shap_explanation = relationship(
+    shap_explanation: Mapped[Optional["SHAPExplanation"]] = relationship(
         "SHAPExplanation",
         back_populates="prediction",
         uselist=False,

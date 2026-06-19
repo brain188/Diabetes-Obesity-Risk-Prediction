@@ -1,0 +1,79 @@
+# .dockerignore
+# Files and directories to exclude from Docker builds
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Development
+.git/
+.gitignore
+.env
+.env.local
+.env.*.local
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+tests/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Logs
+logs/*.log
+logs/*.log.*
+
+# Reports
+reports/*.pdf
+reports/*.json
+
+# Model artifacts (large files - mount as volume instead)
+model/kedro_project/data/06_models/*.pkl
+model/kedro_project/data/06_models/*.joblib
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+*.pyc
+*.pyo
+*.pyd
+
+# Alembic
+alembic/versions/*.pyc

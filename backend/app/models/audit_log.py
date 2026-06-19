@@ -3,15 +3,20 @@ AuditLog model for tracking all security-relevant actions.
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import Column, String, DateTime, Text, ForeignKey, Index
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, generate_uuid
+from app.core.database import Base
+from app.models.base import TimestampMixin, generate_uuid
+
+if TYPE_CHECKING:
+    from app.models.healthcare_worker import HealthcareWorker
 
 
-class AuditLog(Base):
+class AuditLog(Base, TimestampMixin): 
     """
     Audit trail for all user actions.
     Immutable log of security-relevant events for compliance.
@@ -20,95 +25,96 @@ class AuditLog(Base):
     __tablename__ = "audit_logs"
     
     # Primary key
-    log_id = Column(
-        UUID(as_uuid=False),
+    log_id: Mapped[str] = mapped_column(
+        String(36),
         primary_key=True,
         default=generate_uuid,
         nullable=False,
-        doc="Unique identifier for the audit log entry"
+        comment="Unique identifier for the audit log entry"
     )
     
-    # Foreign key to healthcare worker (can be NULL for system events)
-    worker_id = Column(
-        UUID(as_uuid=False),
+    # ── Foreign key to healthcare worker (can be NULL for system events) ──────
+    worker_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("healthcare_workers.worker_id", ondelete="SET NULL"),
         nullable=True,
         index=True,
-        doc="Healthcare worker who performed the action"
+        comment="Healthcare worker who performed the action"
     )
     
     # Event details
-    event_type = Column(
+    event_type: Mapped[str] = mapped_column(
         String(50),
         nullable=False,
         index=True,
-        doc="Type of event (LOGIN, PREDICTION_RUN, REPORT_GENERATED, etc.)"
+        comment="Type of event (LOGIN, PREDICTION_RUN, REPORT_GENERATED, etc.)"
     )
     
-    action = Column(
+    action: Mapped[str] = mapped_column(
         String(255),
         nullable=False,
-        doc="Detailed action description"
+        comment="Detailed action description"
     )
     
-    resource_type = Column(
+    resource_type: Mapped[Optional[str]] = mapped_column(
         String(50),
         nullable=True,
-        doc="Type of resource accessed (Patient, Report, etc.)"
+        comment="Type of resource accessed (Patient, Report, etc.)"
     )
     
-    resource_id = Column(
+    resource_id: Mapped[Optional[str]] = mapped_column(
         String(255),
         nullable=True,
         index=True,
-        doc="Identifier of the resource accessed"
+        comment="Identifier of the resource accessed"
     )
     
     # Request metadata
-    ip_address = Column(
+    ip_address: Mapped[Optional[str]] = mapped_column(
         String(45),
         nullable=True,
-        doc="Client IP address (IPv4 or IPv6)"
+        comment="Client IP address (IPv4 or IPv6)"
     )
     
-    user_agent = Column(
+    user_agent: Mapped[Optional[str]] = mapped_column(
         String(500),
         nullable=True,
-        doc="Client user agent string"
+        comment="Client user agent string"
     )
     
-    request_id = Column(
+    request_id: Mapped[Optional[str]] = mapped_column(
         String(100),
         nullable=True,
         index=True,
-        doc="Correlation ID for request tracing"
+        comment="Correlation ID for request tracing"
     )
     
     # Outcome
-    status = Column(
+    status: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
         default="SUCCESS",
-        doc="Outcome status: SUCCESS/FAILED"
+        comment="Outcome status: SUCCESS/FAILED"
     )
     
-    error_message = Column(
+    error_message: Mapped[Optional[str]] = mapped_column(
         Text,
         nullable=True,
-        doc="Error message if status is FAILED"
+        comment="Error message if status is FAILED"
     )
     
     # Additional context (JSON)
-    details = Column(
+    details: Mapped[Optional[str]] = mapped_column(
         Text,
         nullable=True,
-        doc="Additional JSON details about the event"
+        comment="Additional JSON details about the event"
     )
     
-    # Timestamp (uses base class created_at)
+    # Timestamps from TimestampMixin
+    # created_at and updated_at are provided by TimestampMixin
     
     # Relationships
-    healthcare_worker = relationship(
+    healthcare_worker: Mapped[Optional["HealthcareWorker"]] = relationship(
         "HealthcareWorker",
         back_populates="audit_logs"
     )

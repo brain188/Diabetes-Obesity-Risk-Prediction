@@ -6,7 +6,7 @@ Handles PDF report generation, storage, and retrieval.
 import logging
 import os
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
 
@@ -177,8 +177,8 @@ class ReportService:
         
         # Prepare report data
         report_data = {
-            "report_id": str(hash(visit.visit_id + str(datetime.now(datetime.timezone.utc))))[:8],
-            "generated_at": datetime.now(datetime.timezone.utc).isoformat(),
+            "report_id": str(hash(visit.visit_id + str(datetime.now(timezone.utc))))[:8],
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "model_version": prediction.model_version if prediction else settings.MODEL_VERSION,
             "patient": {
                 "patient_id": patient.patient_id,
@@ -269,7 +269,7 @@ class ReportService:
             reports_dir.mkdir(parents=True, exist_ok=True)
             
             # Create date-based subdirectory
-            date_str = datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
+            date_str = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             date_dir = reports_dir / date_str
             date_dir.mkdir(parents=True, exist_ok=True)
             
@@ -323,7 +323,7 @@ class ReportService:
             reports_dir.mkdir(parents=True, exist_ok=True)
             
             # Create date-based subdirectory
-            date_str = datetime.now(datetime.timezone.utc).strftime("%Y/%m/%d")
+            date_str = datetime.now(timezone.utc).strftime("%Y/%m/%d")
             date_dir = reports_dir / date_str
             date_dir.mkdir(parents=True, exist_ok=True)
             

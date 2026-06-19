@@ -74,12 +74,16 @@ class PredictionRequest(BaseModel):
     """Request model for running predictions."""
     
     patient_id: str = Field(..., description="Patient identifier")
-    screening_data: "ScreeningDataRequest" = Field(..., description="Screening measurements")
+    visit_id: Optional[str] = Field(None, description="Screening visit identifier (optional, will create if not provided)")
+    # Optional because tests may provide only patient_id + visit_id.
+    screening_data: Optional["ScreeningDataRequest"] = Field(None, description="Screening measurements")
+
     
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "patient_id": "550e8400-e29b-41d4-a716-446655440001",
+                "visit_id": "550e8400-e29b-41d4-a716-446655440002",
                 "screening_data": {
                     "weight": 75.5,
                     "height": 1.75,

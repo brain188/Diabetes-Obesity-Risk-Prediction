@@ -7,7 +7,7 @@ import logging
 from datetime import datetime
 from typing import Optional, Tuple, List
 
-from app.core.exceptions import NotFoundError, ValidationError
+from app.core.exceptions import NotFoundError, InputValidationError
 from app.repositories.screening_repository import ScreeningRepository
 from app.repositories.patient_repository import PatientRepository
 from app.repositories.audit_log_repository import AuditLogRepository
@@ -113,7 +113,7 @@ class ScreeningService:
         
         age = patient.age
         if not age:
-            raise ValidationError("Unable to calculate patient age")
+            raise InputValidationError("Unable to calculate patient age")
         
         # Validate screening data
         self._validate_screening_data(request, age)
@@ -140,8 +140,6 @@ class ScreeningService:
             height=request.height,
             bmi=bmi,
             bmi_category=bmi_category,
-            glucose_level=request.glucose_level,
-            blood_pressure=request.blood_pressure,
             physical_activity=request.physical_activity,
             family_history_diabetes=request.family_history_diabetes,
             previous_gdm=request.previous_gdm,
@@ -177,8 +175,6 @@ class ScreeningService:
             height=request.height,
             bmi=bmi,
             bmi_category=bmi_category,
-            glucose_level=request.glucose_level,
-            blood_pressure=request.blood_pressure,
             physical_activity=request.physical_activity,
             family_history_diabetes=request.family_history_diabetes,
             previous_gdm=request.previous_gdm,
@@ -238,8 +234,6 @@ class ScreeningService:
                 height=visit.screening_data.height,
                 bmi=visit.screening_data.bmi,
                 bmi_category=visit.screening_data.bmi_category,
-                glucose_level=visit.screening_data.glucose_level,
-                blood_pressure=visit.screening_data.blood_pressure,
                 physical_activity=visit.screening_data.physical_activity,
                 family_history_diabetes=visit.screening_data.family_history_diabetes,
                 previous_gdm=visit.screening_data.previous_gdm,

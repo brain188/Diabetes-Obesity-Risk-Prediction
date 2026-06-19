@@ -2,7 +2,7 @@
 Common Pydantic schemas used across multiple endpoints.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Generic, List, Optional, TypeVar
 from pydantic import BaseModel, Field, ConfigDict
 
@@ -45,7 +45,7 @@ class ErrorResponse(BaseModel):
     message: str = Field(..., description="Human-readable error message")
     status_code: int = Field(..., description="HTTP status code", example=422)
     detail: Optional[Any] = Field(None, description="Additional error details")
-    timestamp: datetime = Field(default_factory=datetime.now(datetime.timezone.utc), description="Error timestamp")
+    timestamp: datetime = Field(default_factory=datetime.now(timezone.utc), description="Error timestamp")
     
     model_config = ConfigDict(
         json_schema_extra={
@@ -79,34 +79,49 @@ class PaginationParams(BaseModel):
 
 class PaginatedResponse(BaseModel, Generic[T]):
     """Generic paginated response model."""
-    
+
     items: List[T] = Field(..., description="List of items for current page")
     total: int = Field(..., description="Total number of items available")
+
+    # Backwards/forwards compatible pagination payloads.
+    # Some clients/tests expect a nested `pagination` object.
+    pagination: Dict[str, int] = Field(
+        ..., description="Pagination metadata (page, page_size, total_pages)"
+    )
+
+    # Keep the flattened fields too (other endpoints/tests may rely on them).
     page: int = Field(..., description="Current page number")
     page_size: int = Field(..., description="Items per page")
     total_pages: int = Field(..., description="Total number of pages")
-    
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "items": [],
                 "total": 100,
+                "pagination": {"page": 1, "page_size": 20, "total_pages": 5},
                 "page": 1,
                 "page_size": 20,
-                "total_pages": 5
+                "total_pages": 5,
             }
         }
     )
-    
+
     @classmethod
     def create(cls, items: List[T], total: int, params: PaginationParams) -> "PaginatedResponse[T]":
         """Factory method to create paginated response from query results."""
+        total_pages = (total + params.page_size - 1) // params.page_size if params.page_size else 0
         return cls(
             items=items,
             total=total,
+            pagination={
+                "page": params.page,
+                "page_size": params.page_size,
+                "total_pages": total_pages,
+            },
             page=params.page,
             page_size=params.page_size,
-            total_pages=(total + params.page_size - 1) // params.page_size
+            total_pages=total_pages,
         )
 
 

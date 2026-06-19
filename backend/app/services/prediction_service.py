@@ -6,7 +6,7 @@ import logging
 import time
 from typing import Optional, Dict, Any
 
-from app.core.exceptions import PredictionError, ValidationError
+from app.core.exceptions import PredictionError, InputValidationError, ModelNotLoadedError
 from app.core.constants import get_risk_color, RISK_HIGH, RISK_MODERATE, RISK_LOW
 
 # ML Module Imports
@@ -85,7 +85,7 @@ class PredictionService:
             )
             
             if not visit.screening_data:
-                raise ValidationError("No screening data found for this visit")
+                raise InputValidationError("No screening data found for this visit")
             
             screening_data = visit.screening_data
             patient = visit.patient
@@ -97,13 +97,17 @@ class PredictionService:
                     screening_data=screening_data,
                     patient_sex=patient.sex
                 )
-                
+
                 # Build scaled feature row
                 feature_row = build_feature_row(patient_features, self.model_loader)
-                
+
+            except ModelNotLoadedError:
+                # ML artifacts weren't loaded at startup (common in test envs)
+                # Return 503 instead of mapping to 422.
+                raise
             except Exception as e:
                 logger.error(f"Feature building failed: {str(e)}")
-                raise ValidationError(f"Failed to prepare features: {str(e)}")
+                raise InputValidationError(f"Failed to prepare features: {str(e)}")
             
             # Run Diabetes Prediction
             try:
@@ -232,7 +236,7 @@ class PredictionService:
                 latency_ms=latency_ms
             )
             
-        except (PredictionError, ValidationError):
+        except (PredictionError, InputValidationError, ModelNotLoadedError):
             # Re-raise these as they are already proper exceptions
             raise
         except Exception as e:

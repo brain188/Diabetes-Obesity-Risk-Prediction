@@ -38,7 +38,7 @@ from app.core.constants import (
     RISK_LOW,
     RISK_MODERATE,
 )
-from app.core.exceptions import ValidationError
+from app.core.exceptions import InputValidationError
 from app.core.logging import get_logger
 
 log = get_logger(__name__)
@@ -57,9 +57,9 @@ def calculate_bmi(weight: float, height: float) -> float:
     ValidationError — if height or weight is <= 0
     """
     if height <= 0:
-        raise ValidationError("Height must be greater than zero.")
+        raise InputValidationError("Height must be greater than zero.")
     if weight <= 0:
-        raise ValidationError("Weight must be greater than zero.")
+        raise InputValidationError("Weight must be greater than zero.")
     return round(weight / (height ** 2), 2)
 
 

@@ -79,7 +79,13 @@ class BaseRepository(Generic[ModelType]):
             Model instance or None if not found
         """
         if id_column is None:
-            id_column = f"{self.model.__tablename__.rstrip('s')}_id"
+            primary_key = self.model.__mapper__.primary_key
+            if primary_key:
+                id_column = primary_key[0].key
+            else:
+                raise DatabaseError(
+                    message=f"Failed to determine primary key for {self.model.__name__}"
+                )
         
         try:
             stmt = select(self.model).where(getattr(self.model, id_column) == id)
@@ -205,7 +211,11 @@ class BaseRepository(Generic[ModelType]):
             NotFoundError: If record not found
         """
         if id_column is None:
-            id_column = f"{self.model.__tablename__.rstrip('s')}_id"
+            primary_key = self.model.__mapper__.primary_key
+            if primary_key:
+                id_column = primary_key[0].key
+            else:
+                id_column = f"{self.model.__tablename__.rstrip('s')}_id"
         
         try:
             # First get the instance
@@ -245,7 +255,11 @@ class BaseRepository(Generic[ModelType]):
             DatabaseError: If deletion fails
         """
         if id_column is None:
-            id_column = f"{self.model.__tablename__.rstrip('s')}_id"
+            primary_key = self.model.__mapper__.primary_key
+            if primary_key:
+                id_column = primary_key[0].key
+            else:
+                id_column = f"{self.model.__tablename__.rstrip('s')}_id"
         
         try:
             stmt = delete(self.model).where(getattr(self.model, id_column) == id)

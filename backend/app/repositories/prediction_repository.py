@@ -3,7 +3,7 @@ Repository for Prediction and related model operations.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 
 from sqlalchemy import select, desc
@@ -67,7 +67,7 @@ class PredictionRepository:
             obesity_class=obesity_class,
             model_version=model_version,
             latency_ms=latency_ms,
-            prediction_date=datetime.now(datetime.timezone.utc)
+            prediction_date=datetime.now(timezone.utc)
         )
         
         logger.info(f"Saved prediction for visit {visit_id}: diabetes_risk={diabetes_risk_class}")
@@ -87,11 +87,17 @@ class PredictionRepository:
             Prediction instance with loaded relationships
         """
         try:
-            stmt = select(Prediction).where(
-                Prediction.prediction_id == prediction_id
-            ).options(
-                selectinload(Prediction.recommendation),
-                selectinload(Prediction.shap_explanation)
+            stmt = (
+                select(Prediction)
+                .where(Prediction.prediction_id == prediction_id)
+                .options(
+                    # direct relationships used by API serialization
+                    selectinload(Prediction.visit).selectinload(ScreeningVisit.screening_data),
+                    selectinload(Prediction.visit).selectinload(ScreeningVisit.patient),
+                    # other optional relationships
+                    selectinload(Prediction.recommendation),
+                    selectinload(Prediction.shap_explanation),
+                )
             )
             
             result = await self.session.execute(stmt)
@@ -236,13 +242,37 @@ class PredictionRepository:
             result = await self.session.execute(stmt)
             rows = result.all()
             
-            return [
-                {
-                    "prediction": row[0],
-                    "visit_date": row[1]
-                }
-                for row in rows
-            ]
+            # Important: avoid accessing lazy-loaded relationships here (can trigger MissingGreenlet)
+            # because this repository is building dicts after the async query has completed.
+            result_items = []
+            for row in rows:
+                prediction_obj = row[0]
+                visit_date = row[1]
+
+                result_items.append(
+                    {
+                        "prediction_id": prediction_obj.prediction_id,
+                        "visit_id": prediction_obj.visit_id,
+                        "patient_id": None,
+                        "diabetes": {
+                            "probability": prediction_obj.diabetes_probability,
+                            "risk_class": prediction_obj.diabetes_risk_class,
+                            "class_label": prediction_obj.diabetes_class,
+                        },
+                        "obesity": {
+                            "bmi": None,
+                            "bmi_category": None,
+                            "risk_class": prediction_obj.obesity_risk_class,
+                            "obesity_class": prediction_obj.obesity_class,
+                        },
+                        "model_version": prediction_obj.model_version,
+                        "prediction_date": prediction_obj.prediction_date,
+                        "latency_ms": prediction_obj.latency_ms,
+                        "visit_date": visit_date,
+                    }
+                )
+
+            return result_items
         except Exception as e:
             logger.error(f"Failed to get prediction history for patient {patient_id}: {str(e)}")
             raise

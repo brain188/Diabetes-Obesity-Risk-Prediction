@@ -81,23 +81,27 @@ class AuditLogRepository(BaseRepository[AuditLog]):
     
     async def log_login(
         self,
-        email: str,
-        success: bool,
+        user_id: str = None,
+        email: str = None,
+        success: bool = False,
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
         request_id: Optional[str] = None,
-        worker_id: Optional[str] = None
+        worker_id: Optional[str] = None,
+        details: Optional[str] = None
     ) -> AuditLog:
         """Log a login attempt."""
+        action = f"Login attempt for user: {email or user_id or 'unknown'}"
         return await self.log_event(
             event_type=AUDIT_LOGIN,
-            action=f"Login attempt for user: {email}",
-            worker_id=worker_id,
+            action=action,
+            worker_id=worker_id or user_id,
             ip_address=ip_address,
             user_agent=user_agent,
             request_id=request_id,
             status="SUCCESS" if success else "FAILED",
-            error_message=None if success else "Invalid credentials"
+            error_message=None if success else "Invalid credentials",
+            details=details or {}
         )
     
     async def log_logout(

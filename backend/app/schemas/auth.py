@@ -21,6 +21,8 @@ class UserRegisterRequest(BaseModel):
         """Validate password strength."""
         if len(v) < 8:
             raise ValueError("Password must be at least 8 characters")
+        if len(v) > 72:
+            raise ValueError("Password cannot be longer than 72 characters")
         if not any(c.isupper() for c in v):
             raise ValueError("Password must contain at least one uppercase letter")
         if not any(c.isdigit() for c in v):
@@ -83,16 +85,20 @@ class UserLoginResponse(BaseModel):
     """Response model for successful login."""
     
     access_token: str = Field(..., description="JWT access token")
+    refresh_token: str = Field(..., description="JWT refresh token")
     token_type: str = Field(default="bearer", description="Token type")
-    expires_in: int = Field(..., description="Token expiration in seconds")
+    expires_in: int = Field(..., description="Access token expiration in seconds")
+    refresh_expires_in: int = Field(..., description="Refresh token expiration in seconds")
     user: "UserProfileResponse" = Field(..., description="User profile information")
     
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "access_token": "eyJhbGciOiJIUzI1NiIs...",
+                "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
                 "token_type": "bearer",
                 "expires_in": 3600,
+                "refresh_expires_in": 604800,
                 "user": {
                     "worker_id": "550e8400-e29b-41d4-a716-446655440000",
                     "full_name": "Dr. Jane Smith",
@@ -104,18 +110,28 @@ class UserLoginResponse(BaseModel):
     )
 
 
-class TokenResponse(BaseModel):
-    """Response model for token refresh."""
-    
-    access_token: str = Field(..., description="New JWT access token")
-    token_type: str = Field(default="bearer", description="Token type")
-    expires_in: int = Field(..., description="Token expiration in seconds")
-
-
 class TokenRefreshRequest(BaseModel):
     """Request model for refreshing access token."""
     
     refresh_token: str = Field(..., description="Refresh token")
+
+
+class TokenRefreshResponse(BaseModel):
+    """Response model for token refresh."""
+    
+    access_token: str = Field(..., description="New JWT access token")
+    refresh_token: str = Field(..., description="New JWT refresh token")
+    token_type: str = Field(default="bearer", description="Token type")
+    expires_in: int = Field(..., description="Access token expiration in seconds")
+    refresh_expires_in: int = Field(..., description="Refresh token expiration in seconds")
+
+
+class TokenResponse(BaseModel):
+    """Response model for token refresh (legacy)."""
+    
+    access_token: str = Field(..., description="New JWT access token")
+    token_type: str = Field(default="bearer", description="Token type")
+    expires_in: int = Field(..., description="Token expiration in seconds")
 
 
 class PasswordResetRequest(BaseModel):

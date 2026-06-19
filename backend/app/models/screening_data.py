@@ -2,7 +2,7 @@
 ScreeningVisit and ScreeningData models for capturing patient screening information.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import (
@@ -48,7 +48,7 @@ class ScreeningVisit(Base, TimestampMixin):
     # Visit information
     visit_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=datetime.now(datetime.timezone.utc),
+        default=datetime.now(timezone.utc),
         nullable=False,
         comment="Date and time of the screening visit"
     )
@@ -61,10 +61,12 @@ class ScreeningVisit(Base, TimestampMixin):
     
     # Relationships
     patient: Mapped["Patient"] = relationship(
+        "Patient",
         back_populates="screening_visits"
     )
     
     screening_data: Mapped[Optional["ScreeningData"]] = relationship(
+        "ScreeningData",
         back_populates="visit",
         uselist=False,
         cascade="all, delete-orphan",
@@ -72,13 +74,16 @@ class ScreeningVisit(Base, TimestampMixin):
     )
     
     prediction: Mapped[Optional["Prediction"]] = relationship(
+        "Prediction",
         back_populates="visit",
         uselist=False,
         cascade="all, delete-orphan",
+        viewonly=False,
         doc="Prediction results for this visit"
     )
     
     report: Mapped[Optional["Report"]] = relationship(
+        "Report",
         back_populates="visit",
         uselist=False,
         cascade="all, delete-orphan",
@@ -86,6 +91,7 @@ class ScreeningVisit(Base, TimestampMixin):
     )
     
     clinical_note: Mapped[Optional["ClinicalNote"]] = relationship(
+        "ClinicalNote",
         back_populates="visit",
         uselist=False,
         cascade="all, delete-orphan",
@@ -203,6 +209,7 @@ class ScreeningData(Base, TimestampMixin):
     
     # Relationships
     visit: Mapped["ScreeningVisit"] = relationship(
+        "ScreeningVisit",
         back_populates="screening_data"
     )
     

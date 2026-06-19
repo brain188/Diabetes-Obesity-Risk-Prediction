@@ -1,0 +1,29 @@
+# docker-compose.dev.yml
+# Development environment overrides
+
+version: '3.8'
+
+services:
+  # ────────────────────────────────────────────────────────────────────────────
+  # Backend - Development Mode
+  # ────────────────────────────────────────────────────────────────────────────
+  backend:
+    environment:
+      ENVIRONMENT: development
+      DEBUG: true
+      LOG_LEVEL: DEBUG
+    volumes:
+      - ./app:/app/app
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./model:/app/model
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # PgAdmin - Development
+  # ────────────────────────────────────────────────────────────────────────────
+  pgadmin:
+    profiles:
+      - dev

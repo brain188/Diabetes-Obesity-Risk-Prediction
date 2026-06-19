@@ -14,10 +14,6 @@ class ScreeningDataRequest(BaseModel):
     weight: float = Field(..., ge=20, le=300, description="Weight in kilograms")
     height: float = Field(..., ge=1.0, le=2.5, description="Height in meters")
     
-    # Clinical measurements (optional)
-    glucose_level: Optional[float] = Field(None, ge=40, le=600, description="Blood glucose level (mg/dL)")
-    blood_pressure: Optional[str] = Field(None, pattern=r'^\d{2,3}/\d{2,3}$', description="Blood pressure (e.g., '120/80')")
-    
     # Lifestyle factors
     physical_activity: bool = Field(..., description="Whether the patient is physically active")
     
@@ -42,28 +38,11 @@ class ScreeningDataRequest(BaseModel):
             raise ValueError("Residence must be either 'Urban' or 'Rural'")
         return v
     
-    @field_validator("blood_pressure")
-    @classmethod
-    def validate_blood_pressure(cls, v: Optional[str]) -> Optional[str]:
-        """Validate blood pressure format."""
-        if v is not None:
-            import re
-            if not re.match(r'^\d{2,3}/\d{2,3}$', v):
-                raise ValueError("Blood pressure must be in format '120/80'")
-            systolic, diastolic = map(int, v.split('/'))
-            if systolic < 70 or systolic > 250:
-                raise ValueError("Systolic pressure must be between 70 and 250")
-            if diastolic < 40 or diastolic > 150:
-                raise ValueError("Diastolic pressure must be between 40 and 150")
-        return v
-    
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "weight": 75.5,
                 "height": 1.75,
-                "glucose_level": 95.0,
-                "blood_pressure": "120/80",
                 "physical_activity": True,
                 "family_history_diabetes": True,
                 "previous_gdm": False,
@@ -84,8 +63,6 @@ class ScreeningDataResponse(BaseModel):
     height: float = Field(..., description="Height in meters")
     bmi: float = Field(..., description="Calculated BMI")
     bmi_category: str = Field(..., description="BMI category")
-    glucose_level: Optional[float] = Field(None, description="Blood glucose level")
-    blood_pressure: Optional[str] = Field(None, description="Blood pressure")
     physical_activity: bool = Field(..., description="Physically active")
     family_history_diabetes: bool = Field(..., description="Family history of diabetes")
     previous_gdm: bool = Field(..., description="Previous GDM")
@@ -103,8 +80,6 @@ class ScreeningDataResponse(BaseModel):
                 "height": 1.75,
                 "bmi": 24.65,
                 "bmi_category": "Normal",
-                "glucose_level": 95.0,
-                "blood_pressure": "120/80",
                 "physical_activity": True,
                 "family_history_diabetes": True,
                 "previous_gdm": False,

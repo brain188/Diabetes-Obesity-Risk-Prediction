@@ -12,10 +12,10 @@ Relationships
   clinical_notes → clinical notes for this patient           (one-to-many)
 """
 
-from datetime import date
+from datetime import date, datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlalchemy import Date, ForeignKey, Index, String, func
+from sqlalchemy import Boolean, DateTime, Date, ForeignKey, Index, String, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -83,6 +83,21 @@ class Patient(Base, TimestampMixin):
         index=True,
         comment="National ID or medical record number (optional)"
     )
+
+     # Soft delete field
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
+        nullable=False,
+        index=True,
+        comment="Soft delete flag: True for active, False for deleted"
+    )
+    
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment="Timestamp when patient was soft deleted"
+    )
     
     # Relationships
     registered_by: Mapped["HealthcareWorker"] = relationship(
@@ -133,6 +148,7 @@ class Patient(Base, TimestampMixin):
         Index("idx_patient_dob", "date_of_birth"),
         Index("idx_patient_registered_by", "worker_id"),
         Index("idx_patient_sex", "sex"),
+        Index("idx_patient_active", "is_active"),
     )
     
     def __repr__(self) -> str:

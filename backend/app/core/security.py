@@ -1,174 +1,161 @@
 """
-Security utilities for authentication and data protection.
-Handles password hashing, JWT tokens, and security-related functions.
+JWT token creation/verification and bcrypt password hashing.
 """
 
+import hashlib
 import logging
-from datetime import datetime, timedelta, timezone
-from typing import Optional, Dict, Any
+import secrets
+from datetime import UTC, datetime, timedelta
+from typing import Any, Dict, Optional
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from fastapi import HTTPException, status
 
 from app.core.config import settings
 
-# Set up logging
 logger = logging.getLogger(__name__)
 
-# Password hashing context with bcrypt
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-# ========== Password Functions ==========
 
 def hash_password(password: str) -> str:
-    """
-    Hash a plain text password using bcrypt.
-    
-    Args:
-        password: Plain text password
-        
-    Returns:
-        Hashed password string
-    """
-    return pwd_context.hash(password)
+    """Hash a plain-text password using bcrypt."""
+    salt = bcrypt.gensalt(rounds=settings.BCRYPT_ROUNDS)
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verify a plain text password against a hash.
-    
-    Args:
-        plain_password: Plain text password to verify
-        hashed_password: Stored hash to compare against
-        
-    Returns:
-        True if password matches, False otherwise
-    """
-    return pwd_context.verify(plain_password, hashed_password)
+    """Verify a plain-text password against a stored bcrypt hash."""
+    return bcrypt.checkpw(
+        plain_password.encode("utf-8"),
+        hashed_password.encode("utf-8"),
+    )
 
 
-# ========== JWT Token Functions ==========
+# Access token
 
-def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(
+    data: Dict[str, Any],
+    expires_delta: Optional[timedelta] = None,
+) -> str:
     """
     Create a JWT access token.
-    
-    Args:
-        data: Dictionary of claims to encode in the token
-        expires_delta: Optional custom expiration time
-        
-    Returns:
-        Encoded JWT token string
+
+    Accepts data: dict so existing call sites (auth_service, conftest) work.
+    The "sub" claim must be set by the caller.
     """
     to_encode = data.copy()
-    
-    # Set expiration time
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    
-    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc)})
-    
-    # Encode and sign the token
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
-    logger.debug(f"Created access token for user: {data.get('sub', 'unknown')}")
-    
-    return encoded_jwt
+    expire = datetime.now(UTC) + (
+        expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    to_encode.update({
+        "exp" : expire,
+        "iat" : datetime.now(UTC),
+        "type": "access",
+    })
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def decode_access_token(token: str) -> Optional[Dict[str, Any]]:
+# ── Refresh token ─────────────────────────────────────────────────────────────
+
+def create_refresh_token(data: Dict[str, Any]) -> tuple[str, str, datetime]:
     """
-    Decode and verify a JWT access token.
-    
-    Args:
-        token: JWT token to decode
-        
-    Returns:
-        Decoded claims if valid, None otherwise
+    Create a refresh token.
+
+    Returns (encoded_jwt, sha256_hash, expires_at).
+    The hash is stored in the DB; the raw JWT is sent to the client.
+    """
+    to_encode = data.copy()
+    expire    = datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode.update({
+        "exp" : expire,
+        "iat" : datetime.now(UTC),
+        "type": "refresh",
+        "jti" : secrets.token_urlsafe(16),
+    })
+    encoded    = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    token_hash = hashlib.sha256(encoded.encode()).hexdigest()
+    return encoded, token_hash, expire
+
+
+# ── Token decoding ────────────────────────────────────────────────────────────
+
+def decode_token(token: str, token_type: Optional[str] = None) -> dict:
+    """
+    Decode and validate a JWT token.
+
+    Parameters
+    ----------
+    token      : encoded JWT string
+    token_type : optional "access" or "refresh" — validates the type claim
+
+    Returns the decoded payload dict.
+    Returns None (does not raise) when token_type is provided and mismatches,
+    so auth_service.refresh_token() can handle it gracefully.
+    Raises JWTError for expired / tampered tokens.
+    """
+    payload = jwt.decode(
+        token,
+        settings.SECRET_KEY,
+        algorithms=[settings.ALGORITHM],
+    )
+    if token_type and payload.get("type") != token_type:
+        logger.warning(
+            "Token type mismatch: expected %s, got %s",
+            token_type, payload.get("type"),
+        )
+        return None   # type: ignore[return-value]
+    return payload
+
+
+def extract_subject(token: str) -> Optional[str]:
+    """
+    Safely extract the subject from a token.
+    Returns None if the token is invalid — never raises.
     """
     try:
-        payload = jwt.decode(
-            token, 
-            settings.SECRET_KEY, 
-            algorithms=[settings.ALGORITHM]
-        )
-        return payload
-    except JWTError as e:
-        logger.warning(f"JWT decode error: {str(e)}")
+        return decode_token(token).get("sub")
+    except JWTError:
         return None
 
 
-def verify_token_expiration(payload: Dict[str, Any]) -> bool:
-    """
-    Check if a token's expiration time has passed.
-    
-    Args:
-        payload: Decoded JWT payload
-        
-    Returns:
-        True if token is still valid, False if expired
-    """
-    exp = payload.get("exp")
-    if exp is None:
-        return False
-    
-    exp_datetime = datetime.fromtimestamp(exp, tz=timezone.utc)
-    return exp_datetime > datetime.now(timezone.utc)
-
+# ── Password reset helpers ────────────────────────────────────────────────────
 
 def create_password_reset_token(email: str) -> str:
-    """
-    Create a short-lived token for password reset.
-    
-    Args:
-        email: User's email address
-        
-    Returns:
-        Encoded password reset token
-    """
-    expire = datetime.now(timezone.utc) + timedelta(minutes=settings.PASSWORD_RESET_TOKEN_EXPIRE_MINUTES)
+    """Create a 30-minute JWT for password reset."""
+    expire = datetime.now(UTC) + timedelta(
+        minutes=getattr(settings, "PASSWORD_RESET_TOKEN_EXPIRE_MINUTES", 30)
+    )
     payload = {
-        "sub": email,
+        "sub" : email,
         "type": "password_reset",
-        "exp": expire,
-        "iat": datetime.now(timezone.utc)
+        "exp" : expire,
+        "iat" : datetime.now(UTC),
     }
     return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
 def verify_password_reset_token(token: str) -> Optional[str]:
-    """
-    Verify a password reset token and extract the email.
-    
-    Args:
-        token: Password reset token
-        
-    Returns:
-        Email if token is valid, None otherwise
-    """
+    """Verify a password reset token and return the email, or None."""
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        
-        # Check token type
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         if payload.get("type") != "password_reset":
-            logger.warning("Invalid password reset token type")
             return None
-        
-        # Check expiration
-        if not verify_token_expiration(payload):
-            logger.warning("Password reset token expired")
-            return None
-        
         return payload.get("sub")
-    except JWTError as e:
-        logger.warning(f"Password reset token decode error: {str(e)}")
+    except JWTError:
         return None
 
 
-# ========== Security Exceptions ==========
+def verify_token_expiration(payload: Dict[str, Any]) -> bool:
+    """Return True if the token has not yet expired."""
+    exp = payload.get("exp")
+    if exp is None:
+        return False
+    return datetime.fromtimestamp(exp, tz=UTC) > datetime.now(UTC)
+
+
+# ── Security Exceptions ──────────────────────────────────────────────────────
 
 def raise_unauthorized(detail: str = "Could not validate credentials") -> None:
     """Raise HTTP 401 Unauthorized exception."""

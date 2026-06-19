@@ -3,15 +3,22 @@ ClinicalNote model for free-text observations from healthcare workers.
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING, Optional
 
-from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Index
+from sqlalchemy import String, Text, DateTime, ForeignKey, Index
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, generate_uuid
+from app.core.database import Base
+from app.models.base import TimestampMixin, generate_uuid
+
+if TYPE_CHECKING:
+    from app.models.patient import Patient
+    from app.models.screening_data import ScreeningVisit
+    from app.models.healthcare_worker import HealthcareWorker
 
 
-class ClinicalNote(Base):
+class ClinicalNote(Base, TimestampMixin):
     """
     Free-text clinical notes written by healthcare workers.
     Provides additional context not captured by structured data.
@@ -20,81 +27,82 @@ class ClinicalNote(Base):
     __tablename__ = "clinical_notes"
     
     # Primary key
-    note_id = Column(
-        UUID(as_uuid=False),
+    note_id: Mapped[str] = mapped_column(
+        String(36),
         primary_key=True,
         default=generate_uuid,
         nullable=False,
-        doc="Unique identifier for the clinical note"
+        comment="Unique identifier for the clinical note"
     )
     
     # Foreign keys
-    patient_id = Column(
-        UUID(as_uuid=False),
+    patient_id: Mapped[str] = mapped_column(
+        String(36),
         ForeignKey("patients.patient_id", ondelete="CASCADE"),
         nullable=False,
         index=True,
-        doc="Patient this note is about"
+        comment="Patient this note is about"
     )
     
-    visit_id = Column(
-        UUID(as_uuid=False),
+    visit_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("screening_visits.visit_id", ondelete="SET NULL"),
         nullable=True,
         index=True,
-        doc="Optional: Specific screening visit this note relates to"
+        comment="Optional: Specific screening visit this note relates to"
     )
     
-    author_id = Column(
-        UUID(as_uuid=False),
+    author_id: Mapped[Optional[str]] = mapped_column(
+        String(36),
         ForeignKey("healthcare_workers.worker_id", ondelete="SET NULL"),
         nullable=True,
         index=True,
-        doc="Healthcare worker who wrote the note"
+        comment="Healthcare worker who wrote the note"
     )
     
     # Note content
-    title = Column(
+    title: Mapped[Optional[str]] = mapped_column(
         String(255),
         nullable=True,
-        doc="Optional title/summary of the note"
+        comment="Optional title/summary of the note"
     )
     
-    content = Column(
+    content: Mapped[str] = mapped_column(
         Text,
         nullable=False,
-        doc="Full clinical note text"
+        comment="Full clinical note text"
     )
     
     # Metadata
-    note_type = Column(
+    note_type: Mapped[str] = mapped_column(
         String(50),
         default="GENERAL",
         nullable=False,
-        doc="Type of note: GENERAL, FOLLOW_UP, REFERRAL, etc."
+        comment="Type of note: GENERAL, FOLLOW_UP, REFERRAL, etc."
     )
     
-    is_urgent = Column(
+    is_urgent: Mapped[str] = mapped_column(
         String(20),
         default="NO",
         nullable=False,
-        doc="Urgency flag: NO, YES, CRITICAL"
+        comment="Urgency flag: NO, YES, CRITICAL"
     )
     
-    # Timestamps (uses base created_at and updated_at)
+    # Timestamps from TimestampMixin
+    # created_at and updated_at are provided by TimestampMixin
     
     # Relationships
-    patient = relationship(
+    patient: Mapped["Patient"] = relationship(
         "Patient",
         back_populates="clinical_notes"
     )
     
-    visit = relationship(
+    visit: Mapped[Optional["ScreeningVisit"]] = relationship(
         "ScreeningVisit",
         back_populates="clinical_note"
     )
     
-    author = relationship(
+    author: Mapped[Optional["HealthcareWorker"]] = relationship(
         "HealthcareWorker",
         back_populates="clinical_notes"
     )

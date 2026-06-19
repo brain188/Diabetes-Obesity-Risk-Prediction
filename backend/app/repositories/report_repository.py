@@ -3,9 +3,8 @@ Repository for Report model operations.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional, Tuple
-from datetime import timedelta
 
 from sqlalchemy import select, desc, func
 from sqlalchemy.orm import selectinload
@@ -53,7 +52,7 @@ class ReportRepository(BaseRepository[Report]):
             generated_by=generated_by,
             file_size_bytes=file_size_bytes,
             checksum=checksum,
-            generated_at=datetime.utcnow(),
+            generated_at=datetime.now(timezone.utc),
             download_count=0
         )
         
@@ -77,8 +76,8 @@ class ReportRepository(BaseRepository[Report]):
             stmt = select(Report).where(
                 Report.report_id == report_id
             ).options(
-                selectinload(Report.visit).selectinload(Report.visit.patient),
-                selectinload(Report.healthcare_worker)
+                selectinload(Report.visit).selectinload(Report.visit.property.mapper.class_.patient).options(),
+                selectinload(Report.healthcare_worker),
             )
             
             result = await self.session.execute(stmt)
@@ -130,7 +129,7 @@ class ReportRepository(BaseRepository[Report]):
         report = await self.update(
             report_id,
             download_count=new_count,
-            downloaded_at=datetime.now(datetime.timezone.utc)
+            downloaded_at=datetime.now(timezone.utc)
         )
         
         logger.debug(f"Incremented download count for report {report_id} to {new_count}")
@@ -224,7 +223,7 @@ class ReportRepository(BaseRepository[Report]):
             Number of reports deleted
         """
         try:
-            cutoff_date = datetime.now(datetime.timezone.utc) - timedelta(days=older_than_days)
+            cutoff_date = datetime.now(timezone.utc) - timedelta(days=older_than_days)
             
             # First get the reports to delete their files
             stmt = select(Report).where(Report.generated_at < cutoff_date)

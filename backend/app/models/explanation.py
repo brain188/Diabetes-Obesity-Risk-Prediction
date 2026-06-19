@@ -5,10 +5,10 @@ SHAP explanation model for model interpretability.
 from typing import Optional, Dict, Any
 
 from sqlalchemy import Column, String, Float, ForeignKey, JSON, Index
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base, generate_uuid
+from app.core.database import Base
+from app.models.base import generate_uuid
 
 
 class SHAPExplanation(Base):
@@ -21,7 +21,7 @@ class SHAPExplanation(Base):
     
     # Primary key
     explanation_id = Column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=generate_uuid,
         nullable=False,
@@ -30,7 +30,7 @@ class SHAPExplanation(Base):
     
     # Foreign key to prediction
     prediction_id = Column(
-        UUID(as_uuid=False),
+        String(36),
         ForeignKey("predictions.prediction_id", ondelete="CASCADE"),
         nullable=False,
         unique=True,  # One explanation per prediction

@@ -7,7 +7,7 @@ import logging
 from datetime import date
 from typing import List, Optional, Tuple
 
-from app.core.exceptions import NotFoundError, ValidationError
+from app.core.exceptions import NotFoundError, InputValidationError
 from app.repositories.patient_repository import PatientRepository
 from app.repositories.audit_log_repository import AuditLogRepository
 from app.schemas.patient import PatientCreateRequest, PatientUpdateRequest, PatientResponse
@@ -55,10 +55,10 @@ class PatientService:
         )
         
         if age < 18:
-            raise ValidationError("Patient must be at least 18 years old")
+            raise InputValidationError("Patient must be at least 18 years old")
         
         if age > 120:
-            raise ValidationError("Invalid date of birth")
+            raise InputValidationError("Invalid date of birth")
         
         # Create patient
         patient = await self.patient_repo.create_patient(
@@ -91,13 +91,15 @@ class PatientService:
             national_id=patient.national_id,
             worker_id=patient.worker_id,
             created_at=patient.created_at,
-            updated_at=patient.updated_at
+            updated_at=patient.updated_at,
+            is_active=patient.is_active,
         )
     
     async def get_patient(
         self,
         patient_id: str,
-        worker_id: Optional[str] = None
+        worker_id: Optional[str] = None,
+        include_inactive: bool = False
     ) -> PatientResponse:
         """
         Get patient by ID.
@@ -105,6 +107,7 @@ class PatientService:
         Args:
             patient_id: Patient identifier
             worker_id: Optional worker ID for access check
+            include_inactive: Whether to include inactive patients
             
         Returns:
             Patient response
@@ -112,7 +115,12 @@ class PatientService:
         Raises:
             NotFoundError: If patient not found
         """
-        patient = await self.patient_repo.get_by_id(patient_id)
+        patient = await self.patient_repo.get_patient_with_visits(
+            patient_id=patient_id,
+            include_visits=False,
+            include_inactive=include_inactive
+        )
+        
         if not patient:
             raise NotFoundError("Patient", patient_id)
         
@@ -120,7 +128,7 @@ class PatientService:
         if worker_id:
             await self.audit_repo.log_event(
                 event_type="PATIENT_VIEWED",
-                action="Patient record viewed",
+                action=f"Patient record viewed",
                 worker_id=worker_id,
                 resource_type="Patient",
                 resource_id=patient_id,
@@ -137,7 +145,8 @@ class PatientService:
             national_id=patient.national_id,
             worker_id=patient.worker_id,
             created_at=patient.created_at,
-            updated_at=patient.updated_at
+            updated_at=patient.updated_at,
+            is_active=patient.is_active
         )
     
     async def search_patients(
@@ -145,7 +154,8 @@ class PatientService:
         query: str,
         worker_id: str,
         page: int = 1,
-        page_size: int = 20
+        page_size: int = 20,
+        include_inactive: bool = False
     ) -> Tuple[List[PatientResponse], int]:
         """
         Search patients by name or ID.
@@ -155,6 +165,7 @@ class PatientService:
             worker_id: Worker ID for access control
             page: Page number
             page_size: Items per page
+            include_inactive: Whether to include inactive patients
             
         Returns:
             Tuple of (patients list, total count)
@@ -164,7 +175,8 @@ class PatientService:
         patients, total = await self.patient_repo.search_patients(
             query=query,
             skip=offset,
-            limit=page_size
+            limit=page_size,
+            include_inactive=include_inactive
         )
         
         # Convert to response models
@@ -180,7 +192,8 @@ class PatientService:
                 national_id=patient.national_id,
                 worker_id=patient.worker_id,
                 created_at=patient.created_at,
-                updated_at=patient.updated_at
+                updated_at=patient.updated_at,
+                is_active=patient.is_active
             ))
         
         return patient_responses, total
@@ -207,8 +220,13 @@ class PatientService:
         Raises:
             NotFoundError: If patient not found
         """
-        # Check if patient exists
-        existing = await self.patient_repo.get_by_id(patient_id)
+        # Check if patient exists and is active
+        existing = await self.patient_repo.get_patient_with_visits(
+            patient_id=patient_id,
+            include_visits=False,
+            include_inactive=False
+        )
+        
         if not existing:
             raise NotFoundError("Patient", patient_id)
         
@@ -219,7 +237,7 @@ class PatientService:
         # Log update
         await self.audit_repo.log_event(
             event_type="PATIENT_UPDATED",
-            action="Patient record updated",
+            action=f"Patient record updated",
             worker_id=worker_id,
             resource_type="Patient",
             resource_id=patient_id,
@@ -239,9 +257,114 @@ class PatientService:
             national_id=patient.national_id,
             worker_id=patient.worker_id,
             created_at=patient.created_at,
-            updated_at=patient.updated_at
+            updated_at=patient.updated_at,
+            is_active=patient.is_active
         )
     
+
+    async def soft_delete_patient(
+        self,
+        patient_id: str,
+        worker_id: str,
+        ip_address: Optional[str] = None
+    ) -> bool:
+        """
+        Soft delete a patient.
+        
+        Args:
+            patient_id: Patient identifier
+            worker_id: Worker performing the deletion
+            ip_address: Client IP for audit
+            
+        Returns:
+            True if deleted
+            
+        Raises:
+            NotFoundError: If patient not found
+        """
+        # Check if patient exists and is active
+        existing = await self.patient_repo.get_patient_with_visits(
+            patient_id=patient_id,
+            include_visits=False,
+            include_inactive=False
+        )
+        
+        if not existing:
+            raise NotFoundError("Patient", patient_id)
+        
+        # Soft delete
+        result = await self.patient_repo.soft_delete_patient(
+            patient_id=patient_id,
+            worker_id=worker_id
+        )
+        
+        if result:
+            # Log deletion
+            await self.audit_repo.log_event(
+                event_type="PATIENT_DELETED",
+                action=f"Patient {patient_id} soft deleted",
+                worker_id=worker_id,
+                resource_type="Patient",
+                resource_id=patient_id,
+                ip_address=ip_address,
+                status="SUCCESS"
+            )
+            
+            logger.info(f"Patient soft deleted: {patient_id} by worker {worker_id}")
+        
+        return result
+    
+    async def restore_patient(
+        self,
+        patient_id: str,
+        worker_id: str,
+        ip_address: Optional[str] = None
+    ) -> bool:
+        """
+        Restore a soft-deleted patient.
+        
+        Args:
+            patient_id: Patient identifier
+            worker_id: Worker performing the restoration
+            ip_address: Client IP for audit
+            
+        Returns:
+            True if restored
+            
+        Raises:
+            NotFoundError: If patient not found
+        """
+        # Check if patient exists and is inactive
+        patient = await self.patient_repo.get_by_id(patient_id)
+        if not patient:
+            raise NotFoundError("Patient", patient_id)
+        
+        if patient.is_active:
+            raise InputValidationError("Patient is already active")
+        
+        # Restore
+        result = await self.patient_repo.restore_patient(
+            patient_id=patient_id,
+            worker_id=worker_id
+        )
+        
+        if result:
+            # Log restoration
+            await self.audit_repo.log_event(
+                event_type="PATIENT_RESTORED",
+                action=f"Patient {patient_id} restored",
+                worker_id=worker_id,
+                resource_type="Patient",
+                resource_id=patient_id,
+                ip_address=ip_address,
+                status="SUCCESS"
+            )
+            
+            logger.info(f"Patient restored: {patient_id} by worker {worker_id}")
+        
+        return result
+    
+
     async def get_patient_summary(self, patient_id: str) -> dict:
         """
         Get patient summary including visit statistics.

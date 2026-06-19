@@ -1,0 +1,49 @@
+# docker-compose.prod.yml
+# Production environment overrides
+
+version: '3.8'
+
+services:
+  # ────────────────────────────────────────────────────────────────────────────
+  # Backend - Production Mode
+  # ────────────────────────────────────────────────────────────────────────────
+  backend:
+    environment:
+      ENVIRONMENT: production
+      DEBUG: false
+      LOG_LEVEL: INFO
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # Nginx - Production
+  # ────────────────────────────────────────────────────────────────────────────
+  nginx:
+    restart: always
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # Postgres - Production
+  # ────────────────────────────────────────────────────────────────────────────
+  postgres:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # PgAdmin - Disabled in production
+  # ────────────────────────────────────────────────────────────────────────────
+  pgadmin:
+    profiles: []

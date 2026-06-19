@@ -1,75 +1,41 @@
 """
-Base model class with common fields and utilities.
+Shared mixins applied to ORM models.
+
+TimestampMixin  — adds created_at and updated_at to any table that needs them.
+UUIDMixin       — provides a UUID primary key.
+
+Using mixins keeps individual model files clean and avoids repeating
+the same column definitions across every table.
 """
 
-from datetime import datetime
-from typing import Any, Dict
-from uuid import uuid4
+import uuid
+from datetime import UTC, datetime
 
-from sqlalchemy import Column, DateTime, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import DateTime, func
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-class Base(DeclarativeBase):
-    """
-    Base class for all SQLAlchemy ORM models.
-    """
-    pass
+from app.core.database import Base
 
 
 class TimestampMixin:
     """
-    Mixin that adds created_at and updated_at timestamps to models.
-    Automatically updates updated_at on record changes.
+    Adds created_at and updated_at columns.
+    Both are set automatically by the database server (server_default / onupdate).
     """
-    
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
         nullable=False,
-        comment="Timestamp when the record was created"
     )
-    
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now(),
         nullable=False,
-        comment="Timestamp when the record was last updated"
     )
 
 
 def generate_uuid() -> str:
-    """Generate a UUID string for primary keys."""
-    return str(uuid4())
-
-
-def to_dict(self, exclude: set = None) -> Dict[str, Any]:
-    """
-    Convert model instance to dictionary.
-    
-    Args:
-        exclude: Set of field names to exclude
-        
-    Returns:
-        Dictionary representation of the model
-    """
-    exclude = exclude or set()
-    result = {}
-    
-    for column in self.__table__.columns:
-        if column.name not in exclude:
-            value = getattr(self, column.name)
-            # Handle UUID conversion
-            if hasattr(value, 'hex'):
-                value = str(value)
-            # Handle datetime conversion
-            elif isinstance(value, datetime):
-                value = value.isoformat()
-            result[column.name] = value
-    
-    return result
-
-
-# Attach to_dict method to Base
-Base.to_dict = to_dict
+    """Generate a new UUID4 string. Used as the default for PK columns."""
+    return str(uuid.uuid4())

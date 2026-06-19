@@ -25,7 +25,7 @@ Pipeline
 
 import pandas as pd
 
-from app.core.exceptions import ValidationError
+from app.core.exceptions import InputValidationError
 from app.core.logging import get_logger
 from app.ml.encoders import (
     encode_bmi_category,
@@ -159,7 +159,7 @@ def build_feature_row(
 
     missing = [f for f in feature_names if f not in encoded]
     if missing:
-        raise ValidationError(
+        raise InputValidationError(
             f"Feature builder is missing required features: {missing}. "
             "PatientFeatures may be out of sync with model_metadata['feature_names']."
         )

@@ -3,7 +3,8 @@ Repository for HealthcareWorker model operations.
 """
 
 import logging
-from datetime import datetime, timedelta
+import hashlib
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from sqlalchemy import select, update
@@ -118,11 +119,105 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
         try:
             stmt = update(HealthcareWorker).where(
                 HealthcareWorker.worker_id == worker_id
-            ).values(last_login_at=datetime.now(datetime.timezone.utc))
+            ).values(last_login_at=datetime.now(timezone.utc))
             await self.session.execute(stmt)
             await self.session.flush()
         except Exception as e:
             logger.error(f"Failed to update last login for {worker_id}: {str(e)}")
+
+    # ── Refresh Token Methods ──────────────────────────────────────────────────
+    
+    async def store_refresh_token(self, worker_id: str, token_hash: str, expires_at: datetime) -> bool:
+        """
+        Store a refresh token hash for a worker.
+        
+        Args:
+            worker_id: Worker identifier
+            token_hash: SHA-256 hash of the refresh token
+            expires_at: Token expiration time
+            
+        Returns:
+            True if successful
+        """
+        try:
+            stmt = update(HealthcareWorker).where(
+                HealthcareWorker.worker_id == worker_id
+            ).values(
+                refresh_token=token_hash,
+                refresh_token_expires=expires_at
+            )
+            result = await self.session.execute(stmt)
+            await self.session.flush()
+            return result.rowcount > 0
+        except Exception as e:
+            logger.error(f"Failed to store refresh token for {worker_id}: {str(e)}")
+            return False
+    
+    async def validate_refresh_token(self, worker_id: str, raw_token: str) -> bool:
+        """
+        Validate a refresh token against the stored hash.
+        
+        Args:
+            worker_id: Worker identifier
+            raw_token: Raw refresh token to validate
+            
+        Returns:
+            True if valid, False otherwise
+        """
+        try:
+            # Get worker with refresh token
+            stmt = select(HealthcareWorker).where(
+                HealthcareWorker.worker_id == worker_id,
+                HealthcareWorker.refresh_token.isnot(None)
+            )
+            result = await self.session.execute(stmt)
+            worker = result.scalar_one_or_none()
+            
+            if not worker:
+                return False
+            
+            # Check if token is expired
+            if worker.refresh_token_expires and worker.refresh_token_expires < datetime.utcnow():
+                logger.warning(f"Refresh token expired for user {worker_id}")
+                return False
+            
+            # Hash the incoming token and compare with stored hash
+            token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+            return token_hash == worker.refresh_token
+        
+        except Exception as e:
+            logger.error(f"Failed to validate refresh token for {worker_id}: {str(e)}")
+            return False
+    
+    async def revoke_refresh_token(self, worker_id: str) -> bool:
+        """
+        Revoke the current refresh token for a worker.
+        
+        Args:
+            worker_id: Worker identifier
+            
+        Returns:
+            True if successful
+        """
+        try:
+            stmt = update(HealthcareWorker).where(
+                HealthcareWorker.worker_id == worker_id
+            ).values(
+                refresh_token=None,
+                refresh_token_expires=None
+            )
+            result = await self.session.execute(stmt)
+            await self.session.flush()
+            
+            if result.rowcount > 0:
+                logger.info(f"Revoked refresh token for user {worker_id}")
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Failed to revoke refresh token for {worker_id}: {str(e)}")
+            return False
+    
+    # ── Password Reset Methods ──────────────────────────────────────────────────
     
     async def set_password_reset_token(self, email: str, token: str, expires_minutes: int = 30) -> bool:
         """
@@ -137,7 +232,7 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
             True if successful, False if worker not found
         """
         try:
-            expires_at = datetime.now(datetime.timezone.utc) + timedelta(minutes=expires_minutes)
+            expires_at = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
             stmt = update(HealthcareWorker).where(
                 HealthcareWorker.email == email.lower()
             ).values(
@@ -164,7 +259,7 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
         try:
             stmt = select(HealthcareWorker).where(
                 HealthcareWorker.password_reset_token == token,
-                HealthcareWorker.password_reset_expires > datetime.now(datetime.timezone.utc)
+                HealthcareWorker.password_reset_expires > datetime.now(timezone.utc)
             )
             result = await self.session.execute(stmt)
             return result.scalar_one_or_none()

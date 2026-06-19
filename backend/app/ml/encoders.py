@@ -5,7 +5,7 @@ Categorical encoding maps — must mirror data_processing.yml exactly.
 
 from typing import Union
 
-from app.core.exceptions import ValidationError
+from app.core.exceptions import InputValidationError
 from app.core.logging import get_logger
 
 log = get_logger(__name__)
@@ -43,7 +43,7 @@ def encode_sex(sex: str) -> int:
     """
     key = sex.strip().lower()
     if key not in SEX_MAP:
-        raise ValidationError(
+        raise InputValidationError(
             f"Invalid sex '{sex}'. Expected 'Male' or 'Female'."
         )
     return SEX_MAP[key]
@@ -56,7 +56,7 @@ def encode_residence(residence: str) -> int:
     """
     key = residence.strip().lower()
     if key not in RESIDENCE_MAP:
-        raise ValidationError(
+        raise InputValidationError(
             f"Invalid residence '{residence}'. Expected 'Urban' or 'Rural'."
         )
     return RESIDENCE_MAP[key]
@@ -69,7 +69,7 @@ def encode_bmi_category(bmi_category: str) -> int:
     """
     key = bmi_category.strip().lower()
     if key not in BMI_CATEGORY_MAP:
-        raise ValidationError(
+        raise InputValidationError(
             f"Invalid bmi_category '{bmi_category}'. "
             "Expected: Normal | Overweight | Obese I | Obese II+"
         )

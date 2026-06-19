@@ -82,6 +82,7 @@ class PatientResponse(BaseModel):
     contact_info: Optional[str] = Field(None, description="Contact information")
     national_id: Optional[str] = Field(None, description="National ID or medical record number")
     worker_id: str = Field(..., description="Healthcare worker who registered the patient")
+    is_active: bool = Field(default=True, description="Whether the patient is active")
     created_at: datetime = Field(..., description="Record creation timestamp")
     updated_at: datetime = Field(..., description="Last update timestamp")
     
@@ -96,6 +97,7 @@ class PatientResponse(BaseModel):
                 "contact_info": "+1234567890",
                 "national_id": "ID12345678",
                 "worker_id": "550e8400-e29b-41d4-a716-446655440000",
+                "is_active": True,
                 "created_at": "2024-01-15T10:30:00Z",
                 "updated_at": "2024-01-15T10:30:00Z"
             }
@@ -110,6 +112,7 @@ class PatientListResponse(BaseModel):
     full_name: str = Field(..., description="Patient's full name")
     age: Optional[int] = Field(None, description="Calculated age")
     sex: str = Field(..., description="Patient's sex")
+    is_active: bool = Field(default=True, description="Whether the patient is active")
     last_visit_date: Optional[datetime] = Field(None, description="Date of last screening visit")
     
     model_config = ConfigDict(
@@ -119,6 +122,7 @@ class PatientListResponse(BaseModel):
                 "full_name": "John Doe",
                 "age": 39,
                 "sex": "Male",
+                "is_active": True,
                 "last_visit_date": "2024-01-15T10:30:00Z"
             }
         }
@@ -129,11 +133,13 @@ class PatientSearchRequest(BaseModel):
     """Request model for searching patients."""
     
     query: str = Field(..., min_length=2, description="Search query (name or patient ID)")
+    include_inactive: bool = Field(default=False, description="Include inactive patients")
     
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "query": "John"
+                "query": "John",
+                "include_inactive": False
             }
         }
     )

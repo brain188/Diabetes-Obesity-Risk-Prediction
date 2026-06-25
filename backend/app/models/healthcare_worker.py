@@ -59,7 +59,15 @@ class HealthcareWorker(Base, TimestampMixin):
         nullable=True,
         comment="Name of the healthcare facility"
     )
-    
+
+    role: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="healthcare_worker",
+        server_default="healthcare_worker",
+        comment="User role: admin or healthcare_worker"
+    )
+
     # Account status
     is_active: Mapped[bool] = mapped_column(
         Boolean,

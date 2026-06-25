@@ -39,7 +39,7 @@ class AuthService:
         self.worker_repo  = HealthcareWorkerRepository(session)  # Repository for worker/user operations
         self.audit_repo   = AuditLogRepository(session)          # Repository for audit logging
 
-    # ── Register ──────────────────────────────────────────────────────────────
+    # ----- Register ---------------------------------------------------------------
 
     async def register(
         self,
@@ -47,6 +47,7 @@ class AuthService:
         email: str,
         password: str,
         clinic_name: Optional[str] = None,
+        role: str = "healthcare_worker",
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> dict:
@@ -73,6 +74,7 @@ class AuthService:
             email       = email,
             password    = password,
             clinic_name = clinic_name,
+            role        = role,
         )
 
         # Log the registration event for audit trail
@@ -93,11 +95,12 @@ class AuthService:
             "full_name"  : worker.full_name,
             "email"      : worker.email,
             "clinic_name": worker.clinic_name,
-            "is_active"  : worker.is_active,   # required by UserRegisterResponse
+            "role"       : worker.role,
+            "is_active"  : worker.is_active,
             "created_at" : worker.created_at,
         }
 
-    # ── Login ─────────────────────────────────────────────────────────────────
+    # ------- Login -------------------------------------------------------------------
 
     async def login(
         self,
@@ -130,7 +133,7 @@ class AuthService:
             # Authenticate the user - validates credentials and checks account status
             worker = await self.worker_repo.authenticate(email, password)
 
-            # ── Create Access Token ──────────────────────────────────────────
+            # ----- Create Access Token ---------------------------------------------
             # Access token is short-lived
             access_token = create_access_token(
                 data={
@@ -141,7 +144,7 @@ class AuthService:
                 expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
             )
 
-            # ── Create Refresh Token (with rotation) ─────────────────────────
+            # ------- Create Refresh Token (with rotation) --------------------------------
             # Revoke any existing refresh token to prevent token reuse attacks
             await self.worker_repo.revoke_refresh_token(worker.worker_id)
             
@@ -161,7 +164,7 @@ class AuthService:
                 expires_at = expires_at,
             )
 
-            # ── Audit Logging ─────────────────────────────────────────────────
+            # ---- Audit Logging --------------------------------------------------
             # Log successful login - signature: email, success, worker_id
             await self.audit_repo.log_login(
                 email      = email,
@@ -182,13 +185,14 @@ class AuthService:
                 "expires_in"        : settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
                 "refresh_expires_in": settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
                 "user": {
-                    "worker_id"  : worker.worker_id,
-                    "full_name"  : worker.full_name,
-                    "email"      : worker.email,
-                    "clinic_name": worker.clinic_name,
-                    "is_active"  : worker.is_active,
+                    "worker_id"    : worker.worker_id,
+                    "full_name"    : worker.full_name,
+                    "email"        : worker.email,
+                    "clinic_name"  : worker.clinic_name,
+                    "role"         : getattr(worker, "role", "healthcare_worker"),
+                    "is_active"    : worker.is_active,
                     "last_login_at": getattr(worker, "last_login_at", None),
-                    "created_at" : worker.created_at,
+                    "created_at"   : worker.created_at,
                 },
             }
 
@@ -204,7 +208,7 @@ class AuthService:
             logger.warning("Failed login: %s", email)
             raise  # Re-raise the exception to be handled by the endpoint
 
-    # ── Refresh token ─────────────────────────────────────────────────────────
+    # -------- Refresh token -------------------------------------------------------
 
     async def refresh_token(
         self,
@@ -234,7 +238,7 @@ class AuthService:
         Raises:
             AuthenticationError: If refresh token is invalid, expired, or revoked
         """
-        # ── Decode and validate refresh token ──────────────────────────────
+        # --------- Decode and validate refresh token -------------------------------------
         # decode_token returns None on type mismatch, raises JWTError on expiry
         try:
             payload = decode_token(refresh_token, token_type="refresh")
@@ -253,7 +257,7 @@ class AuthService:
         if not worker_id:
             raise AuthenticationError("Invalid refresh token payload.")
 
-        # ── Validate against stored hash ────────────────────────────────────
+        # ----- Validate against stored hash -------------------------------------------
         # Verify that the token matches the stored hash in database
         is_valid = await self.worker_repo.validate_refresh_token(worker_id, refresh_token)
         if not is_valid:
@@ -261,12 +265,12 @@ class AuthService:
             await self.worker_repo.revoke_refresh_token(worker_id)
             raise AuthenticationError("Refresh token is invalid or already used.")
 
-        # ── Get user and verify status ──────────────────────────────────────
+        # ------- Get user and verify status ----------------------------------------------
         worker = await self.worker_repo.get_by_id(worker_id, id_column="worker_id")
         if not worker or not worker.is_active:
             raise AuthenticationError("User not found or inactive.")
 
-        # ── Rotate tokens ────────────────────────────────────────────────────
+        # ------- Rotate tokens --------------------------------------------------
         # Revoke the old refresh token (already validated)
         await self.worker_repo.revoke_refresh_token(worker_id)
 
@@ -460,6 +464,23 @@ class AuthService:
             )
         return success
 
+    async def list_users(self) -> list[dict]:
+        """Return all registered users (healthcare workers and admins)."""
+        workers = await self.worker_repo.list_workers()
+        return [
+            {
+                "worker_id"    : w.worker_id,
+                "full_name"    : w.full_name,
+                "email"        : w.email,
+                "clinic_name"  : w.clinic_name,
+                "role"         : getattr(w, "role", "healthcare_worker"),
+                "is_active"    : w.is_active,
+                "last_login_at": getattr(w, "last_login_at", None),
+                "created_at"   : w.created_at,
+            }
+            for w in workers
+        ]
+
     async def get_user_profile(self, worker_id: str) -> dict:
         """
         Get user profile information.
@@ -484,6 +505,7 @@ class AuthService:
             "full_name"    : worker.full_name,
             "email"        : worker.email,
             "clinic_name"  : worker.clinic_name,
+            "role"         : getattr(worker, "role", "healthcare_worker"),
             "is_active"    : worker.is_active,
             "last_login_at": getattr(worker, "last_login_at", None),
             "created_at"   : worker.created_at,

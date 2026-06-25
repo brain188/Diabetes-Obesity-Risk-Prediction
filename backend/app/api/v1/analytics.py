@@ -17,6 +17,7 @@ from app.services.prediction_service import PredictionService
 from app.services.audit_service import AuditService
 from app.core.exceptions import NotFoundError
 from app.models import Patient, ScreeningVisit, Prediction
+from app.models.report import Report
 
 logger = get_logger(__name__)
 router = APIRouter()
@@ -34,15 +35,24 @@ async def get_feature_importance(
 ) -> GlobalFeatureImportanceResponse:
     """
     Get global feature importance.
-    
+
     - Shows which features most influence predictions
     - Same for all patients (global view)
     - Cached for performance
     """
     service = PredictionService(db)
-    
-    importance_data = await service.get_global_feature_importance()
-    
+
+    try:
+        importance_data = await service.get_global_feature_importance()
+    except Exception as e:
+        logger.warning(f"Feature importance unavailable: {str(e)}")
+        return GlobalFeatureImportanceResponse(
+            model_version="unavailable",
+            feature_importance={},
+            sorted_features=[],
+            updated_at=""
+        )
+
     return GlobalFeatureImportanceResponse(
         model_version=importance_data.get("model_version", "unknown"),
         feature_importance={
@@ -55,6 +65,49 @@ async def get_feature_importance(
         ],
         updated_at=importance_data.get("updated_at", "")
     )
+
+
+@router.get(
+    "/risk-distribution",
+    response_model=dict,
+    summary="Get risk distribution",
+    description="Get diabetes and obesity risk distribution across all predictions.",
+)
+async def get_risk_distribution(
+    db: AsyncSession = Depends(get_db_session),
+    current_user: str = Depends(get_current_user_id),
+) -> dict:
+    """Get risk distribution for diabetes and obesity."""
+    from app.models import Prediction
+
+    diabetes_stmt = select(
+        Prediction.diabetes_risk_class,
+        func.count(Prediction.prediction_id)
+    ).group_by(Prediction.diabetes_risk_class)
+    obesity_stmt = select(
+        Prediction.obesity_risk_class,
+        func.count(Prediction.prediction_id)
+    ).group_by(Prediction.obesity_risk_class)
+
+    d_result = await db.execute(diabetes_stmt)
+    o_result = await db.execute(obesity_stmt)
+    d_counts = {row[0]: row[1] for row in d_result.all() if row[0]}
+    o_counts = {row[0]: row[1] for row in o_result.all() if row[0]}
+
+    return {
+        "distribution": {
+            "diabetes": {
+                "Low": d_counts.get("Low", 0),
+                "Moderate": d_counts.get("Moderate", 0),
+                "High": d_counts.get("High", 0),
+            },
+            "obesity": {
+                "Low": o_counts.get("Low", 0),
+                "Moderate": o_counts.get("Moderate", 0),
+                "High": o_counts.get("High", 0),
+            },
+        }
+    }
 
 
 @router.get(
@@ -186,79 +239,99 @@ async def get_dashboard_stats(
     - Risk distributions
     - Recent activity counts
     """
-    # Get total patients
-    patient_count_stmt = select(func.count()).select_from(Patient)
-    patient_count_result = await db.execute(patient_count_stmt)
-    total_patients = patient_count_result.scalar() or 0
-    
-    # Get total screenings
-    screening_count_stmt = select(func.count()).select_from(ScreeningVisit)
-    screening_count_result = await db.execute(screening_count_stmt)
-    total_screenings = screening_count_result.scalar() or 0
-    
-    # Get risk distributions for diabetes
-    diabetes_risk_stmt = select(
-        Prediction.diabetes_risk_class,
-        func.count(Prediction.prediction_id)
-    ).group_by(Prediction.diabetes_risk_class)
-    diabetes_risk_result = await db.execute(diabetes_risk_stmt)
-    diabetes_risk_counts = {row[0]: row[1] for row in diabetes_risk_result.all()}
-    
-    # Get risk distributions for obesity
-    obesity_risk_stmt = select(
-        Prediction.obesity_risk_class,
-        func.count(Prediction.prediction_id)
-    ).group_by(Prediction.obesity_risk_class)
-    obesity_risk_result = await db.execute(obesity_risk_stmt)
-    obesity_risk_counts = {row[0]: row[1] for row in obesity_risk_result.all()}
-    
-    # Get recent activities (last 24 hours)
     yesterday = datetime.utcnow() - timedelta(days=1)
-    recent_stmt = select(func.count()).select_from(ScreeningVisit).where(
-        ScreeningVisit.created_at >= yesterday
-    )
-    recent_result = await db.execute(recent_stmt)
-    recent_activities = recent_result.scalar() or 0
-    
-    # Get patients by sex (optional)
-    sex_stmt = select(
-        Patient.sex,
-        func.count(Patient.patient_id)
-    ).group_by(Patient.sex)
-    sex_result = await db.execute(sex_stmt)
-    sex_distribution = {row[0]: row[1] for row in sex_result.all()}
-    
-    # Get BMI distribution (optional)
-    bmi_stmt = select(
-        func.avg(ScreeningData.bmi),
-        func.min(ScreeningData.bmi),
-        func.max(ScreeningData.bmi)
-    ).select_from(ScreeningData)
-    bmi_result = await db.execute(bmi_stmt)
-    bmi_stats = bmi_result.first()
-    
+
+    total_patients_r     = await db.execute(select(func.count()).select_from(Patient))
+    active_patients_r    = await db.execute(select(func.count()).select_from(Patient).where(Patient.is_active == True))
+    total_screenings_r   = await db.execute(select(func.count()).select_from(ScreeningVisit))
+    total_predictions_r  = await db.execute(select(func.count()).select_from(Prediction))
+    total_reports_r      = await db.execute(select(func.count()).select_from(Report))
+    diabetes_risk_r      = await db.execute(select(Prediction.diabetes_risk_class, func.count(Prediction.prediction_id)).group_by(Prediction.diabetes_risk_class))
+    obesity_risk_r       = await db.execute(select(Prediction.obesity_risk_class, func.count(Prediction.prediction_id)).group_by(Prediction.obesity_risk_class))
+    recent_r             = await db.execute(select(func.count()).select_from(ScreeningVisit).where(ScreeningVisit.created_at >= yesterday))
+    sex_r                = await db.execute(select(Patient.sex, func.count(Patient.patient_id)).group_by(Patient.sex))
+    bmi_r                = await db.execute(select(func.avg(ScreeningData.bmi), func.min(ScreeningData.bmi), func.max(ScreeningData.bmi)).select_from(ScreeningData))
+
+    total_patients = total_patients_r.scalar() or 0
+    active_patients = active_patients_r.scalar() or 0
+    total_screenings = total_screenings_r.scalar() or 0
+    total_predictions = total_predictions_r.scalar() or 0
+    total_reports = total_reports_r.scalar() or 0
+    diabetes_risk_counts = {row[0]: row[1] for row in diabetes_risk_r.all() if row[0]}
+    obesity_risk_counts = {row[0]: row[1] for row in obesity_risk_r.all() if row[0]}
+    recent_activities = recent_r.scalar() or 0
+    sex_distribution = {row[0]: row[1] for row in sex_r.all()}
+    bmi_stats = bmi_r.first()
+
     return {
         "total_patients": total_patients,
+        "active_patients": active_patients,
         "total_screenings": total_screenings,
+        "total_predictions": total_predictions,
+        "total_reports": total_reports,
+        "high_risk_count": diabetes_risk_counts.get("High", 0),
+        "moderate_risk_count": diabetes_risk_counts.get("Moderate", 0),
+        "low_risk_count": diabetes_risk_counts.get("Low", 0),
         "risk_distribution": {
             "diabetes": {
                 "Low": diabetes_risk_counts.get("Low", 0),
                 "Moderate": diabetes_risk_counts.get("Moderate", 0),
-                "High": diabetes_risk_counts.get("High", 0)
+                "High": diabetes_risk_counts.get("High", 0),
             },
             "obesity": {
                 "Low": obesity_risk_counts.get("Low", 0),
                 "Moderate": obesity_risk_counts.get("Moderate", 0),
-                "High": obesity_risk_counts.get("High", 0)
-            }
+                "High": obesity_risk_counts.get("High", 0),
+            },
         },
         "sex_distribution": sex_distribution,
         "bmi_stats": {
             "average": round(bmi_stats[0], 2) if bmi_stats and bmi_stats[0] else 0,
             "min": round(bmi_stats[1], 2) if bmi_stats and bmi_stats[1] else 0,
-            "max": round(bmi_stats[2], 2) if bmi_stats and bmi_stats[2] else 0
+            "max": round(bmi_stats[2], 2) if bmi_stats and bmi_stats[2] else 0,
         } if bmi_stats else {},
         "recent_activities": recent_activities,
-        "last_updated": datetime.now(timezone.utc).isoformat()
-    
+        "last_updated": datetime.now(timezone.utc).isoformat(),
     }
+
+
+@router.get(
+    "/stats/trends",
+    response_model=list,
+    summary="Get monthly trends",
+    description="Get monthly screening and prediction counts for the last N months.",
+)
+async def get_monthly_trends(
+    months: int = Query(default=6, ge=1, le=24),
+    db: AsyncSession = Depends(get_db_session),
+    current_user: str = Depends(get_current_user_id),
+) -> list:
+    """Monthly screening and prediction volume for trend chart."""
+    now = datetime.now(timezone.utc)
+    result = []
+    for i in range(months - 1, -1, -1):
+        month_start = (now.replace(day=1) - timedelta(days=30 * i)).replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0
+        )
+        if i > 0:
+            month_end = (now.replace(day=1) - timedelta(days=30 * (i - 1))).replace(
+                day=1, hour=0, minute=0, second=0, microsecond=0
+            )
+        else:
+            month_end = now
+
+        screening_stmt = select(func.count()).select_from(ScreeningVisit).where(
+            and_(ScreeningVisit.created_at >= month_start, ScreeningVisit.created_at < month_end)
+        )
+        prediction_stmt = select(func.count()).select_from(Prediction).where(
+            and_(Prediction.prediction_date >= month_start, Prediction.prediction_date < month_end)
+        )
+        s_result = await db.execute(screening_stmt)
+        p_result = await db.execute(prediction_stmt)
+
+        result.append({
+            "month": month_start.strftime("%b %Y"),
+            "screenings": s_result.scalar() or 0,
+            "predictions": p_result.scalar() or 0,
+        })
+    return result

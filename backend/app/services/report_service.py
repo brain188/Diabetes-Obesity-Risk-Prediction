@@ -6,6 +6,7 @@ Handles PDF report generation, storage, and retrieval.
 import logging
 import os
 import hashlib
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
@@ -68,85 +69,105 @@ class ReportService:
             NotFoundError: If visit not found
             ReportGenerationError: If report generation fails
         """
-        # Get visit with all related data
-        visit = await self.screening_repo.get_visit_with_data_or_fail(
-            visit_id, 
-            include_patient=True
-        )
-        
-        if not visit.screening_data:
-            raise NotFoundError("ScreeningData", visit_id)
-        
-        # Get prediction if exists
-        prediction = await self.prediction_repo.get_prediction_by_visit(
-            visit_id, 
-            include_details=True
-        )
-        
-        # Get patient info
-        patient = visit.patient
-        
-        # Prepare report data
-        report_data = await self._prepare_report_data(
-            visit=visit,
-            patient=patient,
-            screening_data=visit.screening_data,
-            prediction=prediction
-        )
-        
-        # Generate report file
-        if format.upper() == "PDF":
-            file_path, file_size, checksum = await self._generate_pdf_report(
-                report_data=report_data,
-                visit_id=visit_id,
-                patient_name=patient.full_name
+        try:
+            # Get visit with all related data
+            visit = await self.screening_repo.get_visit_with_data_or_fail(
+                visit_id, 
+                include_patient=True
             )
-        else:
-            file_path, file_size, checksum = await self._generate_json_report(
-                report_data=report_data,
-                visit_id=visit_id
+            
+            if not visit.screening_data:
+                raise NotFoundError("ScreeningData", visit_id)
+            
+            # Get prediction if exists
+            prediction = await self.prediction_repo.get_prediction_by_visit(
+                visit_id, 
+                include_details=True
             )
-        
-        # Save report record to database
-        report = await self.report_repo.create_report(
-            visit_id=visit_id,
-            format=format.upper(),
-            file_path=str(file_path),
-            generated_by=worker_id,
-            file_size_bytes=str(file_size),
-            checksum=checksum
-        )
-        
-        # Log report generation
-        await self.audit_repo.log_report_generated(
-            worker_id=worker_id,
-            patient_id=patient.patient_id,
-            report_id=report.report_id,
-            ip_address=ip_address,
-            request_id=request_id
-        )
-        
-        logger.info(f"Report generated: {report.report_id} for visit {visit_id}")
-        
-        return {
-            "report_id": report.report_id,
-            "visit_id": visit_id,
-            "patient_id": patient.patient_id,
-            "patient_name": patient.full_name,
-            "format": report.format,
-            "file_path": report.file_path,
-            "file_size_bytes": report.file_size_bytes,
-            "generated_at": report.generated_at,
-            "download_count": int(report.download_count) if report.download_count else 0
-        }
+            
+            # Get patient info
+            patient = visit.patient
+            
+            # Prepare report data
+            report_data = await self._prepare_report_data(
+                visit=visit,
+                patient=patient,
+                screening_data=visit.screening_data,
+                prediction=prediction
+            )
+            
+            # Generate report file
+            if format.upper() == "PDF":
+                file_path, file_size, checksum = await self._generate_pdf_report(
+                    report_data=report_data,
+                    visit_id=visit_id,
+                    patient_name=patient.full_name
+                )
+            else:
+                file_path, file_size, checksum = await self._generate_json_report(
+                    report_data=report_data,
+                    visit_id=visit_id
+                )
+            
+            # Save (idempotent) report record to database
+            # Report.visit_id is unique, so repeated calls for the same visit_id should reuse/update the existing record.
+            existing_report = await self.report_repo.get_report_by_visit(visit_id)
+            if existing_report:
+                report = await self.report_repo.update(
+                    id=existing_report.report_id,
+                    id_column="report_id",
+                    format=format.upper(),
+                    file_path=str(file_path),
+                    generated_by=worker_id,
+                    file_size_bytes=str(file_size),
+                    checksum=checksum,
+                    generated_at=datetime.now(timezone.utc),
+                    download_count="0",
+                )
+            else:
+                report = await self.report_repo.create_report(
+                    visit_id=visit_id,
+                    format=format.upper(),
+                    file_path=str(file_path),
+                    generated_by=worker_id,
+                    file_size_bytes=str(file_size),
+                    checksum=checksum
+                )
+            
+            # Log report generation
+            await self.audit_repo.log_report_generated(
+                worker_id=worker_id,
+                patient_id=patient.patient_id,
+                report_id=report.report_id,
+                ip_address=ip_address,
+                request_id=request_id
+            )
+            
+            logger.info(f"Report generated: {report.report_id} for visit {visit_id}")
+            
+            return {
+                "report_id": report.report_id,
+                "visit_id": visit_id,
+                "patient_id": patient.patient_id,
+                "patient_name": patient.full_name,
+                "format": report.format,
+                "file_path": report.file_path,
+                "file_size_bytes": report.file_size_bytes,
+                "generated_at": report.generated_at,
+                "download_count": int(report.download_count) if report.download_count else 0
+            }
+            
+        except Exception as e:
+            logger.error(f"Report generation failed: {str(e)}")
+            raise ReportGenerationError(f"Failed to generate report: {str(e)}")
     
     async def _prepare_report_data(
-        self,
-        visit,
-        patient,
-        screening_data,
-        prediction
-    ) -> Dict[str, Any]:
+    self,
+    visit,
+    patient,
+    screening_data,
+    prediction
+) -> Dict[str, Any]:
         """
         Prepare data for report generation.
         
@@ -159,21 +180,44 @@ class ReportService:
         Returns:
             Dictionary with report data
         """
-        # Calculate age
         age = patient.age
         
-        # Get SHAP explanation if prediction exists
+        # Get SHAP explanation, LIME explanation, and recommendation
         shap_explanation = None
+        lime_explanation = None
         recommendation = None
+        global_importance = None
         
         if prediction:
-            shap_explanation = await self.prediction_repo.shap_repo.get_by_id(
-                prediction.prediction_id
-            ) if prediction.prediction_id else None
+            # Get all explanations
+            if prediction.shap_explanation:
+                if prediction.shap_explanation.method == "SHAP":
+                    shap_explanation = prediction.shap_explanation
+                elif prediction.shap_explanation.method == "LIME":
+                    lime_explanation = prediction.shap_explanation
             
+            # Get recommendation
             recommendation = await self.prediction_repo.recommendation_repo.get_by_id(
-                prediction.prediction_id
+                prediction.prediction_id,
+                id_column="prediction_id"
             ) if prediction.prediction_id else None
+        
+        # Get global feature importance
+        try:
+            # Use the cached global feature importance from model_loader
+            if self.model_loader:
+                importance_list, method = self.model_loader.get_feature_importance_cached()
+                global_importance = {
+                    "feature_importance": {
+                        item["feature"]: item["importance"]
+                        for item in importance_list
+                    },
+                    "method": method,
+                    "model_version": self.model_loader.model_version,
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }
+        except Exception as e:
+            logger.warning(f"Failed to get global feature importance: {str(e)}")
         
         # Prepare report data
         report_data = {
@@ -194,7 +238,7 @@ class ReportService:
                 "height_m": screening_data.height,
                 "bmi": screening_data.bmi,
                 "bmi_category": screening_data.bmi_category,
-                "physical_activity_days_per_week": screening_data.physical_activity,
+                "physical_activity": screening_data.physical_activity,  # Boolean
                 "family_history_diabetes": screening_data.family_history_diabetes,
                 "previous_gdm": screening_data.previous_gdm,
                 "has_hypertension": screening_data.has_hypertension,
@@ -228,6 +272,18 @@ class ReportService:
                 "top_positive_features": shap_explanation.top_positive_features,
                 "top_negative_features": shap_explanation.top_negative_features
             }
+        
+        # Add LIME explanation if available
+        if lime_explanation and lime_explanation.feature_contributions:
+            report_data["lime_explanation"] = {
+                "feature_contributions": lime_explanation.feature_contributions,
+                "top_positive_features": lime_explanation.top_positive_features,
+                "top_negative_features": lime_explanation.top_negative_features
+            }
+        
+        # Add global feature importance
+        if global_importance:
+            report_data["global_feature_importance"] = global_importance
         
         # Add recommendations if available
         if recommendation:
@@ -315,8 +371,6 @@ class ReportService:
         Raises:
             ReportGenerationError: If JSON generation fails
         """
-        import json
-        
         try:
             # Create reports directory
             reports_dir = Path(settings.REPORTS_DIR)

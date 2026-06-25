@@ -67,10 +67,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         try:
             model_loader.load_all()
             
-            # Warm up feature importance cache
-            logger.info("Warming up feature importance cache...")
+            # Pre-build all cached explainers so the first prediction is fast
+            logger.info("Warming up caches (feature importance, SHAP, LIME)...")
             model_loader.get_feature_importance_cached()
-            
+            model_loader.get_shap_explainer_cached()
+            model_loader.get_lime_explainer_cached()
+
             logger.info("All systems ready!")
         except FileNotFoundError as e:
             # In test/dev environments model artifacts may be absent.
@@ -477,11 +479,12 @@ logger.info(f"{settings.APP_NAME} application created successfully")
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run(
         "app.main:app",
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG,
+        reload_dirs=["app"] if settings.DEBUG else None,
         log_level=settings.LOG_LEVEL.lower(),
     )

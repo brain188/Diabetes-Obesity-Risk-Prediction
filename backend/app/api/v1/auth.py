@@ -48,12 +48,13 @@ async def register(
     
     # Delegate registration logic to service layer
     result  = await service.register(
-        full_name   = request.full_name,                               # User's full name
-        email       = request.email,                                   # Unique email address
-        password    = request.password,                                # Plain text password (will be hashed)
-        clinic_name = request.clinic_name,                             # Optional clinic/facility name
-        ip_address  = client_ip,                                       # Client IP for audit trail
-        user_agent  = metadata.get("user_agent"),                      # User agent string for audit trail
+        full_name   = request.full_name,
+        email       = request.email,
+        password    = request.password,
+        clinic_name = request.clinic_name,
+        role        = request.role,
+        ip_address  = client_ip,
+        user_agent  = metadata.get("user_agent"),
     )
     
     logger.info("User registered: %s", request.email)                  # Log successful registration
@@ -212,6 +213,17 @@ async def change_password(
     )
     
     return SuccessResponse(success=True, message="Password changed successfully")
+
+
+@router.get("/users", response_model=list[UserProfileResponse], summary="List all users")
+async def list_users(
+    db: AsyncSession = Depends(get_db_session),
+    current_user: str = Depends(get_current_user_id),
+) -> list[UserProfileResponse]:
+    """Return all registered healthcare workers and admins. Available to any authenticated user."""
+    service = AuthService(db)
+    users = await service.list_users()
+    return [UserProfileResponse(**u) for u in users]
 
 
 @router.get("/profile", response_model=UserProfileResponse)

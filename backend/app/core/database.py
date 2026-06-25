@@ -48,6 +48,10 @@ async def init_database() -> None:
         max_overflow=settings.DATABASE_MAX_OVERFLOW,
         pool_pre_ping=True,  # Verify connections before using
         pool_recycle=3600,   # Recycle connections after 1 hour
+        connect_args={
+        "prepared_statement_cache_size": 0,
+        "statement_cache_size": 0,
+    }
     )
     
     # Test connection

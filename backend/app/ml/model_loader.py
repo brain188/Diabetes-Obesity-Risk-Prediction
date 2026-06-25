@@ -176,6 +176,38 @@ class ModelLoader:
             log.info("Feature importance cached at startup.")
         return self._feature_importance_cache
 
+    def get_shap_explainer_cached(self):
+        """
+        Build shap.TreeExplainer from the live model once and cache it.
+        Avoids rebuilding the explainer (0.5–2 s) on every prediction request.
+        Thread-safe: TreeExplainer is read-only during inference.
+        """
+        if not hasattr(self, "_cached_shap_explainer"):
+            import shap
+            self._cached_shap_explainer = shap.TreeExplainer(self.get_model())
+            log.info("SHAP TreeExplainer built and cached.")
+        return self._cached_shap_explainer
+
+    def get_lime_explainer_cached(self):
+        """
+        Build LimeTabularExplainer from background data once and cache it.
+        Avoids rebuilding the explainer (0.3–1 s) on every prediction request.
+        Thread-safe: explain_instance does not mutate the explainer object.
+        """
+        if not hasattr(self, "_cached_lime_explainer"):
+            from lime.lime_tabular import LimeTabularExplainer
+            background = self.get_background()
+            self._cached_lime_explainer = LimeTabularExplainer(
+                training_data=background.values,
+                feature_names=self.feature_names,
+                class_names=["Normal", "Prediabetes", "Diabetic"],
+                mode="classification",
+                discretize_continuous=True,
+                random_state=42,
+            )
+            log.info("LIME LimeTabularExplainer built and cached.")
+        return self._cached_lime_explainer
+
 
 # ── Module-level singleton ────────────────────────────────────────────────────
 # One instance shared across the whole application, attached to app.state

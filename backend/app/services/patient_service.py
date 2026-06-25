@@ -60,14 +60,14 @@ class PatientService:
         if age > 120:
             raise InputValidationError("Invalid date of birth")
         
-        # Create patient
+        # Create patient — coerce empty strings to None for nullable unique fields
         patient = await self.patient_repo.create_patient(
             full_name=request.full_name,
             date_of_birth=request.date_of_birth,
             sex=request.sex,
             worker_id=worker_id,
-            contact_info=request.contact_info,
-            national_id=request.national_id
+            contact_info=request.contact_info or None,
+            national_id=request.national_id or None,
         )
         
         # Log patient creation

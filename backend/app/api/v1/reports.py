@@ -6,6 +6,8 @@ Handles PDF report generation and download.
 from fastapi import APIRouter, Depends, status, Query, Response
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, desc
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db_session
 from app.core.dependencies import get_current_user_id, get_client_ip, get_request_metadata
@@ -14,9 +16,52 @@ from app.schemas.report import ReportGenerateRequest, ReportResponse, ReportDown
 from app.schemas.common import PaginatedResponse, PaginationParams, SuccessResponse
 from app.services.report_service import ReportService
 from app.core.exceptions import NotFoundError, ReportGenerationError
+from app.models.report import Report
+from app.models.screening_data import ScreeningVisit
+from app.models.patient import Patient
 
 logger = get_logger(__name__)
 router = APIRouter()
+
+
+@router.get(
+    "/",
+    response_model=list,
+    summary="List all reports",
+    description="List all reports with patient and visit details.",
+)
+async def list_reports(
+    page: int = Query(default=1, ge=1),
+    page_size: int = Query(default=50, ge=1, le=200),
+    db: AsyncSession = Depends(get_db_session),
+    current_user: str = Depends(get_current_user_id),
+) -> list:
+    """List all generated reports with associated patient info."""
+    offset = (page - 1) * page_size
+    stmt = (
+        select(Report, ScreeningVisit, Patient)
+        .join(ScreeningVisit, Report.visit_id == ScreeningVisit.visit_id)
+        .join(Patient, ScreeningVisit.patient_id == Patient.patient_id)
+        .order_by(desc(Report.generated_at))
+        .offset(offset)
+        .limit(page_size)
+    )
+    result = await db.execute(stmt)
+    rows = result.all()
+    return [
+        {
+            "report_id": r.report_id,
+            "visit_id": r.visit_id,
+            "format": r.format,
+            "generated_at": r.generated_at.isoformat() if r.generated_at else None,
+            "download_count": r.download_count,
+            "file_size_bytes": r.file_size_bytes,
+            "patient_id": p.patient_id,
+            "patient_name": p.full_name,
+            "patient_sex": p.sex,
+        }
+        for r, v, p in rows
+    ]
 
 
 @router.post(
@@ -107,35 +152,47 @@ async def download_report(
 ) -> Response:
     """
     Download a report.
-    
-    - Returns the actual file
+
+    - Returns the actual file via FileResponse
     - Increments download counter
     - Logs download for audit
     """
+    from pathlib import Path as FilePath
+
     service = ReportService(db)
-    
-    try:
-        result = await service.download_report(
-            report_id=report_id,
-            worker_id=current_user,
-            ip_address=client_ip
+
+    # Look up report metadata
+    report = await service.report_repo.get_report_with_details(report_id)
+    if not report:
+        raise NotFoundError("Report", report_id)
+
+    file_path = FilePath(report.file_path)
+    if not file_path.exists():
+        raise ReportGenerationError(
+            f"Report file is no longer available on the server. Please regenerate it.",
+            detail={"report_id": report_id}
         )
-        
-        # Return the file
-        return Response(
-            content=result["content"],
-            media_type=result["content_type"],
-            headers={
-                "Content-Disposition": f'attachment; filename="{result["filename"]}"'
-            }
-        )
-        
-    except NotFoundError as e:
-        logger.warning(f"Report download failed - not found: {report_id}")
-        raise
-    except ReportGenerationError as e:
-        logger.error(f"Report download failed: {str(e)}")
-        raise
+
+    # Increment download count and log
+    await service.report_repo.increment_download_count(report_id)
+    await service.audit_repo.log_event(
+        event_type="REPORT_DOWNLOADED",
+        action="Report downloaded",
+        worker_id=current_user,
+        resource_type="Report",
+        resource_id=report_id,
+        ip_address=client_ip,
+        status="SUCCESS"
+    )
+
+    content_type = "application/pdf" if report.format == "PDF" else "application/json"
+    filename = f"patient_report_{report.visit_id}.{report.format.lower()}"
+
+    return FileResponse(
+        path=str(file_path),
+        filename=filename,
+        media_type=content_type,
+    )
 
 
 @router.get(

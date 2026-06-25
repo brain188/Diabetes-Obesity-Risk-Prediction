@@ -29,7 +29,8 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
         full_name: str,
         email: str,
         password: str,
-        clinic_name: Optional[str] = None
+        clinic_name: Optional[str] = None,
+        role: str = "healthcare_worker",
     ) -> HealthcareWorker:
         """
         Create a new healthcare worker account.
@@ -64,8 +65,9 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
             email=email.lower(),
             password_hash=password_hash,
             clinic_name=clinic_name,
+            role=role,
             is_active=True,
-            is_verified=False
+            is_verified=True,
         )
         
         logger.info(f"Created healthcare worker: {email}")
@@ -347,7 +349,7 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
             ).values(is_active=True)
             result = await self.session.execute(stmt)
             await self.session.flush()
-            
+
             if result.rowcount > 0:
                 logger.info(f"Activated worker account: {worker_id}")
                 return True
@@ -355,3 +357,10 @@ class HealthcareWorkerRepository(BaseRepository[HealthcareWorker]):
         except Exception as e:
             logger.error(f"Failed to activate account {worker_id}: {str(e)}")
             return False
+
+    async def list_workers(self) -> list[HealthcareWorker]:
+        """Return all registered healthcare workers ordered by creation date."""
+        result = await self.session.execute(
+            select(HealthcareWorker).order_by(HealthcareWorker.created_at.desc())
+        )
+        return list(result.scalars().all())

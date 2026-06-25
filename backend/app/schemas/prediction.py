@@ -6,7 +6,12 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
 from app.schemas.screening import ScreeningDataRequest
-
+from app.schemas.recommendation import RecommendationResponse
+from app.schemas.shap import (
+    SHAPExplanationResponse, 
+    LIMEExplanationResponse, 
+    GlobalFeatureImportanceResponse
+) 
 
 class RiskClassification(BaseModel):
     """Risk classification details."""
@@ -110,6 +115,14 @@ class PredictionResponse(BaseModel):
     model_version: str = Field(..., description="Model version used")
     prediction_date: datetime = Field(..., description="Prediction timestamp")
     latency_ms: Optional[float] = Field(None, description="Prediction latency in milliseconds")
+
+    # ── Explanations ──────────────────────────────────────────────────────────
+    shap_explanation: Optional[SHAPExplanationResponse] = Field(None, description="SHAP explanation")
+    lime_explanation: Optional[LIMEExplanationResponse] = Field(None, description="LIME explanation")
+    global_feature_importance: Optional[GlobalFeatureImportanceResponse] = Field(None, description="Global feature importance")
+    
+    # ── Recommendation ──────────────────────────────────────────────────────
+    recommendation: Optional["RecommendationResponse"] = Field(None, description="Clinical recommendation")
     
     model_config = ConfigDict(
         json_schema_extra={
@@ -132,9 +145,14 @@ class PredictionResponse(BaseModel):
                 },
                 "model_version": "1.0.0",
                 "prediction_date": "2024-01-15T10:30:00Z",
-                "latency_ms": 125.5
+                "latency_ms": 125.5,
+                "shap_explanation": {},
+                "lime_explanation": {},
+                "global_feature_importance": {},
+                "recommendation": {}
             }
         }
     )
 
 PredictionRequest.model_rebuild()
+PredictionResponse.model_rebuild()

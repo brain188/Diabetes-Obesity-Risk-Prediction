@@ -2,7 +2,7 @@
 SHAP explanation schemas for model interpretability.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -53,6 +53,28 @@ class SHAPExplanationResponse(BaseModel):
         }
     )
 
+class LIMEExplanationResponse(BaseModel):
+    """Response model for LIME explanation."""
+    
+    explanation_id: str = Field(..., description="Explanation identifier")
+    prediction_id: str = Field(..., description="Associated prediction identifier")
+    feature_contributions: List[FeatureContribution] = Field(..., description="All feature contributions")
+    top_positive_features: List[FeatureContribution] = Field(..., description="Top 5 risk-increasing features")
+    top_negative_features: List[FeatureContribution] = Field(..., description="Top 5 risk-decreasing features")
+    
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "explanation_id": "550e8400-e29b-41d4-a716-446655440005",
+                "prediction_id": "550e8400-e29b-41d4-a716-446655440003",
+                "feature_contributions": [],
+                "top_positive_features": [],
+                "top_negative_features": []
+            }
+        }
+    )
+
+
 
 class GlobalFeatureImportanceResponse(BaseModel):
     """Response model for global feature importance."""
@@ -73,6 +95,25 @@ class GlobalFeatureImportanceResponse(BaseModel):
                 },
                 "sorted_features": ["bmi", "age", "family_history_diabetes"],
                 "updated_at": "2024-01-15T10:30:00Z"
+            }
+        }
+    )
+
+class CombinedExplanationResponse(BaseModel):
+    """Combined response model for all explanations."""
+    
+    prediction_id: str = Field(..., description="Associated prediction identifier")
+    shap: Optional[SHAPExplanationResponse] = Field(None, description="SHAP explanation")
+    lime: Optional[LIMEExplanationResponse] = Field(None, description="LIME explanation")
+    global_feature_importance: Optional[GlobalFeatureImportanceResponse] = Field(None, description="Global feature importance")
+    
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "prediction_id": "550e8400-e29b-41d4-a716-446655440003",
+                "shap": {},
+                "lime": {},
+                "global_feature_importance": {}
             }
         }
     )

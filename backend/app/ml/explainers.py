@@ -17,11 +17,15 @@ PredictionRepository.save_shap_explanation() expects:
 
 from typing import TypedDict
 
+import traceback
+
 import numpy as np
 import pandas as pd
+import shap
 
 from app.core.logging import get_logger
 from app.ml.model_loader import ModelLoader
+from lime.lime_tabular import LimeTabularExplainer
 
 log = get_logger(__name__)
 
@@ -55,48 +59,69 @@ def explain_with_shap(
     """
     Compute per-patient SHAP values for the Diabetic class.
 
+    Uses the cached TreeExplainer from model_loader (built once at startup).
+    Falls back to building a fresh one if the cache is unavailable.
+    Handles both the old list-based API (SHAP < 0.42) and the new
+    Explanation-object API.
+
     Returns
     -------
     (top_positive, top_negative, base_value, feature_contributions_dict)
-
-    top_positive           — up to TOP_N_FACTORS FeatureContribution dicts
-                             where shap_value > 0 (increased diabetic risk)
-    top_negative           — up to TOP_N_FACTORS where shap_value < 0
-    base_value             — model's average prediction (SHAP baseline)
-    feature_contributions  — {feature_name: shap_value} for all features
-                             → passed directly to PredictionRepository.save_shap_explanation()
     """
-    explainer     = model_loader.get_shap_explainer()
     feature_names = model_loader.feature_names
 
-    raw_shap = explainer.shap_values(patient_features)
-
-    # Multiclass TreeExplainer → list[array], one per class
-    if isinstance(raw_shap, list):
-        sv_diabetic = np.asarray(raw_shap[DIABETIC_CLASS_INDEX])[0]
-        expected    = explainer.expected_value
-        base_value  = (
-            float(expected[DIABETIC_CLASS_INDEX])
-            if hasattr(expected, "__len__")
-            else float(expected)
-        )
-    else:
-        sv_diabetic = np.asarray(raw_shap)[0]
-        base_value  = float(explainer.expected_value)
+    # Use cached explainer — avoids rebuilding (~0.5–2 s) on every request
+    try:
+        explainer = model_loader.get_shap_explainer_cached()
+    except Exception:
+        log.warning("Cached SHAP explainer unavailable, building fresh one.")
+        explainer = shap.TreeExplainer(model_loader.get_model())
 
     feature_values = patient_features.iloc[0].to_dict()
 
-    # Full flat dict for the DB (feature_contributions column)
+    # ── Compute SHAP values, handling old and new APIs ──────────────────────
+    sv_diabetic: np.ndarray
+    base_value: float
+
+    try:
+        # New API (SHAP >= 0.42): explainer(X) returns an Explanation object
+        explanation = explainer(patient_features)
+        sv_array    = np.asarray(explanation.values)   # (1, n_features) or (1, n_features, n_classes)
+        bv_array    = np.asarray(explanation.base_values)
+
+        if sv_array.ndim == 3:                          # multiclass
+            sv_diabetic = sv_array[0, :, DIABETIC_CLASS_INDEX]
+            base_value  = float(bv_array[0, DIABETIC_CLASS_INDEX]) if bv_array.ndim == 2 else float(bv_array[0])
+        else:                                           # binary / single output
+            sv_diabetic = sv_array[0]
+            base_value  = float(bv_array[0]) if bv_array.ndim >= 1 else float(bv_array)
+
+    except Exception:
+        log.warning("New SHAP API failed, falling back to shap_values():\n%s", traceback.format_exc())
+        # Old API: shap_values() returns list[ndarray] for multiclass or ndarray
+        raw_shap = explainer.shap_values(patient_features)
+        if isinstance(raw_shap, list):
+            sv_diabetic = np.asarray(raw_shap[DIABETIC_CLASS_INDEX])[0]
+            expected    = explainer.expected_value
+            base_value  = (
+                float(expected[DIABETIC_CLASS_INDEX])
+                if hasattr(expected, "__len__")
+                else float(expected)
+            )
+        else:
+            sv_diabetic = np.asarray(raw_shap)[0]
+            base_value  = float(explainer.expected_value)
+
+    # ── Build output ─────────────────────────────────────────────────────────
     feature_contributions: dict[str, float] = {
         feat: round(float(sv), 6)
         for feat, sv in zip(feature_names, sv_diabetic)
     }
 
-    # Build list in FeatureContribution shape
     all_contributions: list[FeatureContribution] = [
         {
             "feature_name"    : feat,
-            "value"           : round(float(feature_values[feat]), 4),
+            "value"           : round(float(feature_values.get(feat, 0.0)), 4),
             "shap_value"      : round(float(sv), 6),
             "impact_direction": "Positive" if sv > 0 else "Negative",
             "importance_abs"  : round(abs(float(sv)), 6),
@@ -104,7 +129,6 @@ def explain_with_shap(
         for feat, sv in zip(feature_names, sv_diabetic)
     ]
 
-    # Sort by absolute impact descending
     all_contributions.sort(key=lambda c: c["importance_abs"], reverse=True)
 
     top_positive = [c for c in all_contributions if c["impact_direction"] == "Positive"][:TOP_N_FACTORS]
@@ -126,7 +150,7 @@ def explain_with_lime(
     patient_features: pd.DataFrame,
     background_data: pd.DataFrame,
     model_loader: ModelLoader,
-    num_samples: int = 500,
+    num_samples: int = 200,
 ) -> list[FeatureContribution]:
     """
     Compute a LIME explanation for one patient for the Diabetic class.
@@ -139,25 +163,29 @@ def explain_with_lime(
     patient_features : pd.DataFrame — single scaled row
     background_data  : pd.DataFrame — training distribution (for value ranges)
     model_loader      : ModelLoader
-    num_samples       : int — perturbations to generate (500 ≈ 0.5–1s)
+    num_samples       : int — perturbations to generate (200 gives good fidelity in ~0.3s)
 
     Returns
     -------
     list[FeatureContribution] — top TOP_N_FACTORS features, sorted by |shap_value|
     """
-    from lime.lime_tabular import LimeTabularExplainer
 
     model         = model_loader.get_model()
     feature_names = model_loader.feature_names
 
-    explainer = LimeTabularExplainer(
-        training_data      = background_data.values,
-        feature_names      = feature_names,
-        class_names        = ["Normal", "Prediabetes", "Diabetic"],
-        mode               = "classification",
-        discretize_continuous = True,
-        random_state       = 42,
-    )
+    # Use cached explainer — avoids rebuilding (~0.3–1 s) on every request
+    try:
+        explainer = model_loader.get_lime_explainer_cached()
+    except Exception:
+        log.warning("Cached LIME explainer unavailable, building fresh one.")
+        explainer = LimeTabularExplainer(
+            training_data=background_data.values,
+            feature_names=feature_names,
+            class_names=["Normal", "Prediabetes", "Diabetic"],
+            mode="classification",
+            discretize_continuous=True,
+            random_state=42,
+        )
 
     explanation = explainer.explain_instance(
         data_row  = patient_features.iloc[0].values,

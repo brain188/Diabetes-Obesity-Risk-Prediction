@@ -2,6 +2,8 @@
 Risk prediction business logic using ML module.
 """
 
+import asyncio
+import functools
 import logging
 import time
 from typing import Optional, Dict, Any
@@ -10,7 +12,7 @@ from app.core.exceptions import PredictionError, InputValidationError, ModelNotL
 from app.core.constants import get_risk_color, RISK_HIGH, RISK_MODERATE, RISK_LOW
 
 # ML Module Imports
-from app.ml.model_loader import ModelLoader
+from app.ml.model_loader import model_loader
 from app.ml.feature_builder import PatientFeatures, build_feature_row
 from app.ml.diabetes_predictor import predict_diabetes
 from app.ml.obesity import assess_obesity
@@ -29,6 +31,14 @@ from app.schemas.prediction import (
     DiabetesPrediction,
     ObesityPrediction
 )
+
+from app.schemas.shap import (
+    SHAPExplanationResponse,
+    LIMEExplanationResponse,
+    GlobalFeatureImportanceResponse,
+    FeatureContribution as FeatureContributionSchema
+)
+from app.schemas.recommendation import RecommendationResponse
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +60,7 @@ class PredictionService:
         self.audit_repo = AuditLogRepository(session)
         
         # Get the singleton model loader instance
-        self.model_loader = ModelLoader()
+        self.model_loader = model_loader
     
     async def predict_risk(
         self,
@@ -76,6 +86,12 @@ class PredictionService:
             ValidationError: If screening data is invalid
         """
         start_time = time.time()
+
+        # ── Initialize all response variables to None ──────────────────────────
+        shap_explanation_response = None
+        lime_explanation_response = None
+        global_importance_response = None
+        recommendation_response = None
         
         try:
             # Get screening data
@@ -155,44 +171,76 @@ class PredictionService:
                 logger.error(f"Failed to save prediction: {str(e)}")
                 raise PredictionError(f"Failed to save prediction: {str(e)}")
             
-            # Generate Recommendations
+            # --- Generate Recommendations ------------------------------------------
             try:
-                await self._generate_recommendations(
+                recommendation = await self._generate_recommendations(
                     prediction_id=prediction.prediction_id,
                     diabetes_result=diabetes_result,
                     obesity_result=obesity_result
                 )
+
+                # Create recommendation response
+                if recommendation:
+                    recommendation_response = RecommendationResponse(
+                        recommendation_id=recommendation.recommendation_id,
+                        prediction_id=recommendation.prediction_id,
+                        priority=recommendation.priority,
+                        action_text=recommendation.action_text,
+                        patient_advice=recommendation.patient_advice,
+                        follow_up_interval_days=recommendation.follow_up_interval_days,
+                        referral_required=recommendation.referral_required
+                    )
+
             except Exception as e:
                 logger.warning(f"Failed to generate recommendations: {str(e)}")
                 # Don't fail the whole prediction if recommendations fail
             
-            # Generate Explanations
-            
-            # 1. SHAP Explanation (per-patient, local)
-            try:
-                await self._generate_shap_explanation(
+            # ------ Generate Explanations (SHAP + LIME run concurrently) ---------------
+            shap_result, lime_result = await asyncio.gather(
+                self._generate_shap_explanation(
                     prediction_id=prediction.prediction_id,
                     feature_row=feature_row,
                     diabetes_result=diabetes_result
-                )
-            except Exception as e:
-                logger.warning(f"Failed to generate SHAP explanation: {str(e)}")
-                # Don't fail the whole prediction if SHAP fails
-            
-            # 2. LIME Explanation (per-patient, local, model-agnostic)
-            try:
-                await self._generate_lime_explanation(
+                ),
+                self._generate_lime_explanation(
                     prediction_id=prediction.prediction_id,
                     feature_row=feature_row,
                     diabetes_result=diabetes_result
+                ),
+                return_exceptions=True,
+            )
+
+            shap_data = None if isinstance(shap_result, Exception) else shap_result
+            if isinstance(shap_result, Exception):
+                logger.warning(f"SHAP explanation failed: {shap_result}")
+            if shap_data:
+                shap_explanation_response = SHAPExplanationResponse(
+                    explanation_id=shap_data["explanation_id"],
+                    prediction_id=prediction.prediction_id,
+                    base_value=shap_data["base_value"],
+                    final_probability=diabetes_result["diabetes_probability"],
+                    feature_contributions=shap_data["feature_contributions"],
+                    top_positive_features=shap_data["top_positive"],
+                    top_negative_features=shap_data["top_negative"]
                 )
-            except Exception as e:
-                logger.warning(f"Failed to generate LIME explanation: {str(e)}")
-                # Don't fail the whole prediction if LIME fails
+
+            lime_data = None if isinstance(lime_result, Exception) else lime_result
+            if isinstance(lime_result, Exception):
+                logger.warning(f"LIME explanation failed: {lime_result}")
+            if lime_data:
+                lime_explanation_response = LIMEExplanationResponse(
+                    explanation_id=lime_data["explanation_id"],
+                    prediction_id=prediction.prediction_id,
+                    feature_contributions=lime_data["feature_contributions"],
+                    top_positive_features=lime_data["top_positive"],
+                    top_negative_features=lime_data["top_negative"]
+                )
             
             # 3. Native Feature Importance (global, model-specific)
             try:
-                await self._ensure_global_feature_importance()
+                global_data = await self._get_global_feature_importance_response()
+                if global_data:
+                    global_importance_response = global_data
             except Exception as e:
                 logger.warning(f"Failed to load global feature importance: {str(e)}")
                 # Don't fail the whole prediction if global importance fails
@@ -213,7 +261,8 @@ class PredictionService:
             
             logger.info(f"Prediction completed for visit {visit_id} in {latency_ms:.2f}ms")
             
-            # Build Response
+            # ── Build Response with Explanations ──────────────────────────
+
             return PredictionResponse(
                 prediction_id=prediction.prediction_id,
                 visit_id=visit_id,
@@ -233,7 +282,11 @@ class PredictionService:
                 ),
                 model_version=diabetes_result["model_version"],
                 prediction_date=prediction.prediction_date,
-                latency_ms=latency_ms
+                latency_ms=latency_ms,
+                shap_explanation=shap_explanation_response,
+                lime_explanation=lime_explanation_response,
+                global_feature_importance=global_importance_response,
+                recommendation=recommendation_response
             )
             
         except (PredictionError, InputValidationError, ModelNotLoadedError):
@@ -246,7 +299,7 @@ class PredictionService:
                 f"Prediction failed for visit {visit_id}: {str(e)}"
             )
     
-    # Recommendations
+    # ----- Recommendations --------------------------------------
     
     async def _generate_recommendations(
         self,
@@ -285,19 +338,14 @@ class PredictionService:
         patient_advice = self._build_patient_advice(diabetes_result, obesity_result)
         
         # Determine follow-up interval
-        if max_priority == 3:
-            follow_up_days = 30
-        elif max_priority == 2:
-            follow_up_days = 90
-        else:
-            follow_up_days = 180
+        follow_up_days = 30 if max_priority == 3 else 90 if max_priority == 2 else 180
         
         # Diabetes-specific guidance
         diabetes_guidance = self._get_diabetes_guidance(diabetes_result["diabetes_risk_class"])
         obesity_guidance = self._get_obesity_guidance(obesity_result["risk_class"])
         
         # Save recommendation
-        await self.prediction_repo.save_recommendation(
+        return await self.prediction_repo.save_recommendation(
             prediction_id=prediction_id,
             priority=priority,
             action_text=action_text,
@@ -371,7 +419,7 @@ class PredictionService:
         else:
             return ("Maintain healthy weight through balanced nutrition and exercise.")
     
-    # SHAP Explanation
+    # ----- SHAP Explanation -----------------------------------------------
     
     async def _generate_shap_explanation(
         self,
@@ -388,14 +436,13 @@ class PredictionService:
             diabetes_result: Diabetes prediction results
         """
         try:
-            # Use explain_with_shap function
-            top_positive, top_negative, base_value, feature_contributions = explain_with_shap(
-                patient_features=feature_row,
-                model_loader=self.model_loader
+            loop = asyncio.get_running_loop()
+            top_positive, top_negative, base_value, feature_contributions = await loop.run_in_executor(
+                None, explain_with_shap, feature_row, self.model_loader
             )
             
             # Save SHAP explanation
-            await self.prediction_repo.save_shap_explanation(
+            shap_explanation = await self.prediction_repo.save_shap_explanation(
                 prediction_id=prediction_id,
                 base_value=base_value,
                 feature_contributions=feature_contributions,
@@ -403,14 +450,58 @@ class PredictionService:
                 top_negative_features=top_negative,
                 method="SHAP"
             )
+
+            # feature_contributions is a flat dict {feature_name: shap_value}
+            feature_contribs = [
+                FeatureContributionSchema(
+                    feature_name=feat,
+                    value=0.0,
+                    shap_value=sv,
+                    impact_direction="Positive" if sv > 0 else "Negative",
+                    importance_abs=abs(sv)
+                )
+                for feat, sv in feature_contributions.items()
+            ]
             
-            logger.debug(f"SHAP explanation saved for prediction {prediction_id}")
+            top_pos = [
+                FeatureContributionSchema(
+                    feature_name=f["feature_name"],
+                    value=f["value"],
+                    shap_value=f["shap_value"],
+                    impact_direction=f["impact_direction"],
+                    importance_abs=f["importance_abs"]
+                )
+                for f in top_positive
+            ]
+            
+            top_neg = [
+                FeatureContributionSchema(
+                    feature_name=f["feature_name"],
+                    value=f["value"],
+                    shap_value=f["shap_value"],
+                    impact_direction=f["impact_direction"],
+                    importance_abs=f["importance_abs"]
+                )
+                for f in top_negative
+            ]
+            
+            return {
+                "explanation_id": shap_explanation.explanation_id,
+                "base_value": base_value,
+                "feature_contributions": feature_contribs,
+                "top_positive": top_pos,
+                "top_negative": top_neg
+            }
             
         except Exception as e:
-            logger.warning(f"Failed to generate SHAP explanation: {str(e)}")
+            import traceback
+            logger.warning(
+                "Failed to generate SHAP explanation: %s\n%s",
+                str(e), traceback.format_exc()
+            )
             # Don't raise - explanation is optional
-    
-    # LIME Explanation
+
+    # ------ LIME Explanation ------------------------------------------------
     
     async def _generate_lime_explanation(
         self,
@@ -434,14 +525,12 @@ class PredictionService:
             
             if background_data is None:
                 logger.warning("Background data not available for LIME, skipping")
-                return
+                return None
             
-            # Use explain_with_lime function
-            lime_contributions = explain_with_lime(
-                patient_features=feature_row,
-                background_data=background_data,
-                model_loader=self.model_loader,
-                num_samples=500  
+            loop = asyncio.get_running_loop()
+            lime_contributions = await loop.run_in_executor(
+                None,
+                functools.partial(explain_with_lime, feature_row, background_data, self.model_loader, 200)
             )
             
             # Convert to feature contributions dict
@@ -453,18 +542,52 @@ class PredictionService:
             # Separate positive and negative contributions
             top_positive = [c for c in lime_contributions if c["impact_direction"] == "Positive"]
             top_negative = [c for c in lime_contributions if c["impact_direction"] == "Negative"]
-            
-            # Save LIME explanation (using same SHAPExplanation table with method="LIME")
-            await self.prediction_repo.save_shap_explanation(
-                prediction_id=prediction_id,
-                base_value=0.0,  # LIME doesn't have a base value
-                feature_contributions=feature_contributions,
-                top_positive_features=top_positive,
-                top_negative_features=top_negative,
-                method="LIME"
-            )
-            
-            logger.debug(f"LIME explanation saved for prediction {prediction_id}")
+
+            # LIME is not persisted — shap_explanations has a unique constraint on
+            # prediction_id, and SHAP already owns that row. LIME is always recomputed
+            # fresh so there is no need for a separate DB row.
+            import uuid
+            lime_explanation_id = str(uuid.uuid4())
+
+            feature_contribs = [
+                FeatureContributionSchema(
+                    feature_name=c["feature_name"],
+                    value=c["value"],
+                    shap_value=c["shap_value"],
+                    impact_direction=c["impact_direction"],
+                    importance_abs=c["importance_abs"]
+                )
+                for c in lime_contributions
+            ]
+
+            top_pos = [
+                FeatureContributionSchema(
+                    feature_name=c["feature_name"],
+                    value=c["value"],
+                    shap_value=c["shap_value"],
+                    impact_direction=c["impact_direction"],
+                    importance_abs=c["importance_abs"]
+                )
+                for c in top_positive
+            ]
+
+            top_neg = [
+                FeatureContributionSchema(
+                    feature_name=c["feature_name"],
+                    value=c["value"],
+                    shap_value=c["shap_value"],
+                    impact_direction=c["impact_direction"],
+                    importance_abs=c["importance_abs"]
+                )
+                for c in top_negative
+            ]
+
+            return {
+                "explanation_id": lime_explanation_id,
+                "feature_contributions": feature_contribs,
+                "top_positive": top_pos,
+                "top_negative": top_neg
+            }
             
         except ImportError:
             logger.warning("LIME library not installed, skipping LIME explanation")
@@ -472,47 +595,36 @@ class PredictionService:
             logger.warning(f"Failed to generate LIME explanation: {str(e)}")
             # Don't raise - explanation is optional
     
-    # Global Feature Importance
+    # ----- Global Feature Importance ----------------------------------------
     
-    async def _ensure_global_feature_importance(self) -> None:
-        """
-        Ensure global feature importance is available and cached.
-        
-        Global Feature Importance view across the prediction models.
-        This is computed once and cached in memory using ModelLoader's cached method.
-        """
+    async def _get_global_feature_importance_response(self):
         try:
-            # Use ModelLoader's cached method - returns (importance_list, method)
             importance_list, method = self.model_loader.get_feature_importance_cached()
             
-            # Cache the result in the service instance
-            self._cached_feature_importance = {
-                "importance": importance_list,
-                "method": method,
-                "model_version": self.model_loader.model_version,
-                "updated_at": time.time()
-            }
-            
-            logger.info(f"Global feature importance available: {method} with {len(importance_list)} features")
-            
+            return GlobalFeatureImportanceResponse(
+                model_version=self.model_loader.model_version,
+                feature_importance={
+                    item["feature"]: item["importance"]
+                    for item in importance_list
+                },
+                sorted_features=[
+                    item["feature"]
+                    for item in importance_list
+                ],
+                method=method,
+                updated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            )
         except Exception as e:
-            logger.warning(f"Failed to load global feature importance: {str(e)}")
+            logger.warning(f"Failed to get global feature importance: {str(e)}")
+            return None
+
     
     async def get_global_feature_importance(self) -> Dict[str, Any]:
-        """
-        Get global feature importance (public method for API endpoint).
-        
-        Returns:
-            Dictionary with feature importance data
-        """
-        await self._ensure_global_feature_importance()
-        
-        if hasattr(self, '_cached_feature_importance'):
-            return self._cached_feature_importance
-        
+        """Get global feature importance (public method for API endpoint)."""
+        importance_list, method = self.model_loader.get_feature_importance_cached()
         return {
-            "importance": [],
-            "method": "Not available",
+            "importance": importance_list,
+            "method": method,
             "model_version": self.model_loader.model_version,
-            "updated_at": time.time()
+            "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }

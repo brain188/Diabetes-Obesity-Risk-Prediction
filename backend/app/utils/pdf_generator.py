@@ -163,6 +163,14 @@ class PDFGenerator:
         # Add SHAP explanation
         if 'explanation' in report_data:
             story.extend(self._build_explanation(report_data['explanation']))
+
+        # Add LIME explanation
+        if 'lime_explanation' in report_data:
+            story.extend(self._build_lime_explanation(report_data['lime_explanation']))
+        
+        # Add Global Feature Importance
+        if 'global_feature_importance' in report_data:
+            story.extend(self._build_global_feature_importance(report_data['global_feature_importance']))
         
         # Add recommendations
         if 'recommendations' in report_data:
@@ -248,6 +256,13 @@ class PDFGenerator:
         
         story.append(Paragraph("Screening Measurements", self.styles['CustomHeading']))
         
+        # Fix physical activity display - convert boolean to readable text
+        physical_activity = screening.get('physical_activity')
+        if isinstance(physical_activity, bool):
+            physical_activity_text = "Yes" if physical_activity else "No"
+        else:
+            physical_activity_text = str(physical_activity) if physical_activity is not None else "N/A"
+        
         # Screening data table
         data = [
             ["<b>Measurement</b>", "<b>Value</b>"],
@@ -255,14 +270,14 @@ class PDFGenerator:
             ["Height", f"{screening.get('height_m', 'N/A')} m"],
             ["BMI", f"{screening.get('bmi', 'N/A')}"],
             ["BMI Category", screening.get('bmi_category', 'N/A')],
-            ["Physical Activity", f"{screening.get('physical_activity_days_per_week', 'N/A')} days/week"],
+            ["Physically Active", physical_activity_text],  
             ["Family History Diabetes", "Yes" if screening.get('family_history_diabetes') else "No"],
             ["Previous GDM", "Yes" if screening.get('previous_gdm') else "No"],
             ["Has Hypertension", "Yes" if screening.get('has_hypertension') else "No"],
             ["Is Pregnant", "Yes" if screening.get('is_pregnant') else "No"],
             ["Residence", screening.get('residence', 'N/A')],
         ]
-        
+
         # Add optional fields if present
         if screening.get('notes'):
             data.append(["Notes", screening['notes']])
@@ -472,6 +487,122 @@ class PDFGenerator:
         
         return story
     
+    def _build_lime_explanation(self, lime_data: Dict[str, Any]) -> List:
+        """Build LIME explanation section."""
+        story = []
+        
+        story.append(Paragraph("LIME Explanation (Model-Agnostic)", self.styles['CustomHeading']))
+        story.append(Paragraph(
+            "LIME provides a complementary view by explaining the prediction locally.",
+            self.styles['CustomBody']
+        ))
+        story.append(Spacer(1, 6))
+        
+        # Feature contributions
+        contributions = lime_data.get('feature_contributions', {})
+        if contributions:
+            # Sort by absolute value
+            sorted_features = sorted(
+                contributions.items(),
+                key=lambda x: abs(x[1]),
+                reverse=True
+            )
+            
+            # Create table
+            lime_data_table = [["<b>Feature</b>", "<b>Contribution</b>", "<b>Impact</b>"]]
+            for feature, value in sorted_features[:10]:
+                impact = "⬆ Increases Risk" if value > 0 else "⬇ Decreases Risk"
+                color = "#E74C3C" if value > 0 else "#2ECC71"
+                lime_data_table.append([
+                    feature,
+                    f"{value:+.3f}",
+                    f"<font color='{color}'>{impact}</font>",
+                ])
+            
+            table = Table(lime_data_table, colWidths=[2.5*inch, 1.5*inch, 2.5*inch])
+            table.setStyle(TableStyle([
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#BDC3C7')),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2C3E50')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (1, 0), (1, -1), 'CENTER'),
+                ('ALIGN', (2, 0), (2, -1), 'CENTER'),
+                ('PADDING', (0, 0), (-1, -1), 5),
+                ('BACKGROUND', (0, 1), (0, -1), colors.HexColor('#F8F9FA')),
+            ]))
+            
+            story.append(table)
+        
+        story.append(Spacer(1, 12))
+        
+        return story
+
+    def _build_global_feature_importance(self, global_importance: Dict[str, Any]) -> List:
+        """Build global feature importance section."""
+        story = []
+        
+        story.append(Paragraph("Global Feature Importance", self.styles['CustomHeading']))
+        story.append(Paragraph(
+            f"Method: {global_importance.get('method', 'N/A')} | Model Version: {global_importance.get('model_version', 'N/A')}",
+            self.styles['CustomBody']
+        ))
+        story.append(Spacer(1, 6))
+        
+        # Feature importance
+        importance = global_importance.get('feature_importance', {})
+        if importance:
+            # Sort by importance descending
+            sorted_features = sorted(
+                importance.items(),
+                key=lambda x: x[1],
+                reverse=True
+            )
+            
+            # Create table
+            data = [["<b>Rank</b>", "<b>Feature</b>", "<b>Importance</b>", "<b>Bar</b>"]]
+            max_importance = sorted_features[0][1] if sorted_features else 1
+            
+            for rank, (feature, value) in enumerate(sorted_features[:10], 1):
+                # Calculate bar width (percentage of max)
+                bar_width = (value / max_importance) * 100
+                
+                # Create bar
+                bar_data = [[""]]  # Empty cell for bar
+                bar_table = Table(bar_data, colWidths=[3*inch])
+                bar_table.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#2ECC71')),
+                    ('FONTSIZE', (0, 0), (-1, -1), 1),
+                    ('BORDER', (0, 0), (-1, -1), 0, colors.white),
+                ]))
+                
+                data.append([
+                    str(rank),
+                    feature,
+                    f"{value:.2f}",
+                    bar_table
+                ])
+            
+            table = Table(data, colWidths=[0.5*inch, 2*inch, 1*inch, 3*inch])
+            table.setStyle(TableStyle([
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#BDC3C7')),
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2C3E50')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (0, -1), 'CENTER'),
+                ('ALIGN', (2, 0), (2, -1), 'CENTER'),
+                ('PADDING', (0, 0), (-1, -1), 5),
+                ('BACKGROUND', (0, 1), (0, -1), colors.HexColor('#F8F9FA')),
+                ('BACKGROUND', (0, 2), (0, -2), colors.HexColor('#FFFFFF')),
+                ('BACKGROUND', (0, 3), (0, -3), colors.HexColor('#F8F9FA')),
+            ]))
+            
+            story.append(table)
+        
+        story.append(Spacer(1, 12))
+        
+        return story
     def _build_recommendations(self, recommendations: Dict[str, Any]) -> List:
         """Build clinical recommendations section."""
         story = []

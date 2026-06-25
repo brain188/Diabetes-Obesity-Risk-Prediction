@@ -9,8 +9,10 @@ from typing import List, Optional, Tuple
 from sqlalchemy import select, desc, func
 from sqlalchemy.orm import selectinload
 
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import NotFoundError, DatabaseError
 from app.models.report import Report
+from app.models.visit import Visit
+from app.models.base import generate_uuid
 from app.repositories.base import BaseRepository
 
 logger = logging.getLogger(__name__)
@@ -45,19 +47,62 @@ class ReportRepository(BaseRepository[Report]):
         Returns:
             Created Report instance
         """
-        report = await self.create(
-            visit_id=visit_id,
-            format=format.upper(),
-            file_path=file_path,
-            generated_by=generated_by,
-            file_size_bytes=file_size_bytes,
-            checksum=checksum,
-            generated_at=datetime.now(timezone.utc),
-            download_count=0
-        )
-        
-        logger.info(f"Created report {report.report_id} for visit {visit_id}")
-        return report
+        try:
+            # Check if report already exists
+            existing = await self.get_report_by_visit(visit_id)
+            if existing:
+                logger.info(f"Report already exists for visit {visit_id}, updating...")
+                return await self.update_report(existing.report_id, file_path, format, file_size_bytes, checksum)
+            
+            # Create new report with proper types
+            report = Report(
+                report_id=generate_uuid(),
+                visit_id=visit_id,
+                format=format.upper(),
+                file_path=file_path,
+                generated_by=generated_by,
+                file_size_bytes=file_size_bytes,
+                checksum=checksum,
+                generated_at=datetime.now(timezone.utc),
+                download_count="0"
+            )
+            self.session.add(report)
+            await self.session.flush()
+            await self.session.refresh(report)
+            
+            logger.info(f"Created report {report.report_id} for visit {visit_id}")
+            return report
+            
+        except Exception as e:
+            logger.error(f"Failed to create report for visit {visit_id}: {str(e)}")
+            raise DatabaseError(f"Failed to create report: {str(e)}")
+    
+    async def update_report(
+        self,
+        report_id: str,
+        file_path: str,
+        format: str,
+        file_size_bytes: Optional[str] = None,
+        checksum: Optional[str] = None
+    ) -> Report:
+        """Update an existing report."""
+        try:
+            report = await self.get_by_id_or_fail(report_id)
+            report.format = format.upper()
+            report.file_path = file_path
+            report.file_size_bytes = file_size_bytes
+            report.checksum = checksum
+            report.generated_at = datetime.now(timezone.utc)
+            
+            await self.session.flush()
+            await self.session.refresh(report)
+            
+            logger.info(f"Updated report {report_id}")
+            return report
+            
+        except Exception as e:
+            logger.error(f"Failed to update report {report_id}: {str(e)}")
+            raise DatabaseError(f"Failed to update report: {str(e)}")
     
     async def get_report_with_details(
         self,
@@ -76,7 +121,7 @@ class ReportRepository(BaseRepository[Report]):
             stmt = select(Report).where(
                 Report.report_id == report_id
             ).options(
-                selectinload(Report.visit).selectinload(Report.visit.property.mapper.class_.patient).options(),
+                selectinload(Report.visit).selectinload(Visit.patient),
                 selectinload(Report.healthcare_worker),
             )
             
@@ -120,20 +165,25 @@ class ReportRepository(BaseRepository[Report]):
         Returns:
             Updated Report instance
         """
-        report = await self.get_by_id_or_fail(report_id)
-        
-        # Increment download count
-        current_count = int(report.download_count) if report.download_count else 0
-        new_count = str(current_count + 1)
-        
-        report = await self.update(
-            report_id,
-            download_count=new_count,
-            downloaded_at=datetime.now(timezone.utc)
-        )
-        
-        logger.debug(f"Incremented download count for report {report_id} to {new_count}")
-        return report
+        try:
+            report = await self.get_by_id_or_fail(report_id)
+            
+            # Increment download count (convert to int, increment, convert back to string)
+            current_count = int(report.download_count) if report.download_count else 0
+            new_count = str(current_count + 1)
+            
+            report.download_count = new_count
+            report.downloaded_at = datetime.now(timezone.utc)
+            
+            await self.session.flush()
+            await self.session.refresh(report)
+            
+            logger.debug(f"Incremented download count for report {report_id} to {new_count}")
+            return report
+            
+        except Exception as e:
+            logger.error(f"Failed to increment download count for {report_id}: {str(e)}")
+            raise
     
     async def get_patient_reports(
         self,

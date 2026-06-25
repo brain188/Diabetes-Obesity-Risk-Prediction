@@ -9,11 +9,12 @@ from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 
 class UserRegisterRequest(BaseModel):
     """Request model for user registration."""
-    
+
     full_name: str = Field(..., min_length=2, max_length=255, description="User's full name")
     email: EmailStr = Field(..., description="Valid email address")
     clinic_name: Optional[str] = Field(None, max_length=255, description="Healthcare facility name")
     password: str = Field(..., min_length=8, max_length=128, description="Password (min 8 characters)")
+    role: str = Field(default="healthcare_worker", description="User role")
     
     @field_validator("password")
     @classmethod
@@ -43,11 +44,12 @@ class UserRegisterRequest(BaseModel):
 
 class UserRegisterResponse(BaseModel):
     """Response model for user registration."""
-    
+
     worker_id: str = Field(..., description="Unique worker identifier")
     full_name: str = Field(..., description="User's full name")
     email: str = Field(..., description="User's email address")
     clinic_name: Optional[str] = Field(None, description="Healthcare facility name")
+    role: str = Field(default="healthcare_worker", description="User role")
     is_active: bool = Field(..., description="Account active status")
     created_at: datetime = Field(..., description="Account creation timestamp")
     
@@ -180,11 +182,12 @@ class PasswordChangeRequest(BaseModel):
 
 class UserProfileResponse(BaseModel):
     """Response model for user profile information."""
-    
+
     worker_id: str = Field(..., description="Unique worker identifier")
     full_name: str = Field(..., description="User's full name")
     email: str = Field(..., description="User's email address")
     clinic_name: Optional[str] = Field(None, description="Healthcare facility name")
+    role: str = Field(default="healthcare_worker", description="User role")
     is_active: bool = Field(..., description="Account active status")
     last_login_at: Optional[datetime] = Field(None, description="Last login timestamp")
     created_at: datetime = Field(..., description="Account creation timestamp")

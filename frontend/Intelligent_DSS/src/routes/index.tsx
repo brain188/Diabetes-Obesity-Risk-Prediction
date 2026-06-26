@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
-import { useAuthStore } from "@/store/auth.store";
+import { RequireAuth } from "@/components/auth/RequireAuth";
 
 import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
@@ -28,28 +27,6 @@ import ReportsManagementPage from "@/pages/reports/ReportsManagementPage";
 import AnalyticsDashboardPage from "@/pages/analytics/AnalyticsDashboardPage";
 import UserSettingsPage from "@/pages/settings/UserSettingsPage";
 import HelpCenterPage from "@/pages/help/HelpCenterPage";
-
-function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { accessToken } = useAuthStore();
-  // Guard against Zustand v5 persist hydration: on first render the store may
-  // still be at default (null) before localStorage is restored.
-  const [hydrated, setHydrated] = useState(() => {
-    try { return useAuthStore.persist.hasHydrated(); } catch { return true; }
-  });
-  useEffect(() => {
-    if (hydrated) return;
-    try {
-      const unsub = useAuthStore.persist.onFinishHydration(() => setHydrated(true));
-      return unsub;
-    } catch {
-      setHydrated(true);
-    }
-  }, [hydrated]);
-
-  if (!hydrated) return null;
-  if (!accessToken) return <Navigate to="/login" replace />;
-  return <>{children}</>;
-}
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "@/store/auth.store";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1",
@@ -11,15 +12,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+let isRedirecting = false;
+
 api.interceptors.response.use(
   (res) => res,
-  async (error) => {
-    if (error.response?.status === 401) {
-      // Clear BOTH storage locations so Zustand persist + raw key are gone,
-      // preventing RequireAuth from letting a stale token back through.
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("auth-store");
-      window.location.href = "/login";
+  (error) => {
+    if (error.response?.status === 401 && !isRedirecting) {
+      isRedirecting = true;
+      // Clear Zustand state + localStorage in one call so they stay in sync
+      useAuthStore.getState().clearAuth();
+      // Use replace so the login page doesn't get added to browser history
+      window.location.replace("/login");
     }
     return Promise.reject(error);
   },

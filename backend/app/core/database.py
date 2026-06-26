@@ -3,6 +3,7 @@ Database configuration and session management.
 Uses SQLAlchemy 2.0+ with async support for PostgreSQL.
 """
 
+import asyncio
 import logging
 from typing import AsyncGenerator, Optional
 
@@ -43,22 +44,30 @@ async def init_database() -> None:
     # Create async engine with connection pooling
     _engine = create_async_engine(
         settings.DATABASE_URL,
-        echo=settings.DEBUG,  # Log SQL queries in debug mode
+        echo=settings.DEBUG,
         pool_size=settings.DATABASE_POOL_SIZE,
         max_overflow=settings.DATABASE_MAX_OVERFLOW,
-        pool_pre_ping=True,  # Verify connections before using
-        pool_recycle=3600,   # Recycle connections after 1 hour
+        pool_pre_ping=True,
+        pool_recycle=3600,
+        pool_timeout=30,
         connect_args={
-        "prepared_statement_cache_size": 0,
-        "statement_cache_size": 0,
-    }
+            "prepared_statement_cache_size": 0,
+            "statement_cache_size": 0,
+            "timeout": 30,  # asyncpg TCP connection timeout in seconds
+        },
     )
-    
-    # Test connection
+
+    # Test connection — fail fast (30 s) instead of hanging the lifespan startup
     try:
-        async with _engine.connect() as conn:
-            await conn.execute(text("SELECT 1"))
-            logger.info("Database connection successful")
+        async def _ping() -> None:
+            async with _engine.connect() as conn:
+                await conn.execute(text("SELECT 1"))
+
+        await asyncio.wait_for(_ping(), timeout=30.0)
+        logger.info("Database connection successful")
+    except asyncio.TimeoutError:
+        logger.error("Database connection timed out after 30 s")
+        raise RuntimeError("Database connection timed out — check Supabase availability")
     except Exception as e:
         logger.error(f"Database connection failed: {str(e)}")
         raise

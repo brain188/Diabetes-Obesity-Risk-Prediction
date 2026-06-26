@@ -11,7 +11,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.exceptions import NotFoundError, DatabaseError
 from app.models.report import Report
-from app.models.visit import Visit
+from app.models.screening_data import ScreeningVisit
 from app.models.base import generate_uuid
 from app.repositories.base import BaseRepository
 
@@ -121,7 +121,7 @@ class ReportRepository(BaseRepository[Report]):
             stmt = select(Report).where(
                 Report.report_id == report_id
             ).options(
-                selectinload(Report.visit).selectinload(Visit.patient),
+                selectinload(Report.visit).selectinload(ScreeningVisit.patient),
                 selectinload(Report.healthcare_worker),
             )
             

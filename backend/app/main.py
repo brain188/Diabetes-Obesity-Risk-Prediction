@@ -117,7 +117,47 @@ app = FastAPI(
 
 # Middleware Configuration
 
-# CORS Middleware
+# Request/Response Middleware — registered first so CORS (added last) ends up outermost.
+
+@app.middleware("http")
+async def add_request_id(request: Request, call_next):
+    """Add request ID to each request for tracing and logging."""
+    import uuid
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    request.state.request_id = request_id
+
+    start_time = time.time()
+    response = await call_next(request)
+
+    response.headers["X-Request-ID"] = request_id
+    duration_ms = (time.time() - start_time) * 1000
+    logger.info(
+        f"Request completed | {request.method} {request.url.path} | "
+        f"status={response.status_code} | duration={duration_ms:.2f}ms | "
+        f"request_id={request_id}"
+    )
+    return response
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    """Log all incoming requests with metadata."""
+    forwarded = request.headers.get("X-Forwarded-For")
+    client_ip = (
+        forwarded.split(",")[0].strip()
+        if forwarded
+        else (request.client.host if request.client else "unknown")
+    )
+    logger.info(
+        f"Request received | {request.method} {request.url.path} | "
+        f"ip={client_ip} | user_agent={request.headers.get('User-Agent', '-')} | "
+        f"request_id={getattr(request.state, 'request_id', '-')}"
+    )
+    return await call_next(request)
+
+
+# CORS must be added LAST so Starlette places it outermost in the middleware
+# stack — it runs first and handles OPTIONS preflights before anything else.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -130,62 +170,8 @@ app.add_middleware(
 if settings.ENVIRONMENT == "production":
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["*"],  # Configure based on your domain
+        allowed_hosts=["*"],
     )
-
-
-# Request/Response Middleware
-
-@app.middleware("http")
-async def add_request_id(request: Request, call_next):
-    """
-    Add request ID to each request for tracing and logging.
-    """
-    request_id = request.headers.get("X-Request-ID")
-    if not request_id:
-        import uuid
-        request_id = str(uuid.uuid4())
-    
-    # Add request_id to request state for logging
-    request.state.request_id = request_id
-    
-    # Start timer
-    start_time = time.time()
-    
-    # Process request
-    response = await call_next(request)
-    
-    # Add request ID to response headers
-    response.headers["X-Request-ID"] = request_id
-    
-    # Log request duration
-    duration_ms = (time.time() - start_time) * 1000
-    logger.info(
-        f"Request completed | {request.method} {request.url.path} | "
-        f"status={response.status_code} | duration={duration_ms:.2f}ms | "
-        f"request_id={request_id}"
-    )
-    
-    return response
-
-
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    """
-    Log all incoming requests with metadata.
-    """
-    # Get client IP
-    forwarded = request.headers.get("X-Forwarded-For")
-    client_ip = forwarded.split(",")[0].strip() if forwarded else request.client.host
-    
-    # Log request
-    logger.info(
-        f"Request received | {request.method} {request.url.path} | "
-        f"ip={client_ip} | user_agent={request.headers.get('User-Agent', '-')} | "
-        f"request_id={getattr(request.state, 'request_id', '-')}"
-    )
-    
-    return await call_next(request)
 
 
 # Exception Handlers

@@ -3,6 +3,7 @@ FastAPI application entry point.
 Configures the application, middleware, and startup/shutdown events.
 """
 
+import asyncio
 import logging
 import time
 from contextlib import asynccontextmanager
@@ -65,13 +66,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         # Load ML models
         logger.info("Loading ML artifacts...")
         try:
-            model_loader.load_all()
-            
-            # Pre-build all cached explainers so the first prediction is fast
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, model_loader.load_all)
+
+            # Pre-build all cached explainers so the first prediction is fast.
+            # Run in executor — these are CPU-bound and would block the event loop.
             logger.info("Warming up caches (feature importance, SHAP, LIME)...")
-            model_loader.get_feature_importance_cached()
-            model_loader.get_shap_explainer_cached()
-            model_loader.get_lime_explainer_cached()
+            await loop.run_in_executor(None, model_loader.get_feature_importance_cached)
+            await loop.run_in_executor(None, model_loader.get_shap_explainer_cached)
+            await loop.run_in_executor(None, model_loader.get_lime_explainer_cached)
 
             logger.info("All systems ready!")
         except FileNotFoundError as e:

@@ -20,40 +20,6 @@ The system is designed to assist, not replace, clinical judgement. Every predict
 
 ![Full System Architecture](full_architecture/full%20architecture%20diagram.png)
 
-The system is composed of three independently deployable layers:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                FRONTEND  (React 19 + Vite + TypeScript)          │
-│  Healthcare worker interface — patient registration, screening   │
-│  data entry, prediction results, reports, analytics dashboard    │
-│  Port 5173 (dev)                                                 │
-└─────────────────────────┬────────────────────────────────────────┘
-                          │  REST API (JSON over HTTPS)
-                          ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                BACKEND  (FastAPI + SQLAlchemy + asyncpg)         │
-│  Auth · Patient CRUD · Screening · Predictions · Reports         │
-│  Notes · Analytics · Audit logging                               │
-│  Port 8000                                                       │
-│                          │                                       │
-│          ┌───────────────┴───────────────┐                       │
-│          ▼                               ▼                       │
-│  PostgreSQL (Supabase)          ML Artifacts (Kedro output)      │
-│  10 tables                      trained_model.pkl                │
-│                                 scaler.pkl                       │
-│                                 shap_explainer.pkl               │
-└──────────────────────────────────────────────────────────────────┘
-                          ▲
-                          │  Kedro pipeline produces artifacts
-┌──────────────────────────────────────────────────────────────────┐
-│               ML MODEL  (Kedro 1.4 + CatBoost + MLflow)         │
-│  5 pipelines: data_processing → feature_engineering →           │
-│  training → evaluation → prediction                              │
-│  Trained on 10,000 patient records from a clinical dataset       │
-└──────────────────────────────────────────────────────────────────┘
-```
-
 ---
 
 ## Repository Structure

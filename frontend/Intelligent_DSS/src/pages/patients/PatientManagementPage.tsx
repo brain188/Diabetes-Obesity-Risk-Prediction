@@ -1,11 +1,16 @@
 import { useState, useDeferredValue } from "react";
 import { useNavigate } from "react-router-dom";
 import { format, differenceInYears, parseISO } from "date-fns";
-import { UserPlus, Search, Eye, Pencil, ListFilter, ChevronLeft, ChevronRight, Users } from "lucide-react";
-import { usePatients } from "@/hooks/usePatients";
+import { UserPlus, Search, Eye, Pencil, ListFilter, ChevronLeft, ChevronRight, Users, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { usePatients, usePatient, useUpdatePatient } from "@/hooks/usePatients";
 import { RegisterPatientDialog } from "@/components/shared/RegisterPatientDialog";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import type { Patient } from "@/types/patient.types";
 import { PAGE_SIZE } from "@/lib/constants";
 
@@ -22,12 +27,119 @@ function initials(name: string) {
   return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 }
 
+const minDob = () => {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - 18);
+  return d;
+};
+
+const editSchema = z.object({
+  full_name: z.string().min(2, "Full name is required"),
+  date_of_birth: z
+    .string()
+    .min(1, "Date of birth is required")
+    .refine((val) => new Date(val) <= minDob(), "Patient must be at least 18 years old"),
+  sex: z.enum(["Male", "Female"], { required_error: "Sex is required" }),
+  contact_info: z.string().optional(),
+  national_id: z.string().optional(),
+});
+type EditFormValues = z.infer<typeof editSchema>;
+
+function EditPatientDialog({ patientId, onClose }: { patientId: string; onClose: () => void }) {
+  const { data: patient, isLoading } = usePatient(patientId);
+  const update = useUpdatePatient();
+
+  const field = "w-full px-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all";
+  const label = "block text-sm font-medium text-foreground mb-1.5";
+  const err = "mt-1 text-xs text-destructive";
+
+  const { register, handleSubmit, formState: { errors } } = useForm<EditFormValues>({
+    resolver: zodResolver(editSchema),
+    values: patient
+      ? {
+          full_name: patient.full_name,
+          date_of_birth: patient.date_of_birth,
+          sex: patient.sex as "Male" | "Female",
+          contact_info: patient.contact_info ?? "",
+          national_id: patient.national_id ?? "",
+        }
+      : undefined,
+  });
+
+  const onSubmit = (data: EditFormValues) => {
+    update.mutate(
+      { id: patientId, data },
+      {
+        onSuccess: () => { toast.success("Patient updated successfully."); onClose(); },
+        onError: () => toast.error("Failed to update patient. Please try again."),
+      }
+    );
+  };
+
+  return (
+    <Dialog open onOpenChange={(v) => !v && onClose()}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit Patient</DialogTitle>
+          <DialogDescription>Update the patient's information below.</DialogDescription>
+        </DialogHeader>
+        {isLoading ? (
+          <div className="space-y-3 mt-2">
+            {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
+            <div>
+              <label className={label}>Full Name *</label>
+              <input {...register("full_name")} className={field} />
+              {errors.full_name && <p className={err}>{errors.full_name.message}</p>}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className={label}>Date of Birth *</label>
+                <input {...register("date_of_birth")} type="date" max={minDob().toISOString().split("T")[0]} className={field} />
+                {errors.date_of_birth && <p className={err}>{errors.date_of_birth.message}</p>}
+              </div>
+              <div>
+                <label className={label}>Sex *</label>
+                <select {...register("sex")} className={field}>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                {errors.sex && <p className={err}>{errors.sex.message}</p>}
+              </div>
+            </div>
+            <div>
+              <label className={label}>Contact Info</label>
+              <input {...register("contact_info")} placeholder="+237 6xx xxx xxx" className={field} />
+            </div>
+            <div>
+              <label className={label}>National ID</label>
+              <input {...register("national_id")} placeholder="Optional" className={field} />
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                Cancel
+              </button>
+              <button type="submit" disabled={update.isPending} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-60 transition-colors">
+                {update.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                Save Changes
+              </button>
+            </div>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 type StatusFilter = "" | "active" | "inactive";
 type SexFilter = "" | "Male" | "Female";
 
 export default function PatientManagementPage() {
   const navigate = useNavigate();
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [editPatientId, setEditPatientId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("");
   const [sexFilter, setSexFilter] = useState<SexFilter>("");
@@ -185,6 +297,7 @@ export default function PatientManagementPage() {
                   patient={patient}
                   striped={i % 2 === 0}
                   onView={() => navigate(`/patients/${patient.patient_id}`)}
+                  onEdit={() => setEditPatientId(patient.patient_id)}
                 />
               ))}
             </tbody>
@@ -238,6 +351,7 @@ export default function PatientManagementPage() {
       </div>
 
       <RegisterPatientDialog open={registerOpen} onClose={() => setRegisterOpen(false)} />
+      {editPatientId && <EditPatientDialog patientId={editPatientId} onClose={() => setEditPatientId(null)} />}
     </>
   );
 }
@@ -246,12 +360,13 @@ function PatientRow({
   patient,
   striped,
   onView,
+  onEdit,
 }: {
   patient: Patient;
   striped: boolean;
   onView: () => void;
+  onEdit: () => void;
 }) {
-  const navigate = useNavigate();
 
   return (
     <tr
@@ -269,7 +384,7 @@ function PatientRow({
           <span className="text-foreground font-medium">{patient.full_name}</span>
         </div>
       </td>
-      <td className="px-4 py-3 text-muted-foreground">{getAge(patient.date_of_birth)}</td>
+      <td className="px-4 py-3 text-muted-foreground">{(patient as any).age ?? "—"}</td>
       <td className="px-4 py-3 text-muted-foreground">{patient.sex === "Male" ? "M" : "F"}</td>
       <td className="px-4 py-3 text-muted-foreground">
         {formatDate(patient.last_visit_date ?? patient.updated_at)}
@@ -286,7 +401,7 @@ function PatientRow({
         )}
       </td>
       <td className="px-4 py-3 text-right">
-        <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center justify-end gap-1">
           <button
             onClick={onView}
             title="View patient"
@@ -295,7 +410,7 @@ function PatientRow({
             <Eye className="h-4 w-4" />
           </button>
           <button
-            onClick={() => navigate(`/patients/${patient.patient_id}`)}
+            onClick={onEdit}
             title="Edit patient"
             className="p-1.5 text-muted-foreground hover:bg-muted rounded-md transition-colors"
           >

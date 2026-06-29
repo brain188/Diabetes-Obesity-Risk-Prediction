@@ -7,7 +7,6 @@ import {
   FileText,
   BarChart2,
   Settings,
-  Stethoscope,
   UserPlus,
   Building2,
   ShieldCheck,
@@ -62,21 +61,8 @@ export function AppSidebar() {
 
   return (
     <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col border-r border-border bg-sidebar z-40">
-      {/* Facility branding */}
-      <div className="px-4 py-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary shrink-0">
-            <Stethoscope className="h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-sm font-semibold text-foreground truncate">Clinical DSS</h2>
-            <p className="text-xs text-muted-foreground truncate">Endocrinology Unit</p>
-          </div>
-        </div>
-      </div>
-
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto p-3 space-y-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {workerNav.map((item) => <NavItem key={item.label} item={item} />)}
 
         <div className="pt-3 pb-1">

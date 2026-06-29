@@ -24,6 +24,18 @@ export function useCreatePatient() {
   });
 }
 
+export function useUpdatePatient() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Parameters<typeof patientService.update>[1] }) =>
+      patientService.update(id, data),
+    onSuccess: (_data, { id }) => {
+      qc.invalidateQueries({ queryKey: ["patients"] });
+      qc.invalidateQueries({ queryKey: ["patient", id] });
+    },
+  });
+}
+
 export function usePatientHistory(id: string) {
   return useQuery({
     queryKey: ["patient-history", id],

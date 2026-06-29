@@ -13,7 +13,10 @@ import { RISK_COLORS } from "@/lib/constants";
 import type { RiskClass } from "@/types/prediction.types";
 
 function getAge(dob: string) {
-  try { return differenceInYears(new Date(), parseISO(dob)); } catch { return "—"; }
+  try {
+    const years = differenceInYears(new Date(), parseISO(dob));
+    return isNaN(years) ? "—" : years;
+  } catch { return "—"; }
 }
 
 function RiskBadge({ risk }: { risk: RiskClass }) {
@@ -34,7 +37,9 @@ export default function PatientProfilePage() {
   const { data: history } = usePatientHistory(patientId);
   const { data: predictions } = usePredictionHistory(patientId);
 
-  const age = patient ? getAge(patient.date_of_birth) : null;
+  const age = patient
+    ? ((patient as any).age ?? getAge(patient.date_of_birth) ?? "—")
+    : null;
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-8">
